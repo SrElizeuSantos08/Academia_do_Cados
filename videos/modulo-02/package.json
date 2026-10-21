@@ -1,0 +1,24 @@
+{
+  "name": "academia-do-caos-modulo-02",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.jsx",
+    "compositions": "remotion compositions src/index.jsx",
+    "render": "remotion render src/index.jsx Aula02Outlook out/modulo-02-aula-01.mp4 --scale=0.6666666666666666 --crf=23 --audio-codec=aac --audio-bitrate=160k --concurrency=4"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.2.0",
+    "@mediabunny/server": "1.61.3",
+    "@remotion/captions": "4.0.535",
+    "@remotion/cli": "4.0.535",
+    "@remotion/media": "4.0.535",
+    "@remotion/whisper-webgpu": "4.0.535",
+    "mediabunny": "1.61.3",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "remotion": "4.0.535",
+    "zod": "4.5.4"
+  }
+}
