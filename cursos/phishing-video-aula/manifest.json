@@ -1,0 +1,77 @@
+[
+  {
+    "file": ".gitattributes",
+    "bytes": 219,
+    "sha256": "f40da9fa2efc31c1bdb468ba83a24b20010fe24c7dde7e6ee4df95e3f14170b6"
+  },
+  {
+    "file": ".gitignore",
+    "bytes": 96,
+    "sha256": "f7717d52ec22c86856339b191898caf59a6b9eb99d7ffd39859bccb4b83a1bf2"
+  },
+  {
+    "file": "docs/EDICAO.md",
+    "bytes": 1933,
+    "sha256": "ee1f2b209a5c24a65e4429df9d96320310da5ca4723ae1a443c9cfa7c072c230"
+  },
+  {
+    "file": "docs/preview.jpg",
+    "bytes": 58243,
+    "sha256": "558cffb5c9ceb443afbc88b5a4f1f7901d49937f4a5b124c7ed057666d35b59c"
+  },
+  {
+    "file": "exports/Phishing - legendas.srt",
+    "bytes": 3433,
+    "sha256": "ffc99c9a605c673f7d1b65e9a32f73f189ac69ad41cfe6b0057c562a0b18fec7"
+  },
+  {
+    "file": "exports/Phishing - video aula.mp4",
+    "bytes": 6952850,
+    "sha256": "62a0b5b7a8e3e0f56fa171cad619512312cc81fbe5cbac7ddacfe3939419d64e"
+  },
+  {
+    "file": "media/colaborador 1.mp3",
+    "bytes": 254337,
+    "sha256": "790b2a6b82d0f5c38454d1865474547bea6d4867f769f4134dd412ce56c565ca"
+  },
+  {
+    "file": "media/Gravando 2026-10-21 105341.mp4",
+    "bytes": 39769419,
+    "sha256": "1032e091924ad252a5ae9eeeee92934e20fec89cde3a66571df13f391f5eed60"
+  },
+  {
+    "file": "media/narrador aviso.mp3",
+    "bytes": 2070788,
+    "sha256": "8c367918cb911918d3b29d2b5c1de21c97c0c2c6f87717ff6bb7e73a6c7b5fa0"
+  },
+  {
+    "file": "README.md",
+    "bytes": 2785,
+    "sha256": "76b9ae59f72f3f3723a4be9a46eca649ee03096ee6e2221d0532fde93e85e2db"
+  },
+  {
+    "file": "requirements.txt",
+    "bytes": 22,
+    "sha256": "0ba4322636924d18b08903cf82a1eccfb219dcd991cbd8be9baa6bdc0d71843c"
+  },
+  {
+    "file": "roteiro.txt",
+    "bytes": 2147,
+    "sha256": "7b5456aa4d1ec981ba87f7b556381ff2e211ad2042c21cccd2686b0489a5cc99"
+  },
+  {
+    "file": "scripts/render.py",
+    "bytes": 4721,
+    "sha256": "ed7d54014f7efec68f368a12cede09dc53e94821864fccf3d78eeb4e25cbacaa"
+  },
+  {
+    "file": "transcripts/colaborador 1.mp3.json",
+    "bytes": 2557,
+    "sha256": "da7eeb27ec5d90903b5c3f972832dc1f9a6079966afdc5dc3b852ee3145dc6d6"
+  },
+  {
+    "file": "transcripts/narrador aviso.mp3.json",
+    "bytes": 18863,
+    "sha256": "b4717155571f7ba0acc7773612a68a7f3c32bede24c5843026c0e3690690536e"
+  }
+]
