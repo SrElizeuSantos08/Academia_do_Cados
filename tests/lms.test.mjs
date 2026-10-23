@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {handleLms} from '../lib/lms.mjs';
 const sql=new DatabaseSync(':memory:');sql.exec(readFileSync(new URL('../drizzle/0000_brainy_dreaming_celestial.sql',import.meta.url),'utf8'));
+sql.exec(readFileSync(new URL('../drizzle/0008_learning_community_tutor.sql',import.meta.url),'utf8'));
 class Statement{constructor(q,args=[]){this.q=q;this.args=args}bind(...args){return new Statement(this.q,args)}async run(){const r=sql.prepare(this.q).run(...this.args);return {success:true,meta:{changes:r.changes}}}async first(){return sql.prepare(this.q).get(...this.args)||null}async all(){return {results:sql.prepare(this.q).all(...this.args)}}}
-const env={DB:{prepare:q=>new Statement(q),batch:async stmts=>{sql.exec('BEGIN');try{const out=[];for(const s of stmts)out.push(await s.run());sql.exec('COMMIT');return out}catch(e){sql.exec('ROLLBACK');throw e}}}};
+const env={BOOTSTRAP_ADMIN_EMAILS:'elizeu.santos@bugbusters.com.br',DB:{prepare:q=>new Statement(q),batch:async stmts=>{sql.exec('BEGIN');try{const out=[];for(const s of stmts)out.push(await s.run());sql.exec('COMMIT');return out}catch(e){sql.exec('ROLLBACK');throw e}}}};
 const admin={id:'platform-admin',email:'elizeu.santos@bugbusters.com.br'},student={id:'platform-student',email:'student@example.com'},other={id:'platform-other',email:'other@example.com'};
 async function call(path,method='GET',body,user=admin,status=200,origin='https://academy.test'){
  const headers={origin};if(user){headers['oai-authenticated-user-id']=user.id;headers['oai-authenticated-user-email']=user.email}if(body)headers['content-type']='application/json';
@@ -45,7 +46,7 @@ await call('courses','POST',{title:'Curso seguinte',folder:course.folder,sort:2,
 for(let i=1;i<8;i++){const l=course.modules[i].lessons[0];assert.equal(l.quiz.length,5);assert.equal(l.materials.length,1);const answers=l.quiz.map(q=>q.answer);await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:[answers[0]]},student,400);const below=[...answers];below[0]=(below[0]+1)%3;below[1]=(below[1]+1)%3;const failed=await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:below},student);assert.equal(failed.passed,false);assert.equal(failed.score,60);const sufficient=[...answers];sufficient[0]=(sufficient[0]+1)%3;const passed=await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:sufficient,videoEnded:true},student);assert.equal(passed.passed,true);assert.equal(passed.score,80);await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers,videoEnded:true},student)}
 assert.equal((await call('bootstrap','GET',null,student)).courses.find(c=>c.id===next.id).locked,false);await call('certificates','POST',{course:course.id,module:'course'},student,403);await call('course-assessment','POST',{course:course.id,answers:course.modules.map((m,i)=>m.lessons[0].quiz[i%5].answer)},student);await call('certificates','POST',{course:course.id,module:'course'},student);await call('progress','POST',{course:next.id,lesson:'next-l',complete:true},student);
 const truncated=structuredClone(course);truncated.modules.splice(0,1);await call('courses/'+course.id,'PATCH',truncated,admin,409);
-await call('robot','PATCH',{enabled:true},admin,409);
+await call('robot','PATCH',{enabled:true},admin);
 await call('people','POST',{name:'CSRF',email:'csrf@example.com'},admin,403,'https://attacker.test');
 await call('enrollments','POST',{user:p.id,course:course.id,remove:true});await call('forum?course='+course.id,'GET',null,student,403);await call('courses/'+next.id,'DELETE',null,admin);assert.equal((await call('bootstrap','GET',null,student)).courses.length,0);
 await call('people/'+p.id,'PATCH',{active:false},admin);await call('bootstrap','GET',null,student,403);
@@ -68,3 +69,5 @@ const vid=await rawUpload('video',course.id,'video/mp4','1234');
 await call('assets/'+vid.id,'GET',null,other,403);
 await call('enrollments','POST',{user:p2.id,course:course.id,remove:true});const ownFile=await handleLms(new Request('https://academy.test/api/lms/assets/'+doc.id,{headers:{'oai-authenticated-user-id':other.id,'oai-authenticated-user-email':other.email}}),env);assert.equal(ownFile.status,200);assert.equal(await ownFile.text(),'documento'); // author retains access to their own attachment
 console.log('PASS: streamed files, size/type validation, interrupted uploads, profile photos, attachment authorship, video authorization and range delivery.');
+
+export {env,call,admin,student,other,sql,course,p,p2,cert,doc,rawUpload};

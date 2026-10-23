@@ -111,3 +111,21 @@ O [projeto da videoaula](cursos/phishing-video-aula/README.md) inclui o [vídeo 
 O e-mail correto de Elizeu é `elizeu.santos@bugbusters.com.br`; somente esse endereço reserva o RA `AC-2026-0001` em novos cadastros. O endereço incorreto não é mais um alias de cadastro. A migração histórica `0007` foi preservada sem alterações: suas referências antigas serviram para atribuir RAs a cadastros existentes, não para criar contas ou atualizar e-mails. Esta correção no código não substitui os dados de um banco publicado.
 
 A aula 03 da básica, **Sou eu! Só mudou o número…**, usa como vídeo padrão `public/assets/videos/modulo-03-aula-01.mp4` (2min02s, 1280×720, H.264/AAC), tanto no portal quanto na demonstração piloto. O arquivo fornecido foi preservado, com áudio, música e legendas incorporadas. O caso do falso contato da filha pedindo Pix está alinhado ao portfólio Identidade antes da confiança: número novo, pressão, confirmação pelo contato conhecido e atenção ao destinatário; a palavra de segurança aparece como proteção extra, sem substituir confirmação independente. O vídeo padrão é apresentado em cursos novos e existentes sem regravar suas grades; uploads personalizados têm prioridade. A API exige o término do vídeo e aprovação na avaliação antes da primeira conclusão desta aula, preservando conclusões anteriores. `node tests/lesson03-video.test.mjs` verifica esse fluxo, a vinculação ao portfólio e a preservação de uploads/histórico.
+
+## Documentos e pausa do aluno
+
+O certificado utiliza o modelo PDF fornecido pela academia, com nome, curso ou módulo, carga horária, data e código preenchidos pelo registro de conclusão. A emissão usa `src/student-documents.mjs`; o pacote de navegador é gerado por `scripts/build-documents.mjs` durante o build. Os arquivos `public/templates/` são modelos e fontes, sem dados de alunos. O documento de cada participante é gerado no navegador e não é gravado em diretórios públicos.
+
+A página Minha carteirinha usa os dados e a foto do perfil, permite selecionar um curso liberado e exporta duas páginas de 85,6 × 54 mm, uma para a frente e outra para o verso, sem QR Code. Momento de distração abre a versão final do jogo em outra aba, preservando a aula aberta. O login existente foi mantido.
+
+## Acompanhamento, fórum e player
+
+A equipe docente encontra Acompanhamento no painel: progresso por matrícula, RA, notas médias das avaliações, horas curriculares proporcionais à carga do módulo, última atividade e CSV com os filtros atuais. Horas curriculares não equivalem a presença cronometrada.
+
+O fórum oferece tópicos por curso, fixação e encerramento pela equipe, denúncias, ocultação/restauração com motivo e histórico. Arquivos de mensagens ocultadas também são bloqueados aos demais alunos.
+
+O player mantém velocidade de 0,5× a 2×, posição ao mudar de qualidade, legendas WebVTT e variantes cadastradas pelo professor. A seleção de qualidade utiliza arquivos enviados, sem prometer transcodificação automática.
+
+O assistente consulta apenas as aulas liberadas, descrições, o PDF didático e a transcrição da aula piloto. A integração de IA usa OPENAI_API_KEY no servidor e OPENAI_MODEL opcional (padrão gpt-4.1-mini), com fontes, limite de consultas e encaminhamento ao professor. Sem credencial, a interface informa explicitamente que a consulta é feita sem IA. A migração 0005 ativa o assistente; a IA requer configuração válida no ambiente de produção. Nunca colocar credenciais no código ou no navegador.
+
+Administradores iniciais de um banco novo podem ser definidos no servidor em BOOTSTRAP_ADMIN_EMAILS, separados por vírgula. A ausência dessa configuração não altera os administradores já cadastrados. Novos acessos administrativos também podem ser cadastrados por um administrador existente no painel; não há mais e-mails pessoais fixos no código.

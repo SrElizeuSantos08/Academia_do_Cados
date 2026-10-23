@@ -57,6 +57,13 @@
       "when": 1792717200000,
       "tag": "0007_assigned_registrations",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1792717260000,
+      "tag": "0008_learning_community_tutor",
+      "breakpoints": true
     }
   ]
 }

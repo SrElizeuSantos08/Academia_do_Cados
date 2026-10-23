@@ -1,0 +1,11 @@
+import {certificatePdf,studentCardPdf} from '../src/student-documents.mjs';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {PDFDocument} from 'pdf-lib';
+const load=async p=>new Uint8Array(await readFile(new URL('../public'+p,import.meta.url))),origin='https://bbs-one-seguranca-digital.bbsone-2952.chatgpt.site';
+const dir=new URL('../../tmp/pdfs/',import.meta.url);await mkdir(dir,{recursive:true});
+const sample={name:'Elizeu Santos',ra:'AC-2026-0001',course:'Segurança Digital na Prática',module:'Formação completa',hours:2,issued:'2026-10-23T12:00:00Z',code:'AC-TESTE-0001'};
+const cert=await certificatePdf(sample,'test-record',{load,origin});assert.equal((await PDFDocument.load(cert)).getPageCount(),1);await writeFile(new URL('certificado-personalizado.pdf',dir),cert);
+const second=await certificatePdf({...sample,name:'Maria Eduarda de Albuquerque Gonçalves',ra:'AC-2026-0002',module:'Proteção de contas e informações',course:'Segurança Digital na Prática',hours:.25},'test-record-2',{load,origin});assert.notDeepEqual(cert,second);await writeFile(new URL('certificado-segunda-aluna.pdf',dir),second);
+const card=await studentCardPdf(sample,'Segurança Digital na Prática',{load}),pdf=await PDFDocument.load(card);assert.equal(pdf.getPageCount(),2);for(const p of pdf.getPages()){assert(Math.abs(p.getWidth()-85.6*72/25.4)<.01);assert(Math.abs(p.getHeight()-54*72/25.4)<.01)}await writeFile(new URL('carteirinha-personalizada.pdf',dir),card);
+console.log('PASS: independent personalized certificates, module variant, Unicode names, two-sided CR80 student card.');

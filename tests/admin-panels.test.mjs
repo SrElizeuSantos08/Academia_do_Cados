@@ -10,7 +10,7 @@ const context={S:{me:{id:'me',role:'admin'},certificates:[{user:'me'},{user:'oth
 let adminSpace=true;
 context.isAdmin=()=>context.S.me.role==='admin';context.adminView=()=>adminSpace;
 vm.createContext(context);vm.runInContext(helpers,context);
-assert.deepEqual(Array.from(context.managementItems(),i=>i[0]),['dashboard','people','enrollments','courses','forum','support','notifications','certificates','settings','audit']);
+assert.deepEqual(Array.from(context.managementItems(),i=>i[0]),['dashboard','people','enrollments','reports','moderation','courses','forum','support','notifications','certificates','settings','audit']);
 assert(context.managementOverview().includes('data-go="people"'));
 assert.equal(context.visibleCertificates().length,2);
 adminSpace=false;assert.equal(context.visibleCertificates().length,1);
