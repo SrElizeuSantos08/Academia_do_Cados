@@ -89,3 +89,7 @@ A migração `0006_module_portfolios_and_quizzes.sql` amplia somente as avaliaç
 Testes automatizados de API, sintaxe JavaScript, tipos TypeScript e build de produção. Revisão visual e testes em navegador real ainda precisam ser executados no ambiente autorizado. Não foram inseridos alunos fictícios no banco de produção.
 
 A migração `0007_assigned_registrations.sql` atribui `0001` a Elizeu (incluindo o e-mail Jamaica Mangueiras usado localmente), `0002` a Guilherme, `0003` a Osmar, `0004` a Alisson Pereira e `0005` a Erik Reis. O número `0006` está reservado para Bruna Oliveira (`bruna.oliveira@bugbusters.com.br`), e é atribuído quando esse e-mail for cadastrado. O cadastro distinto de Bruna Lima não é renomeado nem associado automaticamente a ela. Ocupantes anteriores dos números reservados são movidos para números livres, preservando seus IDs e históricos.
+
+## Videoaula sobre phishing
+
+O [projeto da videoaula](cursos/phishing-video-aula/README.md) inclui o [vídeo final legendado](cursos/phishing-video-aula/exports/Phishing%20-%20video%20aula.mp4), a gravação original, os dois áudios e as instruções de edição. A inclusão dos arquivos no repositório não cadastra automaticamente a aula no catálogo da plataforma.

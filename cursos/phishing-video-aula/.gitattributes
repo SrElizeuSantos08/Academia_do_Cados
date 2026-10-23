@@ -1,0 +1,11 @@
+* text=auto
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.srt -text whitespace=cr-at-eol,-blank-at-eof
+*.mp4 binary
+*.mp3 binary
+*.jpg binary

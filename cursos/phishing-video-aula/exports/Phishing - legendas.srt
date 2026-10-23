@@ -1,0 +1,136 @@
+﻿1
+00:00:00,000 --> 00:00:02,060
+Bom, acabei de chegar no meu trabalho.
+
+2
+00:00:02,419 --> 00:00:06,330
+A primeira coisa a se fazer é acompanhar os e-mails recebidos de clientes
+
+3
+00:00:06,360 --> 00:00:10,320
+e colaboradores. Mas, opa! Tem um diferente aqui...
+
+4
+00:00:11,140 --> 00:00:12,930
+Nossa, parece um e-mail do meu banco.
+
+5
+00:00:12,960 --> 00:00:14,580
+Deixe eu dar uma olhada nisso...
+
+6
+00:00:15,050 --> 00:00:18,589
+Espera aí! Não, não clique em nada ainda, por favor!
+
+7
+00:00:19,230 --> 00:00:23,619
+Se você recebeu um e-mail do seu banco para clicar em um link ou fornecer
+
+8
+00:00:23,649 --> 00:00:29,589
+algum tipo de dado, CPF, conta bancária, senhas etc., pare e pense.
+
+9
+00:00:30,149 --> 00:00:35,590
+E agora? Será que é seguro? O phishing é um golpe muito comum e perigoso.
+
+10
+00:00:36,109 --> 00:00:40,939
+Ele acontece quando criminosos enviam e-mails, SMS ou até mensagens
+
+11
+00:00:40,969 --> 00:00:45,250
+de WhatsApp se passando por bancos ou outras empresas para roubar
+
+12
+00:00:45,280 --> 00:00:50,069
+as suas informações pessoais. O objetivo é convencer você a clicar
+
+13
+00:00:50,099 --> 00:00:55,170
+em links maliciosos, fornecer seus dados bancários, senhas e até instalar
+
+14
+00:00:55,200 --> 00:00:58,659
+vírus no seu aparelho. E como fazer para identificar?
+
+15
+00:00:59,340 --> 00:01:03,459
+É comum que mensagens desse tipo de golpe apresentem erros de português,
+
+16
+00:01:03,859 --> 00:01:07,560
+links que não te levam para o site oficial do banco ou da empresa,
+
+17
+00:01:07,959 --> 00:01:12,540
+possuam tom de urgência e solicitem dados sensíveis, como senha ou
+
+18
+00:01:12,680 --> 00:01:16,950
+número de cartão. Além disso, desconfie de mensagens que dizem coisas
+
+19
+00:01:16,980 --> 00:01:22,250
+como: "Sua conta será bloqueada em até 24 horas" ou "Você ganhou um
+
+20
+00:01:22,280 --> 00:01:25,509
+prêmio exclusivo, clique aqui para resgatá-lo".
+
+21
+00:01:25,539 --> 00:01:30,369
+Golpistas adoram fazer você agir sob pressão e com isso você não tem
+
+22
+00:01:30,399 --> 00:01:34,649
+tempo para pensar. Após identificar uma tentativa de phishing, você
+
+23
+00:01:34,679 --> 00:01:39,239
+deve se proteger. Nunca clique em link de mensagens suspeitas.
+
+24
+00:01:39,719 --> 00:01:42,659
+Verifique o remetente e também o endereço do site.
+
+25
+00:01:43,159 --> 00:01:46,780
+Nunca forneça dados pessoais fora dos canais oficiais.
+
+26
+00:01:47,219 --> 00:01:50,989
+Se você tiver alguma dúvida, entre diretamente em contato com o seu
+
+27
+00:01:51,019 --> 00:01:55,539
+banco ou empresa pelos canais oficiais, telefone ou aplicativo.
+
+28
+00:01:56,019 --> 00:02:00,589
+Nunca responda pela própria mensagem recebida e lembre-se: se você
+
+29
+00:02:00,619 --> 00:02:05,089
+já clicou em algum link suspeito ou forneceu algum dado, entre em
+
+30
+00:02:05,119 --> 00:02:09,629
+contato imediatamente com o seu banco, troque suas senhas e acompanhe
+
+31
+00:02:09,659 --> 00:02:14,069
+o extrato da sua conta. Agora você já sabe se proteger do golpe do
+
+32
+00:02:14,099 --> 00:02:18,229
+phishing. Se você quiser ainda mais segurança, entre em contato com
+
+33
+00:02:18,259 --> 00:02:22,189
+a Academia do Caus. Vamos ajudá-lo a enfrentar esses golpistas com
+
+34
+00:02:22,219 --> 00:02:23,100
+conhecimento. Bom trabalho!
+
