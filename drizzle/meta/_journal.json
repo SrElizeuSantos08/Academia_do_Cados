@@ -8,6 +8,55 @@
       "when": 1792096146238,
       "tag": "0000_brainy_dreaming_celestial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1792168200000,
+      "tag": "0001_pilot_lesson_video",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792170000000,
+      "tag": "0002_pilot_phishing_material",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792170600000,
+      "tag": "0003_fix_phishing_material_path",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792177200000,
+      "tag": "0004_aula01_video_and_quiz",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1792627200000,
+      "tag": "0005_sequential_registration",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1792713600000,
+      "tag": "0006_module_portfolios_and_quizzes",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1792717200000,
+      "tag": "0007_assigned_registrations",
+      "breakpoints": true
     }
   ]
 }
