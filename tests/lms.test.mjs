@@ -11,19 +11,25 @@ async function call(path,method='GET',body,user=admin,status=200,origin='https:/
  const r=await handleLms(new Request('https://academy.test/api/lms/'+path,{method,headers,body:body?JSON.stringify(body):undefined}),env);const data=await r.json();assert.equal(r.status,status,`${method} ${path}: ${JSON.stringify(data)}`);return data;
 }
 await call('bootstrap','GET',null,null,401);await call('bootstrap','GET',null,other,403);
-let boot=await call('bootstrap');assert.equal(boot.me.role,'admin');const adminId=boot.me.id;
+let boot=await call('bootstrap');assert.equal(boot.me.role,'admin');assert.equal(boot.me.ra,'AC-2026-0001');const adminId=boot.me.id;
 const p=await call('people','POST',{name:'Aluno de Teste',email:student.email,role:'student'},admin,201);await call('people','POST',{name:'Duplicado',email:student.email},admin,409);
-boot=await call('bootstrap','GET',null,student);assert.equal(boot.me.id,p.id);assert.match(boot.me.ra,/^AC-/);assert.equal(boot.courses.length,0);
+boot=await call('bootstrap','GET',null,student);assert.equal(boot.me.id,p.id);assert.equal(boot.me.ra,'AC-2026-0007');assert.equal(boot.courses.length,0);
 await call('people','POST',{name:'Intruso',email:'intruso@example.com'},student,403);
 await call('people/'+adminId,'PATCH',{role:'student'},admin,400);
 await call('seed','POST',{});await call('seed','POST',{});boot=await call('bootstrap');assert.equal(boot.courses.length,1);assert.equal(boot.courses[0].modules.length,8);
-const course=boot.courses[0];await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[1]},student,403);
+const course=boot.courses[0];const savedMaterial=course.modules[0].lessons[0].materials[0];
+const malicious=structuredClone(course);malicious.modules[0].lessons[0].materials[0].url='javascript:alert(1)';await call('courses/'+course.id,'PATCH',malicious,admin,400);
+await call('courses/'+course.id,'PATCH',course);assert.deepEqual((await call('bootstrap')).courses[0].modules[0].lessons[0].materials[0],savedMaterial);
+await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[1]},student,403);
 await call('enrollments','POST',{user:p.id,course:course.id});
 boot=await call('bootstrap','GET',null,student);assert.equal(boot.courses.length,1);assert.equal(boot.courses[0].modules[1].lessons[0].description,'');assert.equal(boot.courses[0].modules[0].lessons[0].quiz[0].answer,undefined);
 await call('progress','POST',{course:course.id,lesson:'pilot-l2',complete:true,answers:[2]},student,403);
 await call('certificates','POST',{course:course.id,module:'pilot-m1'},student,403);
-const wrong=await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[0]},student);assert.equal(wrong.passed,false);
-await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[1]},student);
+const firstLesson=course.modules[0].lessons[0];assert.equal(firstLesson.quiz.length,5);assert.equal(firstLesson.materials[0].url,'/materials/portfolio-phishing-2026.pdf');
+await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[1]},student,400);
+const wrong=await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:[0,0,1,0,0]},student);assert.equal(wrong.passed,false);assert.deepEqual(wrong.incorrect,[0,1,2,3,4]);
+assert.equal((await call('bootstrap','GET',null,student)).progress.some(p=>p.done),false);
+await call('progress','POST',{course:course.id,lesson:'pilot-l1',complete:true,answers:firstLesson.quiz.map(q=>q.answer)},student);
 const cert=await call('certificates','POST',{course:course.id,module:'pilot-m1'},student);const again=await call('certificates','POST',{course:course.id,module:'pilot-m1'},student);assert.equal(cert.id,again.id);
 const verified=await call('certificates/'+cert.id,'GET',null,student);assert.equal(verified.snapshot.name,'Aluno de Teste');assert.equal(verified.snapshot.hours,.25);assert.equal(verified.snapshot.course,course.title);
 await call('people/'+p.id,'PATCH',{name:'Nome Atualizado',email:'contato@example.com'},student);assert.equal((await call('certificates/'+cert.id,'GET',null,student)).snapshot.name,'Aluno de Teste');
@@ -36,8 +42,8 @@ const p2=await call('people','POST',{name:'Outro Aluno',email:other.email},admin
 await call('progress','POST',{course:course.id,lesson:'pilot-l1',position:23},student);boot=await call('bootstrap','GET',null,student);assert.equal(boot.progress[0].position,23);assert.equal(boot.progress[0].done,1);assert(boot.notifications.length>0);
 await call('notifications','POST',{},student);assert((await call('bootstrap','GET',null,student)).notifications.every(n=>n.read));
 await call('courses','POST',{title:'Curso seguinte',folder:course.folder,sort:2,published:1,modules:[{id:'next-m',title:'Módulo',hours:2,lessons:[{id:'next-l',title:'Introdução',description:'Texto',minutes:20,quiz:[]}]}]},admin);boot=await call('bootstrap');const next=boot.courses.find(c=>c.title==='Curso seguinte');await call('enrollments','POST',{user:p.id,course:next.id});assert((await call('bootstrap','GET',null,student)).courses.find(c=>c.id===next.id).locked);await call('progress','POST',{course:next.id,lesson:'next-l',complete:true},student,403);
-for(let i=1;i<8;i++){const l=course.modules[i].lessons[0];await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:l.quiz.map(q=>q.answer)},student)}
-assert.equal((await call('bootstrap','GET',null,student)).courses.find(c=>c.id===next.id).locked,false);await call('certificates','POST',{course:course.id,module:'course'},student);await call('progress','POST',{course:next.id,lesson:'next-l',complete:true},student);
+for(let i=1;i<8;i++){const l=course.modules[i].lessons[0];assert.equal(l.quiz.length,5);assert.equal(l.materials.length,1);const answers=l.quiz.map(q=>q.answer);await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:[answers[0]]},student,400);const below=[...answers];below[0]=(below[0]+1)%3;below[1]=(below[1]+1)%3;const failed=await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:below},student);assert.equal(failed.passed,false);assert.equal(failed.score,60);const sufficient=[...answers];sufficient[0]=(sufficient[0]+1)%3;const passed=await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers:sufficient},student);assert.equal(passed.passed,true);assert.equal(passed.score,80);await call('progress','POST',{course:course.id,lesson:l.id,complete:true,answers},student)}
+assert.equal((await call('bootstrap','GET',null,student)).courses.find(c=>c.id===next.id).locked,false);await call('certificates','POST',{course:course.id,module:'course'},student,403);await call('course-assessment','POST',{course:course.id,answers:course.modules.map((m,i)=>m.lessons[0].quiz[i%5].answer)},student);await call('certificates','POST',{course:course.id,module:'course'},student);await call('progress','POST',{course:next.id,lesson:'next-l',complete:true},student);
 const truncated=structuredClone(course);truncated.modules.splice(0,1);await call('courses/'+course.id,'PATCH',truncated,admin,409);
 await call('robot','PATCH',{enabled:true},admin,409);
 await call('people','POST',{name:'CSRF',email:'csrf@example.com'},admin,403,'https://attacker.test');
