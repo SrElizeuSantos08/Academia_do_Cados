@@ -17,10 +17,26 @@
     module: 'pilot-m' + (index + 1),
     image: '/assets/badges/modulo-' + String(index + 1).padStart(2, '0') + '-' + slug + '.webp',
   })));
+  const intermediateNames = [
+    ['Negociação Verificada', 'negociacao-verificada'],
+    ['Compartilhamento Consciente', 'compartilhamento-consciente'],
+    ['Identidade Protegida', 'identidade-protegida'],
+    ['Suporte Validado', 'suporte-validado'],
+    ['IA com Critério', 'ia-com-criterio'],
+    ['Incidente Comunicado', 'incidente-comunicado'],
+  ];
+  const intermediateBadges = Object.freeze(intermediateNames.map(([name, slug], index) => Object.freeze({
+    name,
+    number: String(index + 1).padStart(2, '0'),
+    module: 'intermediate-m' + (index + 1),
+    courseTitle: 'Segurança Digital no Trabalho',
+    image: '/assets/badges/intermediario-' + String(index + 1).padStart(2, '0') + '-' + slug + '.webp',
+  })));
+  const catalog = Object.freeze({'cyber-pilot': badges, 'cyber-intermediate': intermediateBadges});
   const verification = '<span class="ac-badge-verified"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6z"/><path d="m8 12 3 3 5-6"/></svg>Selo conquistado</span>';
 
   function forModule(courseId, moduleId) {
-    return courseId === 'cyber-pilot' ? badges.find(badge => badge.module === moduleId) : undefined;
+    return catalog[courseId]?.find(badge => badge.module === moduleId);
   }
 
   function isComplete(module, getProgress) {
@@ -29,7 +45,7 @@
 
   function card(badge) {
     if (!badge) return '';
-    return `<article class="ac-badge-card"><div class="ac-badge-art"><img src="${badge.image}" width="128" height="128" loading="lazy" decoding="async" alt="Selo ${badge.name}"></div><div class="ac-badge-details">${verification}<small>Módulo ${badge.number} concluído</small><h3>${badge.name}</h3></div></article>`;
+    return `<article class="ac-badge-card"><div class="ac-badge-art"><img src="${badge.image}" width="128" height="128" loading="lazy" decoding="async" alt="Selo ${badge.name}"></div><div class="ac-badge-details">${verification}<small>${badge.courseTitle ? badge.courseTitle + ' · ' : ''}Módulo ${badge.number} concluído</small><h3>${badge.name}</h3></div></article>`;
   }
 
   function celebrate(badge, {onContinue, onDismiss, continueLabel = 'Continuar aprendizado', description = 'Você concluiu todas as aulas deste módulo. Esta conquista faz parte do seu progresso.'} = {}) {
@@ -54,5 +70,5 @@
     return dialog;
   }
 
-  window.AcademyBadges = Object.freeze({forModule, forIndex: index => badges[index], isComplete, card, celebrate});
+  window.AcademyBadges = Object.freeze({forModule, forIndex: (index, courseId = 'cyber-pilot') => catalog[courseId]?.[index], isComplete, card, celebrate});
 })();

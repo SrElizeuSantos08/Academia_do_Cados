@@ -15,6 +15,15 @@ for (let i = 0; i < names.length; i++) {
   assert.equal(badges.forIndex(i), badge);
   assert(existsSync(new URL('../public' + badge.image, import.meta.url)));
 }
+const intermediateNames=['Negociação Verificada','Compartilhamento Consciente','Identidade Protegida','Suporte Validado','IA com Critério','Incidente Comunicado'];
+for(const [index,name] of intermediateNames.entries()){
+ const badge=badges.forModule('cyber-intermediate','intermediate-m'+(index+1));
+ assert.equal(badge.name,name);assert.equal(badges.forIndex(index,'cyber-intermediate'),badge);
+ assert(existsSync(new URL('../public'+badge.image,import.meta.url)));
+ assert.match(badges.card(badge),/Segurança Digital no Trabalho/);
+ assert.equal(badges.forModule('cyber-pilot',badge.module),undefined);
+}
+assert.equal(badges.forModule('cyber-intermediate','pilot-m1'),undefined);
 assert.equal(badges.forModule('other-course', 'pilot-m1'), undefined);
 assert.equal(badges.forModule('cyber-pilot', 'unknown'), undefined);
 assert.equal(badges.isComplete({lessons: []}, () => ({done: 1})), false);
@@ -23,27 +32,28 @@ assert.equal(badges.isComplete({lessons: [{id: 'a'}, {id: 'b'}]}, id => id === '
 // Execute the actual completion function with a controlled API and refreshed server progress.
 const completeSource = portalSource.slice(portalSource.indexOf('async function completeLesson('), portalSource.indexOf('\nasync function renderForum('));
 const helperSource = portalSource.slice(portalSource.indexOf('function moduleComplete('), portalSource.indexOf('function renderEarnedBadges('));
-async function scenario({alreadyDone = false, passed = true, serverDone = true, incompleteSibling = false, refreshFails = false, auto = true} = {}) {
-  const courseModule = {id: 'pilot-m1', lessons: [{id: 'pilot-l1'}, ...(incompleteSibling ? [{id: 'sibling'}] : [])]};
-  const course = {id: 'cyber-pilot', modules: [courseModule, {id: 'pilot-m2', lessons: [{id: 'pilot-l2'}]}]};
-  let modal, calls = 0, renders = 0, focused = 0;
+async function scenario({alreadyDone = false, passed = true, serverDone = true, incompleteSibling = false, refreshFails = false, auto = true, intermediate = false, feedback = false} = {}) {
+  const prefix=intermediate?'intermediate':'pilot', first=prefix+'-l1', next=prefix+'-l2';
+  const courseModule = {id: prefix+'-m1', lessons: [{id:first,title:'Aula de teste'}, ...(incompleteSibling ? [{id: 'sibling'}] : [])]};
+  const course = {id:intermediate?'cyber-intermediate':'cyber-pilot', modules: [courseModule, {id:prefix+'-m2', lessons:[{id:next}]}]};
+  let modal, reviewHTML='', calls = 0, renders = 0, focused = 0;
   const result = {textContent: ''};
   const context = {
-    S: {courses: [course], progress: alreadyDone ? [{course: course.id, lesson: 'pilot-l1', done: 1}] : []},
-    courseId: course.id, lessonId: 'pilot-l1', videoEnded: true, completingLesson: false,
+    S: {me:{name:'Aluno de teste'},courses: [course], progress: alreadyDone ? [{course: course.id, lesson:first, done: 1}] : []},
+    courseId: course.id, lessonId:first, assessmentAdvance:null, videoEnded: true, completingLesson: false,
     moduleBadges: {...badges, celebrate: (badge, options) => {modal = {badge, ...options};}},
     $: selector => selector === '#autoplayNext' ? {checked: auto} : selector === '#lessonVideo' ? null : selector === '#lessonResult' ? result : {focus() {focused++;}},
     lessons: c => c.modules.flatMap(m => m.lessons),
-    api: async () => {calls++; return {passed, score: passed ? 100 : 0};},
-    refresh: async () => {if (refreshFails) throw Error('Offline'); context.S.progress = serverDone ? [{course: course.id, lesson: 'pilot-l1', done: 1}] : [];},
-    toast() {}, renderClassroom() {renders++;},
+    api: async () => {calls++; return {passed, score: passed ? 100 : 0,...(feedback?{feedback:[{question:'Decisão',correct:true,explanation:'Confirme pelo canal autorizado.'}]}:{})};},
+    refresh: async () => {if (refreshFails) throw Error('Offline'); context.S.progress = serverDone ? [{course: course.id, lesson:first, done: 1}] : [];},
+    toast() {}, renderClassroom() {renders++;}, esc:v=>String(v??''), assessmentFeedback:()=>'<p>Comentários da avaliação</p>', btn:label=>'<button>'+label+'</button>', openDialog:html=>{reviewHTML=html;},
   };
   context.progress = (c, l) => context.S.progress.find(p => p.course === c && p.lesson === l);
   vm.createContext(context);
   vm.runInContext(helperSource + '\n' + completeSource, context);
   let error;
   try {await context.completeLesson([1]);} catch (e) {error = e;}
-  return {context, result, error, get modal() {return modal;}, get calls() {return calls;}, get renders() {return renders;}, get focused() {return focused;}};
+  return {context, result, error, get modal() {return modal;}, get calls() {return calls;}, get renders() {return renders;}, get focused() {return focused;}, get reviewHTML(){return reviewHTML;}};
 }
 
 const completed = await scenario();
@@ -69,6 +79,19 @@ const offline = await scenario({refreshFails: true});
 assert(offline.error);
 assert.equal(offline.modal, undefined);
 assert.equal(offline.context.completingLesson, false);
+
+// Intermediate achievements must show the grading explanations before advancing.
+const intermediate=await scenario({intermediate:true,feedback:true});
+assert.equal(intermediate.modal.badge.name,'Negociação Verificada');
+assert.equal(intermediate.context.lessonId,'intermediate-l1');
+assert.equal(intermediate.reviewHTML,'');
+intermediate.modal.onContinue();
+assert.match(intermediate.reviewHTML,/Comentários da avaliação/);
+assert.equal(intermediate.context.lessonId,'intermediate-l1');
+intermediate.context.assessmentAdvance();
+assert.equal(intermediate.context.lessonId,'intermediate-l2');
+assert.equal((await scenario({intermediate:true,feedback:true,passed:false})).modal,undefined);
+assert.equal((await scenario({intermediate:true,alreadyDone:true})).modal,undefined);
 
 // Native dialog behavior: continue invokes advancement, close/escape only dismisses.
 function dialogScenario(proceed) {
@@ -147,4 +170,4 @@ for (const name of ['aluno', 'admin', 'portal', 'piloto']) {
   assert(html.includes('module-badges.css'));
   assert(html.indexOf('src="module-badges.js"') < html.indexOf('src="' + (name === 'piloto' ? 'app' : 'portal') + '.js"'));
 }
-console.log('PASS: eight badge assets, complete modules only, server confirmation, failed quizzes, replay, offline refresh, accessible dialog actions and controlled automatic advancement.');
+console.log('PASS: fourteen badge assets across both tracks, commented review before advancement, complete modules only, server confirmation, failed quizzes, replay, offline refresh, accessible dialog actions and controlled automatic advancement.');

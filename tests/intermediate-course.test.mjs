@@ -38,12 +38,22 @@ for(const m of c.modules){
  assert.equal(fail.passed,false);assert.equal(fail.score,60);assert.equal(fail.feedback.length,5);assert.equal(fail.feedback[0].correct,false);
  const pass=await call('progress','POST',{course:c.id,lesson:l.id,complete:true,answers},student);assert(pass.passed);assert.equal(pass.feedback.length,5);
  const cert=await call('certificates','POST',{course:c.id,module:m.id},student);
+ const issued=await call('certificates/'+cert.id,'GET',null,student);
+ assert.equal(issued.snapshot.name,'Intermediário');assert.equal(issued.snapshot.course,c.title);
+ assert.equal(issued.snapshot.module,m.title);assert.equal(issued.snapshot.hours,.25);
+ assert.equal(issued.snapshot.level,'Intermediário');assert.equal(issued.snapshot.score,100);
+
  assert.equal((await call('certificates','POST',{course:c.id,module:m.id},student)).id,cert.id);
 }
 await call('certificates','POST',{course:c.id,module:'course'},student,403);
 await call('course-assessment','POST',{course:c.id,answers:c.modules.map((m,i)=>m.lessons[0].quiz[i%5].answer)},student);
 const cert=await call('certificates','POST',{course:c.id,module:'course'},student);
 assert.equal((await call('certificates','POST',{course:c.id,module:'course'},student)).id,cert.id);
+const finalRecord=await call('certificates/'+cert.id,'GET',null,student);
+assert.equal(finalRecord.snapshot.name,'Intermediário');assert.equal(finalRecord.snapshot.course,c.title);
+assert.equal(finalRecord.snapshot.module,'Formação completa');assert.equal(finalRecord.snapshot.hours,1.5);
+assert.equal(finalRecord.snapshot.score,100);assert.equal(finalRecord.snapshot.level,'Intermediário');
+
 assert.equal((await call('bootstrap','GET',null,student)).certificates.length,7);
 sql.close();
 console.log('PASS: intermediate import, permissions, basic preservation, editor roundtrip, sequential lessons, feedback, six module certificates and one final certificate without duplicates.');
