@@ -64,6 +64,13 @@
       "when": 1792717260000,
       "tag": "0008_learning_community_tutor",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1792782600000,
+      "tag": "0009_password_login",
+      "breakpoints": true
     }
   ]
 }

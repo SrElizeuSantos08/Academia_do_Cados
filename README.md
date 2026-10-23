@@ -129,3 +129,13 @@ O player mantém velocidade de 0,5× a 2×, posição ao mudar de qualidade, leg
 O assistente consulta apenas as aulas liberadas, descrições, o PDF didático e a transcrição da aula piloto. A integração de IA usa OPENAI_API_KEY no servidor e OPENAI_MODEL opcional (padrão gpt-4.1-mini), com fontes, limite de consultas e encaminhamento ao professor. Sem credencial, a interface informa explicitamente que a consulta é feita sem IA. A migração 0005 ativa o assistente; a IA requer configuração válida no ambiente de produção. Nunca colocar credenciais no código ou no navegador.
 
 Administradores iniciais de um banco novo podem ser definidos no servidor em BOOTSTRAP_ADMIN_EMAILS, separados por vírgula. A ausência dessa configuração não altera os administradores já cadastrados. Novos acessos administrativos também podem ser cadastrados por um administrador existente no painel; não há mais e-mails pessoais fixos no código.
+
+## Login da academia
+
+A página login.html oferece acesso por e-mail de login ou RA, cadastro com nome/e-mail/empresa opcional/curso publicado/senha e troca de senha. O cadastro cria somente alunos e matrícula no curso escolhido; não concede administração.
+
+A migração 0009 ativa o acesso por senha para as APIs. Cadastros anteriores sem senha podem iniciar com a senha temporária fornecida pela academia e precisam alterá-la antes de consultar dados. Essa inicialização requer a identidade Sites já vinculada ao cadastro para impedir que a senha compartilhada seja usada para tomar outra conta. Senhas já definidas não são substituídas.
+
+Senhas usam PBKDF2-SHA256 com salt aleatório individual; sessões usam tokens aleatórios de 256 bits, armazenados por hash no banco, cookie Secure/HttpOnly com partição para o ambiente incorporado e expiração de oito horas. A troca de senha invalida as sessões anteriores. Há limitação de tentativas e validação de origem em operações de escrita. A política de audiência da hospedagem Sites foi preservada: o login próprio não altera a lista de pessoas autorizadas a abrir o Site.
+
+A senha inicial de contas sem senha deve ser configurada pelo operador no segredo de servidor `ACADEMY_INITIAL_PASSWORD`, fora do repositório. Se o segredo não estiver definido, o primeiro acesso dessas contas permanece desativado. O acesso exige a identidade já vinculada e obriga trocar a senha.
