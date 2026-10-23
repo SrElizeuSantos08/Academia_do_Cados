@@ -1,0 +1,10 @@
+(()=>{'use strict';
+const main=document.querySelector('main');
+if(!main||/^\/(?:index\.html)?$/.test(location.pathname))return;
+const portal=!!document.querySelector('#view')&&!!document.querySelector('#nav');
+const svg=path=>'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';
+const bar=document.createElement('nav');bar.className='page-navigation '+(portal?'portal-navigation':document.querySelector('.top')?'public-navigation':'document-navigation');bar.setAttribute('aria-label','Navegação da página');
+bar.innerHTML='<button type="button" '+(portal?'data-portal-back':'data-site-back')+'>'+svg('<path d="m10 5-7 7 7 7M3 12h18"/>')+'<span>Voltar</span></button><a href="/index.html" aria-label="Home — página inicial da academia">'+svg('<path d="m3 10 9-7 9 7v11h-6v-7H9v7H3z"/>')+'<span>Home</span></a>';
+const header=main.querySelector('.portal-header');if(header)header.after(bar);else main.prepend(bar);
+if(!portal)bar.querySelector('[data-site-back]').addEventListener('click',()=>{let sameOrigin=false;try{sameOrigin=!!document.referrer&&new URL(document.referrer).origin===location.origin}catch{}if(sameOrigin&&history.length>1)history.back();else location.assign(location.pathname.includes('certificado')?'/aluno.html':'/index.html')});
+})();
