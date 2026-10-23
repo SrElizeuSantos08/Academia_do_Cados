@@ -100,8 +100,10 @@ Para testar em outra máquina, instale as dependências com o lockfile e execute
 
 Antes da publicação em produção, valide a integração em um ambiente de teste, aplique somente as migrações ainda pendentes e importe a trilha intermediária pelo painel administrativo. Publicar o código não transfere a base local nem cria automaticamente matrículas. Preserve a identidade do Site e suas configurações de acesso e armazenamento. O envio da branch e a abertura de um Pull Request não publicam o site.
 
-A migração `0007_assigned_registrations.sql` atribui `0001` a Elizeu (incluindo o e-mail Jamaica Mangueiras usado localmente), `0002` a Guilherme, `0003` a Osmar, `0004` a Alisson Pereira e `0005` a Erik Reis. O número `0006` está reservado para Bruna Oliveira (`bruna.oliveira@bugbusters.com.br`), e é atribuído quando esse e-mail for cadastrado. O cadastro distinto de Bruna Lima não é renomeado nem associado automaticamente a ela. Ocupantes anteriores dos números reservados são movidos para números livres, preservando seus IDs e históricos.
+A migração `0007_assigned_registrations.sql` atribui `0001` a Elizeu, `0002` a Guilherme, `0003` a Osmar, `0004` a Alisson Pereira e `0005` a Erik Reis. O número `0006` está reservado para Bruna Oliveira (`bruna.oliveira@bugbusters.com.br`), e é atribuído quando esse e-mail for cadastrado. O cadastro distinto de Bruna Lima não é renomeado nem associado automaticamente a ela. Ocupantes anteriores dos números reservados são movidos para números livres, preservando seus IDs e históricos.
 
 ## Videoaula sobre phishing
 
 O [projeto da videoaula](cursos/phishing-video-aula/README.md) inclui o [vídeo final legendado](cursos/phishing-video-aula/exports/Phishing%20-%20video%20aula.mp4), a gravação original, os dois áudios e as instruções de edição. A inclusão dos arquivos no repositório não cadastra automaticamente a aula no catálogo da plataforma.
+
+O e-mail correto de Elizeu é `elizeu.santos@bugbusters.com.br`; somente esse endereço reserva o RA `AC-2026-0001` em novos cadastros. O endereço incorreto não é mais um alias de cadastro. A migração histórica `0007` foi preservada sem alterações: suas referências antigas serviram para atribuir RAs a cadastros existentes, não para criar contas ou atualizar e-mails. Esta correção no código não substitui os dados de um banco publicado.

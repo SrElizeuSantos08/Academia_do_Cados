@@ -8,7 +8,7 @@ const rows=[
  ['demo-student','qa@example.test','Aluno de verificação','AC-2026-0004'],
  ['demo-admin','admin@example.test','Administração local','AC-2026-0005'],
  ['demo-teacher','teacher@example.test','Professor local','AC-2026-0006'],
- ['elizeu','elizeu.santos@jamaicamangueiras.com.br','Elizeu Santos','AC-2026-0007'],
+ ['elizeu','elizeu.santos@bugbusters.com.br','Elizeu Santos','AC-2026-0007'],
  ['guilherme','guilherme.arakaki@bugbusters.com.br','Guilherme Kenji Arakaki','AC-2026-0002'],
  ['osmar','osmar.cabral@bugbusters.com.br','Osmar Cabral','AC-2026-0003'],
  ['alisson','alisson.pereira@bugbusters.com.br','Alisson Pereira','AC-2026-0008'],
@@ -30,10 +30,15 @@ assert.equal(db.prepare('SELECT ra FROM people WHERE id=?').get('bruna').ra,'AC-
 db.close();
 const fresh=new DatabaseSync(':memory:');fresh.exec(read('drizzle/0000_brainy_dreaming_celestial.sql'));
 const adapter={prepare:query=>({bind:(...values)=>({run:async()=>fresh.prepare(query).run(...values)})})};
-for(const [index,email] of ['elizeu.santos@jamaicamangueiras.com.br','guilherme.arakaki@bugbusters.com.br','osmar.cabral@bugbusters.com.br','alisson.pereira@bugbusters.com.br','erik.reis@bugbusters.com.br','bruna.oliveira@bugbusters.com.br'].entries()){
+for(const [index,email] of ['elizeu.santos@bugbusters.com.br','guilherme.arakaki@bugbusters.com.br','osmar.cabral@bugbusters.com.br','alisson.pereira@bugbusters.com.br','erik.reis@bugbusters.com.br','bruna.oliveira@bugbusters.com.br'].entries()){
  await insertPerson(adapter,{id:String(index),login:email,email,name:email,role:'student',created:'2026-10-22'});
  assert.equal(fresh.prepare('SELECT ra FROM people WHERE id=?').get(String(index)).ra,'AC-2026-000'+(index+1));
 }
 await insertPerson(adapter,{id:'next',login:'next@example.test',email:'next@example.test',name:'Próximo aluno',role:'student',created:'2026-10-22'});
-assert.equal(fresh.prepare('SELECT ra FROM people WHERE id=?').get('next').ra,'AC-2026-0007');fresh.close();
+assert.equal(fresh.prepare('SELECT ra FROM people WHERE id=?').get('next').ra,'AC-2026-0007');
+// The incorrect domain is no longer an alias for Elizeu or his reserved RA.
+await insertPerson(adapter,{id:'wrong-domain',login:'elizeu.santos@jamaicamangueiras.com.br',email:'elizeu.santos@jamaicamangueiras.com.br',name:'Outro cadastro',role:'student',created:'2026-10-23'});
+assert.equal(fresh.prepare('SELECT ra FROM people WHERE id=?').get('wrong-domain').ra,'AC-2026-0008');
+assert.equal(fresh.prepare('SELECT ra FROM people WHERE id=?').get('0').ra,'AC-2026-0001');
+fresh.close();
 console.log('PASS: requested identities, reserved-number collisions, preserved profiles, idempotent RA assignment and future registrations.');
