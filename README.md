@@ -21,7 +21,11 @@ Os oito módulos da trilha Segurança Digital na Prática têm selos personaliza
 
 O fórum suporta mensagens, respostas, imagens, vídeos, áudio, documentos e gravação de voz quando o navegador permite acesso ao microfone. O suporte é privado entre aluno e equipe docente. Notificações são consultadas a cada 30 segundos enquanto o portal está em uso.
 
-Os certificados usam um registro persistente com dados de conclusão congelados: nome, RA, curso, módulo, carga horária, nível, data e identificador. Podem ser impressos ou salvos em PDF pelo navegador. A consulta respeita as permissões de acesso do Site.
+Cada aula concluída registra o progresso e libera um selo digital. O certificado de módulo exige todas as aulas concluídas e aproveitamento mínimo de 75% em cada avaliação; informa tema, carga horária e aproveitamento ponderado pela quantidade de perguntas. O certificado final exige também uma avaliação de fechamento, com uma decisão de cada módulo e mínimo de 75%. A aprovação final libera uma conquista visual personalizada.
+
+Os certificados usam um registro persistente com dados de conclusão congelados: nome e RA do cadastro no momento da emissão, curso, módulo, carga horária, aproveitamento, nível, data e identificador. A emissão permite baixar diretamente o PDF A4 horizontal ou imprimir pelo navegador. O código e o link permitem consultar o registro com autenticação no portal. Registros emitidos anteriormente são preservados. Os resultados de fechamento usam chaves reservadas em `progress`, separadas das aulas e excluídas dos contadores de aulas; não exigem uma nova tabela. Alterações nas perguntas de fechamento exigem uma nova aprovação para futuras emissões, sem invalidar certificados já emitidos.
+
+A trilha intermediária **Segurança Digital no Trabalho** tem seis módulos com cenário empresarial, portfólio PDF de oito páginas, decisão prática e cinco perguntas comentadas. Os vídeos ainda estão em preparação; as aulas podem ser concluídas por leitura e avaliação. A carga inicial é de 15 minutos por módulo (1h30 total). O conteúdo está em `content/intermediate-course.json`, com catálogo em `lib/catalog.mjs`. Na administração, abra Cursos e escolha **Importar Segurança Digital no Trabalho**, depois libere as matrículas. A importação é idempotente e preserva cursos existentes.
 
 ## Arquitetura
 
@@ -64,6 +68,10 @@ node tests/published-content.test.mjs
 node tests/module-learning.test.mjs
 node tests/admin-panels.test.mjs
 node tests/module-badges.test.mjs
+node tests/assigned-registration.test.mjs
+node tests/intermediate-course.test.mjs
+node tests/certification.test.mjs
+python tests/portfolios.test.py  # opcional: validação dos PDFs com pypdf/pdfplumber no Python de autoria
 pnpm exec tsc --noEmit
 pnpm run build
 ```
@@ -86,7 +94,11 @@ A migração `0006_module_portfolios_and_quizzes.sql` amplia somente as avaliaç
 
 ## Verificação desta versão
 
-Testes automatizados de API, sintaxe JavaScript, tipos TypeScript e build de produção. Revisão visual e testes em navegador real ainda precisam ser executados no ambiente autorizado. Não foram inseridos alunos fictícios no banco de produção.
+Testes automatizados de API, sintaxe JavaScript, tipos TypeScript, PDFs e build de produção. O fluxo de fechamento, conquista, emissão e download foi validado em navegador com uma base local isolada. O build pode informar que o Vinext não classifica automaticamente algumas rotas dinâmicas; a compilação termina com sucesso. Não foram inseridos alunos fictícios no banco de produção.
+
+Para testar em outra máquina, instale as dependências com o lockfile e execute `pnpm run preview:academy`. Os PDFs, selos e vídeos utilizados pelo portal estão versionados; Python e Remotion não são necessários para executar o portal. As ferramentas de autoria têm dependências próprias. A base de demonstração, usuários cadastrados localmente, progresso e uploads em `outputs/local-preview/` não são enviados pelo Git. O preview cria perfis fictícios e importa as duas trilhas sem substituir cursos já existentes.
+
+Antes da publicação em produção, valide a integração em um ambiente de teste, aplique somente as migrações ainda pendentes e importe a trilha intermediária pelo painel administrativo. Publicar o código não transfere a base local nem cria automaticamente matrículas. Preserve a identidade do Site e suas configurações de acesso e armazenamento. O envio da branch e a abertura de um Pull Request não publicam o site.
 
 A migração `0007_assigned_registrations.sql` atribui `0001` a Elizeu (incluindo o e-mail Jamaica Mangueiras usado localmente), `0002` a Guilherme, `0003` a Osmar, `0004` a Alisson Pereira e `0005` a Erik Reis. O número `0006` está reservado para Bruna Oliveira (`bruna.oliveira@bugbusters.com.br`), e é atribuído quando esse e-mail for cadastrado. O cadastro distinto de Bruna Lima não é renomeado nem associado automaticamente a ela. Ocupantes anteriores dos números reservados são movidos para números livres, preservando seus IDs e históricos.
 

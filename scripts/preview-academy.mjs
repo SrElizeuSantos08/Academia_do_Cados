@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import { handleLms } from '../lib/lms.mjs';
 import { insertPerson } from '../lib/registration.mjs';
-import { pilotCourse } from '../lib/pilot.mjs';
+import {courseCatalog} from '../lib/catalog.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const publicRoot = resolve(root, 'public');
@@ -20,7 +20,7 @@ const profiles = {
 const aliases = new Set(['admin','aluno','portal','empresa','piloto','certificado','index']);
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8','.pdf':'application/pdf','.mp4':'video/mp4',
-  '.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml','.vtt':'text/vtt; charset=utf-8'};
+  '.jpg':'image/jpeg','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml','.vtt':'text/vtt; charset=utf-8'};
 
 class LocalFixedLengthStream {
   constructor(length) {
@@ -51,9 +51,10 @@ export async function startPreview({port=5190,stateDirectory=resolve(root,'outpu
     sql.exec('BEGIN');try{const result=[];for(const statement of statements)result.push(await statement.run());sql.exec('COMMIT');return result;}catch(error){sql.exec('ROLLBACK');throw error;}
   }};
   for(const profile of Object.values(profiles))await insertPerson(db,{...profile,email:profile.login,identity:profile.id,created:new Date().toISOString()},true);
-  const c=pilotCourse;
-  sql.prepare('INSERT OR IGNORE INTO courses VALUES(?,?,?,?,?,?,?,?,?)').run(c.id,c.title,c.description,c.level,c.folder,1,0,JSON.stringify(c.modules),new Date().toISOString());
+  for(const c of courseCatalog){
+  sql.prepare('INSERT OR IGNORE INTO courses VALUES(?,?,?,?,?,?,?,?,?)').run(c.id,c.title,c.description,c.level,c.folder,1,c.sort||0,JSON.stringify(c.modules),new Date().toISOString());
   sql.prepare('INSERT OR IGNORE INTO enrollments VALUES(?,?,?)').run('qa-student',c.id,new Date().toISOString());
+  }
   const snapshotPath=resolve(root,'outputs/local-preview-progress.json');
   if(fresh&&restoreSnapshot&&existsSync(snapshotPath)){
     const saved=JSON.parse(readFileSync(snapshotPath,'utf8').replace(/^\uFEFF/,''));

@@ -120,7 +120,7 @@ def cover(c, item):
     key.drawOn(c, 92, 476 - key_h)
     c.setFillColor(colors.HexColor("#D1E0EB"))
     c.setFont("Arial", 15)
-    c.drawString(57, 300, "Segurança Digital na Prática • BBS One")
+    c.drawString(57, 300, item.get("trackLabel", "Segurança Digital na Prática • BBS One"))
     c.setFont("Arial", 9.1)
     c.drawString(57, 279, "Público geral • leitura estimada: 12 minutos • revisão: 22 out. 2026")
     c.setStrokeColor(colors.HexColor("#2B566D"))
