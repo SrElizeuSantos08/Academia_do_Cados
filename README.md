@@ -69,6 +69,24 @@ Para preview local com D1, após o build, aplique cada migração pendente ao es
 
 Testes automatizados de API, sintaxe JavaScript, tipos TypeScript e build de produção. Revisão visual e testes em navegador real ainda precisam ser executados no ambiente autorizado. Não foram inseridos alunos fictícios no banco de produção.
 
+## Documentos e pausa do aluno
+
+O certificado utiliza o modelo PDF fornecido pela academia, com nome, curso ou módulo, carga horária, data e código preenchidos pelo registro de conclusão. A emissão usa `src/student-documents.mjs`; o pacote de navegador é gerado por `scripts/build-documents.mjs` durante o build. Os arquivos `public/templates/` são modelos e fontes, sem dados de alunos. O documento de cada participante é gerado no navegador e não é gravado em diretórios públicos.
+
+A página Minha carteirinha usa os dados e a foto do perfil, permite selecionar um curso liberado e exporta duas páginas de 85,6 × 54 mm, uma para a frente e outra para o verso, sem QR Code. Momento de distração abre a versão final do jogo em outra aba, preservando a aula aberta. O login existente foi mantido.
+
+## Acompanhamento, fórum e player
+
+A equipe docente encontra Acompanhamento no painel: progresso por matrícula, RA, notas médias das avaliações, horas curriculares proporcionais à carga do módulo, última atividade e CSV com os filtros atuais. Horas curriculares não equivalem a presença cronometrada.
+
+O fórum oferece tópicos por curso, fixação e encerramento pela equipe, denúncias, ocultação/restauração com motivo e histórico. Arquivos de mensagens ocultadas também são bloqueados aos demais alunos.
+
+O player mantém velocidade de 0,5× a 2×, posição ao mudar de qualidade, legendas WebVTT e variantes cadastradas pelo professor. A seleção de qualidade utiliza arquivos enviados, sem prometer transcodificação automática.
+
+O assistente consulta apenas as aulas liberadas, descrições, o PDF didático e a transcrição da aula piloto. A integração de IA usa OPENAI_API_KEY no servidor e OPENAI_MODEL opcional (padrão gpt-4.1-mini), com fontes, limite de consultas e encaminhamento ao professor. Sem credencial, a interface informa explicitamente que a consulta é feita sem IA. A migração 0005 ativa o assistente; a IA requer configuração válida no ambiente de produção. Nunca colocar credenciais no código ou no navegador.
+
 ## Videoaula sobre phishing
 
 O [projeto da videoaula](cursos/phishing-video-aula/README.md) inclui o [vídeo final legendado](cursos/phishing-video-aula/exports/Phishing%20-%20video%20aula.mp4), a gravação original, os dois áudios e as instruções de edição. A inclusão dos arquivos no repositório não cadastra automaticamente a aula no catálogo da plataforma.
+
+Administradores iniciais de um banco novo podem ser definidos no servidor em BOOTSTRAP_ADMIN_EMAILS, separados por vírgula. A ausência dessa configuração não altera os administradores já cadastrados. Novos acessos administrativos também podem ser cadastrados por um administrador existente no painel; não há mais e-mails pessoais fixos no código.
