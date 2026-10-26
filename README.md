@@ -132,10 +132,33 @@ Administradores iniciais de um banco novo podem ser definidos no servidor em BOO
 
 ## Login da academia
 
-A página login.html oferece acesso por e-mail de login ou RA, cadastro com nome/e-mail/empresa opcional/curso publicado/senha e troca de senha. O cadastro cria somente alunos e matrícula no curso escolhido; não concede administração.
+A autenticação própria usa e-mail ou RA e senha pessoal, sobre a camada de acesso da hospedagem. A recuperação por identidade Sites verificada permanece disponível para contas já vinculadas.
 
-A migração 0009 ativa o acesso por senha para as APIs. Cadastros anteriores sem senha podem iniciar com a senha temporária fornecida pela academia e precisam alterá-la antes de consultar dados. Essa inicialização requer a identidade Sites já vinculada ao cadastro para impedir que a senha compartilhada seja usada para tomar outra conta. Senhas já definidas não são substituídas.
 
-Senhas usam PBKDF2-SHA256 com salt aleatório individual; sessões usam tokens aleatórios de 256 bits, armazenados por hash no banco, cookie Secure/HttpOnly com partição para o ambiente incorporado e expiração de oito horas. A troca de senha invalida as sessões anteriores. Há limitação de tentativas e validação de origem em operações de escrita. A política de audiência da hospedagem Sites foi preservada: o login próprio não altera a lista de pessoas autorizadas a abrir o Site.
 
-A senha inicial de contas sem senha deve ser configurada pelo operador no segredo de servidor `ACADEMY_INITIAL_PASSWORD`, fora do repositório. Se o segredo não estiver definido, o primeiro acesso dessas contas permanece desativado. O acesso exige a identidade já vinculada e obriga trocar a senha.
+## Acesso temporário por e-mail
+
+O envio usa a API Resend no servidor. Configure no ambiente de produção, fora do Git:
+
+- `RESEND_API_KEY`: segredo de API com permissão de envio e domínio verificado.
+- `ACADEMY_EMAIL_FROM`: remetente autorizado, por exemplo `Academia do Caos <acesso@SEU-DOMINIO>`.
+- `ACADEMY_PUBLIC_URL`: origem HTTPS real da academia.
+
+Sem esses três valores válidos, o cadastro e a solicitação de senha por e-mail retornam 503 e informam que o envio precisa ser configurado. Não há envio simulado nem senha alternativa. Se o serviço falhar, retorna 502, descarta a credencial temporária e permite tentar novamente pela solicitação de acesso. Um cadastro pendente pode permanecer no banco; não tem credencial utilizável e pode repetir a solicitação. A aceitação pela API de e-mail não comprova entrega na caixa de entrada; monitore a entrega no provedor.
+
+O e-mail tem logo institucional incorporada via CID, versão HTML e texto puro, saudação personalizada, conteúdo para aluno/empresa, botão de acesso e instruções. `public/email-exemplo.html` é somente uma demonstração com nome e senha fictícios, sem chamada de envio.
+
+APIs (todas as escritas exigem JSON e origem válida):
+
+| Rota | Uso |
+| --- | --- |
+| `GET /api/lms/auth/config` | Disponibilidade da configuração, sem expor credenciais |
+| `POST /api/lms/auth/register` | Nome, e-mail, empresa, curso e `space` (`student`/`company`); sem senha fornecida pelo usuário |
+| `POST /api/lms/auth/request-access` | Solicita credencial temporária para e-mail/RA; resposta genérica para reduzir enumeração |
+| `POST /api/lms/auth/login` | E-mail/RA e senha; uma credencial temporária só abre sessão restrita |
+| `POST /api/lms/auth/password` | Troca autenticada; encerra sessões e invalida credenciais temporárias |
+| `POST /api/lms/auth/recover` | Recuperação por identidade Sites verificada, sem escolher outra conta pelo formulário |
+
+As senhas temporárias são geradas por CSPRNG local (128 bits), têm validade de 15 minutos, consumo atômico de uso único e hash com salt no banco. Não são devolvidas pela API, exibidas na interface nem registradas em logs. A senha permanente não é alterada por uma solicitação de e-mail. A troca exige 12 a 128 caracteres e rejeita padrões comuns/repetidos. Solicitações e logins têm limites por IP e conta; e-mail e RA convergem para a mesma conta no limite de login. Cookies são Secure, HttpOnly e particionados; o prazo da sessão temporária nunca supera o da credencial.
+
+A migração de segurança remove credenciais legadas marcadas para troca e suas sessões, preservando senhas pessoais, RAs, matrículas e progresso. Cadastro de empresa cria perfil sem privilégio administrativo, marcado como empresa em `auth_profiles.account_type`; a administração precisa autorizar o papel de professor/administrador em Alunos e equipe para liberar o painel. Enquanto isso a conta tem apenas os acessos de aluno matriculado.

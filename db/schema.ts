@@ -21,5 +21,7 @@ export const tutor=sqliteTable('tutor',{id:text('id').primaryKey(),user:text('us
 
 export const authPasswords=sqliteTable('auth_passwords',{user:text('user').primaryKey().references(()=>people.id),salt:text('salt').notNull(),passwordHash:text('password_hash').notNull(),mustChange:integer('must_change').notNull().default(0),updated:text('updated').notNull()});
 export const authSessions=sqliteTable('auth_sessions',{tokenHash:text('token_hash').primaryKey(),user:text('user').notNull().references(()=>people.id),expires:integer('expires').notNull(),created:text('created').notNull(),version:text('version').notNull()});
-export const authProfiles=sqliteTable('auth_profiles',{user:text('user').primaryKey().references(()=>people.id),company:text('company').notNull().default('')});
+export const authProfiles=sqliteTable('auth_profiles',{user:text('user').primaryKey().references(()=>people.id),company:text('company').notNull().default(''),accountType:text('account_type').notNull().default('student')});
 export const authLimits=sqliteTable('auth_limits',{key:text('key').primaryKey(),count:integer('count').notNull(),started:integer('started').notNull()});
+
+export const authEmailChallenges=sqliteTable('auth_email_challenges',{id:text('id').primaryKey(),user:text('user').notNull().references(()=>people.id),salt:text('salt').notNull(),passwordHash:text('password_hash').notNull(),expires:integer('expires').notNull(),consumed:integer('consumed').notNull().default(0),created:text('created').notNull()});
