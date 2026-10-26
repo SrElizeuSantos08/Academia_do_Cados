@@ -2,6 +2,12 @@
 
 Plataforma de cursos de cibersegurança com site institucional, painel administrativo e área do aluno.
 
+**Domínio oficial:** https://academiadocaos.bbsone.com.br
+
+**Remetente:** Academia do Caos <academiadocaos@bbsone.com.br>
+
+Veja a configuração de DNS, HTTPS e ambiente em [Domínio de produção](docs/dominio-producao.md). A ativação depende da validação na hospedagem; o commit não altera o DNS automaticamente.
+
 ## Acessos
 
 - `/index.html`: apresentação, cursos e certificação.
@@ -141,8 +147,8 @@ A autenticação própria usa e-mail ou RA e senha pessoal, sobre a camada de ac
 O envio usa a API Resend no servidor. Configure no ambiente de produção, fora do Git:
 
 - `RESEND_API_KEY`: segredo de API com permissão de envio e domínio verificado.
-- `ACADEMY_EMAIL_FROM`: remetente autorizado, por exemplo `Academia do Caos <acesso@SEU-DOMINIO>`.
-- `ACADEMY_PUBLIC_URL`: origem HTTPS real da academia.
+- `ACADEMY_EMAIL_FROM`: `Academia do Caos <academiadocaos@bbsone.com.br>`, após autorização no provedor de envio.
+- `ACADEMY_PUBLIC_URL`: `https://academiadocaos.bbsone.com.br`.
 
 Sem esses três valores válidos, o cadastro e a solicitação de senha por e-mail retornam 503 e informam que o envio precisa ser configurado. Não há envio simulado nem senha alternativa. Se o serviço falhar, retorna 502, descarta a credencial temporária e permite tentar novamente pela solicitação de acesso. Um cadastro pendente pode permanecer no banco; não tem credencial utilizável e pode repetir a solicitação. A aceitação pela API de e-mail não comprova entrega na caixa de entrada; monitore a entrega no provedor.
 
