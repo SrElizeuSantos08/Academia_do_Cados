@@ -31,7 +31,7 @@ ACADEMY_EMAIL_FROM=Academia do Caos <academiadocaos@bbsone.com.br>
 
 Configure `RESEND_API_KEY` como segredo. Depois, publique uma versão salva para aplicar a revisão do ambiente. Não grave a chave em `.env.example`, arquivos públicos, commits, issues ou logs. Variáveis do GitHub Actions não são transferidas automaticamente ao Sites.
 
-A integração atual envia pela API Resend. O domínio `bbsone.com.br` precisa estar autorizado nesse serviço para o remetente aprovado; a existência da caixa compartilhada Microsoft 365 não substitui a autorização do provedor de envio. Este cadastro não configura nem altera o Exchange.
+O envio usa o provedor selecionado em `ACADEMY_EMAIL_PROVIDER`. Para a caixa compartilhada Microsoft 365, use `microsoft365` e siga [a configuração do aplicativo e da caixa](microsoft365-email.md). O modo Resend permanece disponível e exige domínio autorizado nesse provedor. Estes arquivos não concedem permissões nem configuram o Exchange automaticamente.
 
 ## Verificação funcional
 

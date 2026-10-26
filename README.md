@@ -144,7 +144,9 @@ A autenticação própria usa e-mail ou RA e senha pessoal, sobre a camada de ac
 
 ## Acesso temporário por e-mail
 
-O envio usa a API Resend no servidor. Configure no ambiente de produção, fora do Git:
+O envio suporta Microsoft 365/Graph para a caixa compartilhada da academia e Resend para compatibilidade. Para Microsoft 365, siga [Configuração e validação](docs/microsoft365-email.md). O servidor precisa de credenciais próprias do aplicativo autorizado; a conexão Outlook do ChatGPT não é transferida à plataforma.
+
+Para o modo Resend, configure no ambiente de produção, fora do Git:
 
 - `RESEND_API_KEY`: segredo de API com permissão de envio e domínio verificado.
 - `ACADEMY_EMAIL_FROM`: `Academia do Caos <academiadocaos@bbsone.com.br>`, após autorização no provedor de envio.
@@ -168,3 +170,8 @@ APIs (todas as escritas exigem JSON e origem válida):
 As senhas temporárias são geradas por CSPRNG local (128 bits), têm validade de 15 minutos, consumo atômico de uso único e hash com salt no banco. Não são devolvidas pela API, exibidas na interface nem registradas em logs. A senha permanente não é alterada por uma solicitação de e-mail. A troca exige 12 a 128 caracteres e rejeita padrões comuns/repetidos. Solicitações e logins têm limites por IP e conta; e-mail e RA convergem para a mesma conta no limite de login. Cookies são Secure, HttpOnly e particionados; o prazo da sessão temporária nunca supera o da credencial.
 
 A migração de segurança remove credenciais legadas marcadas para troca e suas sessões, preservando senhas pessoais, RAs, matrículas e progresso. Cadastro de empresa cria perfil sem privilégio administrativo, marcado como empresa em `auth_profiles.account_type`; a administração precisa autorizar o papel de professor/administrador em Alunos e equipe para liberar o painel. Enquanto isso a conta tem apenas os acessos de aluno matriculado.
+
+
+## Envio Microsoft 365
+
+O teste pela caixa compartilhada foi enviado e seu recebimento confirmado em 26/10/2026. O Exchange apresentou o endereço principal `academiadocaosbbsone@bbsone.com.br`. O suporte ao Microsoft Graph está implementado, com logo incorporada, HTML personalizado e troca obrigatória da senha temporária. O envio automático depende da autorização do aplicativo e da configuração na hospedagem. Consulte [o procedimento e as pendências](docs/microsoft365-email.md).
