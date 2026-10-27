@@ -2,10 +2,14 @@ import { handleLms } from "../lib/lms.mjs";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
+import { configureSupabaseRuntime } from "../lib/supabase-d1-adapter.mjs";
 
 export default {
-  fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
-    if (new URL(request.url).pathname.startsWith("/api/lms/")) return handleLms(request, env);
+  async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+    if (new URL(request.url).pathname.startsWith("/api/lms/")) {
+      try { return await handleLms(request, configureSupabaseRuntime(env)); }
+      catch { return Response.json({ error: "A configuração segura do banco de dados está incompleta." }, { status: 503, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } }); }
+    }
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and
     // the auxiliary service binding are absent from production builds.
