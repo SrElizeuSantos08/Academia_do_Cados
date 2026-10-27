@@ -11,8 +11,6 @@ function audienceMatches(value,expected){return typeof value==='string'?value===
 
 export function isTrustedGitHubPush(claims){
  return claims?.repository==='SrElizeuSantos08/Academia_do_Cados'
-  &&claims?.repository_owner==='SrElizeuSantos08'
-  &&claims?.sub==='repo:SrElizeuSantos08/Academia_do_Cados:ref:refs/heads/main'
   &&claims?.ref==='refs/heads/main'
   &&claims?.event_name==='push'
   &&claims?.workflow_ref==='SrElizeuSantos08/Academia_do_Cados/.github/workflows/supabase-site-updates.yml@refs/heads/main'
