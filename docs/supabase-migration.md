@@ -18,11 +18,11 @@ Os cursos e a cópia longa de configuração já têm conteúdo completo no Supa
 
 ## Arquivos e runtime
 
-A tabela `academia.assets` contém os metadados dos dois arquivos existentes, mas os bytes continuam no R2. O projeto não possui um bucket de Storage para a Academia; os objetos precisam ser transferidos pela API do Supabase Storage.
+A tabela `academia.assets` contém os metadados dos dois arquivos existentes (`Perfil.jpg` e `WhatsApp Image 2026-10-22 at 12.33.39 PM.jpeg`). O bucket privado `academia-assets` foi criado no Supabase Storage, com limite de 50 MB por arquivo e tipos permitidos para imagens, áudio, vídeo, documentos e legendas. Os bytes desses dois arquivos continuam no R2 e ainda precisam ser copiados para o bucket.
 
-A aplicação hospedada ainda grava dados de produção no D1 e arquivos no R2. O adaptador e as credenciais privadas de runtime precisam estar ativos antes de uma troca definitiva. A chave `service_role` ou uma secret key deve existir somente como variável secreta do servidor, nunca no navegador, no GitHub ou neste repositório.
+A aplicação hospedada ainda grava dados de produção no D1 e arquivos no R2. O adaptador `lib/supabase-d1-adapter.mjs` está preparado para usar o gateway de consultas fixas `public.academia_backend_batch` e o bucket Supabase quando as variáveis secretas `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` estiverem configuradas no runtime. Sem essas variáveis, o portal continua usando D1/R2. A chave administrativa deve existir somente como segredo do servidor, nunca no navegador, no GitHub ou neste repositório.
 
-O Sites Connector atualmente não consegue localizar o projeto ao consultar as variáveis de produção (`project_not_found`). Até que o acesso de configuração do runtime seja corrigido, a carga é registrada como parcial e o D1 continua sendo a origem operacional.
+O Sites Connector atualmente não consegue localizar o projeto ao consultar as variáveis de produção (`project_not_found`). Até que o proprietário libere o acesso à configuração do runtime, os dois arquivos sejam copiados e a chave secreta seja validada, a carga permanece parcial e o D1 continua sendo a origem operacional.
 
 ## Migrações SQL
 
