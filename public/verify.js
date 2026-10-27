@@ -10,7 +10,7 @@
  if(!cid){el.textContent='Informe o identificador de um certificado para consultar o registro.';return}
  try{
   const r=await fetch('/api/lms/certificates/'+encodeURIComponent(cid)),data=await r.json();
-  if(!r.ok){el.textContent=data.error||'Registro indisponível.';if(r.status===401){const a=document.createElement('a');a.className='btn secondary';a.textContent='Entrar para verificar';a.href='/signin-with-chatgpt?return_to='+encodeURIComponent(location.pathname+location.search);a.target='_top';el.append(document.createElement('br'),a)}return}
+  if(!r.ok){el.textContent=data.error||'Registro indisponível.';if(r.status===401){const a=document.createElement('a');a.className='btn secondary';a.textContent='Entrar para verificar';a.href='/login.html?space=student';a.target='_top';el.append(document.createElement('br'),a)}return}
   render(data.snapshot);
  }catch{el.textContent='Não foi possível consultar o certificado. Tente novamente.'}
 })();
