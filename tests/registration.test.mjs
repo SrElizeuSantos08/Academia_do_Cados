@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { insertPerson } from '../lib/registration.mjs';
 
 const sql = new DatabaseSync(':memory:');
-sql.exec(readFileSync(new URL('../drizzle/0000_brainy_dreaming_celestial.sql', import.meta.url), 'utf8'));
+sql.exec(readFileSync(new URL('./fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql', import.meta.url), 'utf8'));
 const db = { prepare(query) { return { bind(...values) { return { async run() { return sql.prepare(query).run(...values); } }; } }; } };
 const emails = ['elizeu.santos@bugbusters.com.br', 'guilherme.arakaki@bugbusters.com.br', 'osmar.cabral@bugbusters.com.br'];
 const person = (id, login) => ({ id, login, email: login, name: id, role: 'student', created: '2026-10-22' });
@@ -21,7 +21,7 @@ assert.equal(sql.prepare('SELECT COUNT(DISTINCT ra) AS n FROM people').get().n, 
 // Simulate legacy IDs and a swap of the reserved numbers without touching users.
 sql.exec("UPDATE people SET ra='old-' || id; UPDATE people SET ra='AC-2026-0002' WHERE id='0'; UPDATE people SET ra='AC-2026-0001' WHERE id='1'; UPDATE people SET ra='AC-2026-0040' WHERE id='early'");
 const before = sql.prepare('SELECT id,identity,login_email,email,name,role,active,created FROM people ORDER BY id').all();
-const migration = readFileSync(new URL('../drizzle/0005_sequential_registration.sql', import.meta.url), 'utf8');
+const migration = readFileSync(new URL('./fixtures/local-drizzle/0005_sequential_registration.sql', import.meta.url), 'utf8');
 sql.exec(migration);
 assert.deepEqual(sql.prepare('SELECT id,identity,login_email,email,name,role,active,created FROM people ORDER BY id').all(), before);
 for (let i = 0; i < 3; i++) assert.equal(ra(String(i)), `AC-2026-000${i + 1}`);

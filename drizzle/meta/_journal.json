@@ -78,6 +78,27 @@
       "when": 1793012400000,
       "tag": "0010_secure_email_access",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1793100660000,
+      "tag": "0011_confirmed_registration",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1793100720000,
+      "tag": "0012_intermediate_development",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1793100780000,
+      "tag": "0013_basic_default_enrollment",
+      "breakpoints": true
     }
   ]
 }

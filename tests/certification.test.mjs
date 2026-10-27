@@ -5,14 +5,14 @@ import vm from 'node:vm';
 import {handleLms} from '../lib/lms.mjs';
 import {closingAssessment,moduleResult} from '../lib/certification.mjs';
 const sql=new DatabaseSync(':memory:');
-sql.exec(readFileSync(new URL('../drizzle/0000_brainy_dreaming_celestial.sql',import.meta.url),'utf8'));
+sql.exec(readFileSync(new URL('./fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql',import.meta.url),'utf8'));
 class Statement{
  constructor(q,args=[]){this.q=q;this.args=args}bind(...args){return new Statement(this.q,args)}
  async run(){return {meta:{changes:sql.prepare(this.q).run(...this.args).changes}}}
  async first(){return sql.prepare(this.q).get(...this.args)||null}
  async all(){return {results:sql.prepare(this.q).all(...this.args)}}
 }
-const env={BOOTSTRAP_ADMIN_EMAILS:'elizeu.santos@bugbusters.com.br',DB:{prepare:q=>new Statement(q)}};
+const env={BOOTSTRAP_ADMIN_EMAILS:'elizeu.santos@bugbusters.com.br',DB:{prepare:q=>new Statement(q),batch:async stmts=>{sql.exec("BEGIN");try{const result=[];for(const s of stmts)result.push(await s.run());sql.exec("COMMIT");return result}catch(e){sql.exec("ROLLBACK");throw e}}}};
 const admin={id:'admin',email:'elizeu.santos@bugbusters.com.br'},student={id:'student',email:'student@example.test'};
 function request(path,method,body,user){return new Request('https://academy.test/api/lms/'+path,{method,headers:{origin:'https://academy.test','content-type':'application/json','oai-authenticated-user-id':user.id,'oai-authenticated-user-email':user.email},body:body?JSON.stringify(body):undefined})}
 async function call(path,method='GET',body,user=admin,status=200){const r=await handleLms(request(path,method,body,user),env);const data=await r.json();assert.equal(r.status,status,JSON.stringify(data));return data}

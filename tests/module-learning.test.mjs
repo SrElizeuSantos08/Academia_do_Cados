@@ -6,7 +6,7 @@ import { validateModules } from '../lib/lms.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const content = JSON.parse(read('content/module-portfolios.json'));
-const migration = read('drizzle/0006_module_portfolios_and_quizzes.sql');
+const migration = read('tests/fixtures/local-drizzle/0006_module_portfolios_and_quizzes.sql');
 const originalFirstLesson = JSON.stringify(pilotCourse.modules[0]);
 assert.equal(content.length, 7);
 const allQuestions = new Set();
@@ -36,7 +36,7 @@ assert.throws(() => validateModules(wrongMaterial, pilotCourse.id), /Material n√
 
 function migrate({reorder = false, custom = false} = {}) {
   const sql = new DatabaseSync(':memory:');
-  sql.exec(read('drizzle/0000_brainy_dreaming_celestial.sql'));
+  sql.exec(read('tests/fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql'));
   const modules = structuredClone(pilotCourse.modules);
   for (const module of modules.slice(1)) {
     module.lessons[0].quiz.splice(1);

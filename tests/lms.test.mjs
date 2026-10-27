@@ -2,8 +2,8 @@ import {DatabaseSync} from 'node:sqlite';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {handleLms} from '../lib/lms.mjs';
-const sql=new DatabaseSync(':memory:');sql.exec(readFileSync(new URL('../drizzle/0000_brainy_dreaming_celestial.sql',import.meta.url),'utf8'));
-sql.exec(readFileSync(new URL('../drizzle/0008_learning_community_tutor.sql',import.meta.url),'utf8'));
+const sql=new DatabaseSync(':memory:');sql.exec(readFileSync(new URL('./fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql',import.meta.url),'utf8'));
+sql.exec(readFileSync(new URL('./fixtures/local-drizzle/0008_learning_community_tutor.sql',import.meta.url),'utf8'));
 class Statement{constructor(q,args=[]){this.q=q;this.args=args}bind(...args){return new Statement(this.q,args)}async run(){const r=sql.prepare(this.q).run(...this.args);return {success:true,meta:{changes:r.changes}}}async first(){return sql.prepare(this.q).get(...this.args)||null}async all(){return {results:sql.prepare(this.q).all(...this.args)}}}
 const env={BOOTSTRAP_ADMIN_EMAILS:'elizeu.santos@bugbusters.com.br',DB:{prepare:q=>new Statement(q),batch:async stmts=>{sql.exec('BEGIN');try{const out=[];for(const s of stmts)out.push(await s.run());sql.exec('COMMIT');return out}catch(e){sql.exec('ROLLBACK');throw e}}}};
 const admin={id:'platform-admin',email:'elizeu.santos@bugbusters.com.br'},student={id:'platform-student',email:'student@example.com'},other={id:'platform-other',email:'other@example.com'};

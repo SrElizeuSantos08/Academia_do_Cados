@@ -38,8 +38,8 @@ export async function startPreview({port=5190,stateDirectory=resolve(root,'outpu
   const assetRoot=resolve(stateDirectory,'assets');mkdirSync(assetRoot,{recursive:true});
   const sql=new DatabaseSync(resolve(stateDirectory,'academy.sqlite'));
   const fresh=!sql.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='people'").get();
-  const journal=JSON.parse(readFileSync(resolve(root,'drizzle/meta/_journal.json'),'utf8')).entries;
-  if(fresh)sql.exec(readFileSync(resolve(root,'drizzle',journal[0].tag+'.sql'),'utf8'));
+  const journal=JSON.parse(readFileSync(resolve(root,'tests/fixtures/local-drizzle/meta/_journal.json'),'utf8')).entries;
+  if(fresh)sql.exec(readFileSync(resolve(root,'tests/fixtures/local-drizzle',journal[0].tag+'.sql'),'utf8'));
   class Statement {
     constructor(query,args=[]){this.query=query;this.args=args;}
     bind(...args){return new Statement(this.query,args);}
@@ -68,7 +68,7 @@ export async function startPreview({port=5190,stateDirectory=resolve(root,'outpu
   }
   sql.exec('CREATE TABLE IF NOT EXISTS preview_migrations (tag TEXT PRIMARY KEY)');
   for(const entry of journal.slice(1))if(!sql.prepare('SELECT tag FROM preview_migrations WHERE tag=?').get(entry.tag)){
-    sql.exec('BEGIN');try{sql.exec(readFileSync(resolve(root,'drizzle',entry.tag+'.sql'),'utf8'));sql.prepare('INSERT INTO preview_migrations VALUES(?)').run(entry.tag);sql.exec('COMMIT');}catch(error){sql.exec('ROLLBACK');sql.close();throw error;}
+    sql.exec('BEGIN');try{sql.exec(readFileSync(resolve(root,'tests/fixtures/local-drizzle',entry.tag+'.sql'),'utf8'));sql.prepare('INSERT INTO preview_migrations VALUES(?)').run(entry.tag);sql.exec('COMMIT');}catch(error){sql.exec('ROLLBACK');sql.close();throw error;}
   }
   globalThis.FixedLengthStream??=LocalFixedLengthStream;
   const assetPath=key=>{if(!/^[a-zA-Z0-9-]+$/.test(key))throw Error('Invalid key');return resolve(assetRoot,key);};

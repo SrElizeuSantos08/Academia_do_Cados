@@ -1,0 +1,1081 @@
+{
+  "project_ref": "snboppvknkqlremkwrjf",
+  "schema": "academia",
+  "tables": {
+    "people": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "identity",
+          "type": "text",
+          "nullable": true,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "login_email",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "ra",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "role",
+          "type": "text",
+          "nullable": false,
+          "default": "'student'",
+          "pk": 0
+        },
+        {
+          "name": "active",
+          "type": "integer",
+          "nullable": false,
+          "default": "1",
+          "pk": 0
+        },
+        {
+          "name": "photo",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "courses": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "level",
+          "type": "text",
+          "nullable": false,
+          "default": "'Básico'",
+          "pk": 0
+        },
+        {
+          "name": "folder",
+          "type": "text",
+          "nullable": false,
+          "default": "'Cyber'",
+          "pk": 0
+        },
+        {
+          "name": "published",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "sort",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "body",
+          "type": "text",
+          "nullable": false,
+          "default": "'[]'",
+          "pk": 0
+        },
+        {
+          "name": "updated",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "enrollments": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 2
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "user",
+        "course"
+      ]
+    },
+    "progress": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 2
+        },
+        {
+          "name": "lesson",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 3
+        },
+        {
+          "name": "position",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "done",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "score",
+          "type": "integer",
+          "nullable": true,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "updated",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "user",
+        "course",
+        "lesson"
+      ]
+    },
+    "assets": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "scope",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "size",
+          "type": "integer",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "messages": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "parent",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "text",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "asset",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "topics": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "pinned",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "closed",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "message_topics": {
+      "columns": [
+        {
+          "name": "message",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "topic",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "message"
+      ]
+    },
+    "moderation": {
+      "columns": [
+        {
+          "name": "message",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "hidden",
+          "type": "integer",
+          "nullable": false,
+          "default": "1",
+          "pk": 0
+        },
+        {
+          "name": "reason",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "message"
+      ]
+    },
+    "forum_reports": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "message",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "reason",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "nullable": false,
+          "default": "'open'",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "tickets": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "teacher",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "subject",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "nullable": false,
+          "default": "'open'",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "replies": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "ticket",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "text",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "notifications": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "text",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "reads": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "notice",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 2
+        }
+      ],
+      "primaryKey": [
+        "user",
+        "notice"
+      ]
+    },
+    "certificates": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "module",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "snapshot",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "settings": {
+      "columns": [
+        {
+          "name": "key",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "value",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "key"
+      ]
+    },
+    "audit": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "action",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "target",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "tutor": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "question",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "answer",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "needs_teacher",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "sources",
+          "type": "text",
+          "nullable": false,
+          "default": "'[]'",
+          "pk": 0
+        },
+        {
+          "name": "ticket",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    },
+    "auth_profiles": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "company",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "account_type",
+          "type": "text",
+          "nullable": false,
+          "default": "'student'",
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "user"
+      ]
+    },
+    "auth_passwords": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "salt",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "password_hash",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "must_change",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "updated",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "user"
+      ]
+    },
+    "auth_sessions": {
+      "columns": [
+        {
+          "name": "token_hash",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "expires",
+          "type": "bigint",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "version",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "token_hash"
+      ]
+    },
+    "auth_limits": {
+      "columns": [
+        {
+          "name": "key",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "count",
+          "type": "integer",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "started",
+          "type": "bigint",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "key"
+      ]
+    },
+    "auth_email_challenges": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "salt",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "password_hash",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "expires",
+          "type": "bigint",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "consumed",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ]
+    }
+  }
+}

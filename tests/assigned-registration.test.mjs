@@ -3,7 +3,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {insertPerson} from '../lib/registration.mjs';
 const read=file=>readFileSync(new URL('../'+file,import.meta.url),'utf8');
-const db=new DatabaseSync(':memory:');db.exec(read('drizzle/0000_brainy_dreaming_celestial.sql'));
+const db=new DatabaseSync(':memory:');db.exec(read('tests/fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql'));
 const rows=[
  ['demo-student','qa@example.test','Aluno de verificação','AC-2026-0004'],
  ['demo-admin','admin@example.test','Administração local','AC-2026-0005'],
@@ -17,7 +17,7 @@ const rows=[
 ];
 for(const [id,email,name,ra] of rows)db.prepare('INSERT INTO people(id,identity,login_email,email,name,ra,created) VALUES(?,?,?,?,?,?,?)').run(id,id,email,email,name,ra,'2026-10-22');
 const before=db.prepare('SELECT id,identity,login_email,email,name,role,active,photo,created FROM people ORDER BY id').all();
-const migration=read('drizzle/0007_assigned_registrations.sql');db.exec(migration);
+const migration=read('tests/fixtures/local-drizzle/0007_assigned_registrations.sql');db.exec(migration);
 for(const [index,id] of ['elizeu','guilherme','osmar','alisson','erik'].entries())assert.equal(db.prepare('SELECT ra FROM people WHERE id=?').get(id).ra,'AC-2026-000'+(index+1));
 for(const id of ['demo-student','demo-admin','demo-teacher'])assert(Number(db.prepare('SELECT ra FROM people WHERE id=?').get(id).ra.slice(8))>10);
 assert.equal(db.prepare('SELECT ra FROM people WHERE id=?').get('bruna').ra,'AC-2026-0010');
@@ -28,7 +28,7 @@ db.prepare('UPDATE people SET name=?,login_email=? WHERE id=?').run('Bruna Olive
 db.exec(migration);
 assert.equal(db.prepare('SELECT ra FROM people WHERE id=?').get('bruna').ra,'AC-2026-0006');
 db.close();
-const fresh=new DatabaseSync(':memory:');fresh.exec(read('drizzle/0000_brainy_dreaming_celestial.sql'));
+const fresh=new DatabaseSync(':memory:');fresh.exec(read('tests/fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql'));
 const adapter={prepare:query=>({bind:(...values)=>({run:async()=>fresh.prepare(query).run(...values)})})};
 for(const [index,email] of ['elizeu.santos@bugbusters.com.br','guilherme.arakaki@bugbusters.com.br','osmar.cabral@bugbusters.com.br','alisson.pereira@bugbusters.com.br','erik.reis@bugbusters.com.br','bruna.oliveira@bugbusters.com.br'].entries()){
  await insertPerson(adapter,{id:String(index),login:email,email,name:email,role:'student',created:'2026-10-22'});

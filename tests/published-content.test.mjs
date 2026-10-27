@@ -6,11 +6,11 @@ import { pilotCourse } from '../lib/pilot.mjs';
 import { validateModules } from '../lib/lms.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
-const journal = JSON.parse(read('drizzle/meta/_journal.json'));
+const journal = JSON.parse(read('tests/fixtures/local-drizzle/meta/_journal.json'));
 assert.equal(new Set(journal.entries.map(e => e.idx)).size, journal.entries.length);
 assert.equal(new Set(journal.entries.map(e => e.tag)).size, journal.entries.length);
 const sql = new DatabaseSync(':memory:');
-sql.exec(read('drizzle/' + journal.entries[0].tag + '.sql'));
+sql.exec(read('tests/fixtures/local-drizzle/' + journal.entries[0].tag + '.sql'));
 const legacy = structuredClone(pilotCourse.modules);
 for(const module of legacy)for(const lesson of module.lessons){lesson.quiz.splice(1);delete lesson.materials;}
 sql.prepare('INSERT INTO courses(id,title,body,updated) VALUES(?,?,?,?)').run(pilotCourse.id, pilotCourse.title, JSON.stringify(legacy), '2026-10-15');
@@ -19,7 +19,7 @@ sql.prepare('INSERT INTO enrollments VALUES(?,?,?)').run('original-user',pilotCo
 sql.prepare('INSERT INTO progress VALUES(?,?,?,?,?,?,?)').run('original-user',pilotCourse.id,'pilot-l1',42,1,100,'2026-10-15');
 sql.prepare('INSERT INTO certificates VALUES(?,?,?,?,?,?)').run('original-certificate','original-user',pilotCourse.id,'pilot-m1','{"ra":"AC-OLD"}','2026-10-15');
 const history = ['enrollments','progress','certificates'].map(table => sql.prepare('SELECT * FROM ' + table).all());
-for (const entry of journal.entries.slice(1)) sql.exec(read('drizzle/' + entry.tag + '.sql'));
+for (const entry of journal.entries.slice(1)) sql.exec(read('tests/fixtures/local-drizzle/' + entry.tag + '.sql'));
 const migrated = JSON.parse(sql.prepare('SELECT body FROM courses').get().body);
 assert.deepEqual(migrated[0].lessons[0].quiz, pilotCourse.modules[0].lessons[0].quiz);
 assert.deepEqual(migrated[0].lessons[0].materials, pilotCourse.modules[0].lessons[0].materials);
@@ -28,7 +28,7 @@ assert.deepEqual(['enrollments','progress','certificates'].map(table => sql.prep
 assert.equal(sql.prepare('SELECT ra FROM people').get().ra,'AC-2026-0003');
 assert.equal(validateModules(migrated, pilotCourse.id)[0].lessons[0].materials.length,1);
 assert.throws(() => validateModules(migrated, 'other-course'), /Material não autorizado/);
-sql.exec(read('drizzle/0004_aula01_video_and_quiz.sql'));
+sql.exec(read('tests/fixtures/local-drizzle/0004_aula01_video_and_quiz.sql'));
 assert.equal(JSON.parse(sql.prepare('SELECT body FROM courses').get().body)[0].lessons[0].quiz.length,5);
 assert(existsSync(new URL('../public/materials/portfolio-phishing-2026.pdf',import.meta.url)));
 assert.equal(readFileSync(new URL('../public/materials/portfolio-phishing-2026.pdf',import.meta.url)).subarray(0,5).toString(),'%PDF-');
