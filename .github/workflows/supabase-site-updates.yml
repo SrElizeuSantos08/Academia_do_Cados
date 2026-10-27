@@ -1,0 +1,33 @@
+name: Record site source updates in Supabase
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  record-update:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Send a verified GitHub push to Supabase
+        shell: bash
+        run: |
+          set -euo pipefail
+          oidc_token="$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=academia-github-site-updates" | jq -er '.value')"
+          status="$(curl --silent --show-error --output /tmp/supabase-update-response.json --write-out '%{http_code}' \
+            --request POST \
+            --header "Authorization: Bearer ${oidc_token}" \
+            --header 'Content-Type: application/json' \
+            --data '{}' \
+            'https://snboppvknkqlremkwrjf.supabase.co/functions/v1/github-site-update')"
+          if [[ ! "$status" =~ ^2[0-9][0-9]$ ]]; then
+            cat /tmp/supabase-update-response.json
+            exit 1
+          fi
