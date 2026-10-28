@@ -7,13 +7,13 @@
   "database_management": {
     "base_tables": 26,
     "rls_enabled_tables": 26,
-    "service_role_policies": 25,
+    "service_role_policies": 26,
     "constraints": 68,
     "indexes": 60,
     "triggers": 3,
     "enum_types": 0,
     "realtime_tables": 0,
-    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling."
+    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling. Registry is RLS-enabled and only service_role has a read policy."
   },
   "d1_import": {
     "source_table_counts": {
@@ -78,7 +78,7 @@
     "auth_limits",
     "auth_email_challenges"
   ],
-  "latest_database_migration": "20261028130653_platform_user_registry_and_sync",
+  "latest_database_migration": "20261028130825_platform_user_registry_read_policy",
   "pending": [
     "Transfer the two R2 objects",
     "Owner must configure and validate runtime secrets",
