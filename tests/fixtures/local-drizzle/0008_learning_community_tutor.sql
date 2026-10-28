@@ -46,3 +46,5 @@ CREATE TABLE IF NOT EXISTS `tutor` (
 
 --> statement-breakpoint
 INSERT INTO settings(key,value) VALUES('robot','on') ON CONFLICT(key) DO UPDATE SET value='on';
+INSERT INTO settings(key,value) VALUES('agent:auto_support','on') ON CONFLICT(key) DO UPDATE SET value='on';
+INSERT INTO settings(key,value) VALUES('agent:auto_forum','on') ON CONFLICT(key) DO UPDATE SET value='on';
