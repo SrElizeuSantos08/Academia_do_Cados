@@ -1,39 +1,87 @@
 {
   "project_ref": "snboppvknkqlremkwrjf",
-  "date": "2026-10-27",
-  "source": "D1 snapshot; authenticated administrative export",
+  "snapshot_date": "2026-10-27",
+  "status": "partial",
+  "source": "Cloudflare D1 live snapshot; copied to private academia schema",
   "destination_schema": "academia",
-  "tables_with_rls": 23,
-  "row_counts": {
-    "people": 7,
-    "courses": 2,
-    "enrollments": 5,
-    "progress": 19,
-    "assets": 2,
-    "messages": 2,
-    "topics": 0,
-    "message_topics": 0,
-    "moderation": 0,
-    "forum_reports": 0,
-    "tickets": 2,
-    "replies": 2,
-    "notifications": 5,
-    "reads": 0,
-    "certificates": 2,
-    "settings": 5,
-    "audit": 36,
-    "tutor": 0,
-    "auth_profiles": 2,
-    "auth_passwords": 7
+  "database_management": {
+    "base_tables": 25,
+    "rls_enabled_tables": 25,
+    "service_role_policies": 25,
+    "constraints": 67,
+    "indexes": 56,
+    "triggers": 0,
+    "enum_types": 0,
+    "realtime_tables": 0,
+    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend; forum updates use polling."
   },
-  "course_sha256_verified": true,
+  "d1_import": {
+    "source_table_counts": {
+      "people": 7,
+      "courses": 2,
+      "enrollments": 5,
+      "progress": 19,
+      "assets": 2,
+      "messages": 2,
+      "topics": 0,
+      "message_topics": 0,
+      "moderation": 0,
+      "forum_reports": 0,
+      "tickets": 2,
+      "replies": 2,
+      "notifications": 5,
+      "reads": 0,
+      "certificates": 2,
+      "settings": 5,
+      "audit": 43,
+      "tutor": 0,
+      "auth_profiles": 2,
+      "auth_passwords": 7
+    },
+    "salted_password_hashes_imported": true,
+    "plaintext_passwords_imported": false,
+    "ephemeral_auth_rows_copied": false,
+    "course_and_long_setting_checksum_verified": false,
+    "checksum_note": "Complete course JSON and long setting values exist in Supabase, but the bounded D1 reader prevented independent full-value checksums; course updated_at values match."
+  },
+  "storage": {
+    "bucket": "academia-assets",
+    "public": false,
+    "max_file_size_bytes": 52428800,
+    "metadata_rows": 2,
+    "object_bytes_copied": 0,
+    "pending_objects": [
+      "Perfil.jpg",
+      "WhatsApp Image 2026-10-22 at 12.33.39 PM.jpeg"
+    ],
+    "source": "Cloudflare R2"
+  },
+  "application": {
+    "current_production_backend": "D1/R2",
+    "supabase_adapter_committed": true,
+    "runtime_cutover": false,
+    "required_server_secrets": [
+      "SUPABASE_URL",
+      "SUPABASE_SERVICE_ROLE_KEY"
+    ],
+    "runtime_configuration_error": "Sites connector returns project_not_found for production environment variables; current user is Site editor, not owner.",
+    "github_commit_logging": "Enabled through the existing GitHub Actions to Supabase workflow."
+  },
+  "validation": {
+    "unit_tests": "27 passed",
+    "production_build": "passed",
+    "changed_adapter_files_lint": "passed",
+    "full_lint": "existing repository issues remain outside this migration"
+  },
   "ephemeral_tables_empty": [
     "auth_sessions",
     "auth_limits",
     "auth_email_challenges"
   ],
-  "production_backend": "D1/R2",
-  "continuous_sync": false,
-  "binary_assets_copied": false,
-  "tests_passed": 23
+  "latest_database_migration": "20261027200101_academia_database_management",
+  "pending": [
+    "Transfer the two R2 objects",
+    "Owner must configure and validate runtime secrets",
+    "Run cutover verification before treating Supabase as production source"
+  ]
 }
