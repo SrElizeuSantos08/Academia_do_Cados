@@ -5,15 +5,15 @@
   "source": "Cloudflare D1 live snapshot; copied to private academia schema",
   "destination_schema": "academia",
   "database_management": {
-    "base_tables": 25,
-    "rls_enabled_tables": 25,
+    "base_tables": 26,
+    "rls_enabled_tables": 26,
     "service_role_policies": 25,
-    "constraints": 67,
-    "indexes": 56,
-    "triggers": 0,
+    "constraints": 68,
+    "indexes": 60,
+    "triggers": 3,
     "enum_types": 0,
     "realtime_tables": 0,
-    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend; forum updates use polling."
+    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling."
   },
   "d1_import": {
     "source_table_counts": {
@@ -78,10 +78,28 @@
     "auth_limits",
     "auth_email_challenges"
   ],
-  "latest_database_migration": "20261027200101_academia_database_management",
+  "latest_database_migration": "20261028130653_platform_user_registry_and_sync",
   "pending": [
     "Transfer the two R2 objects",
     "Owner must configure and validate runtime secrets",
-    "Run cutover verification before treating Supabase as production source"
-  ]
+    "Run cutover verification before treating Supabase as production source",
+    "Configure and validate the production Supabase runtime cutover so new site registrations reach the Supabase source tables and registry automatically"
+  ],
+  "platform_user_registry": {
+    "table": "academia.usuarios_plataforma",
+    "records_seeded": 7,
+    "includes": [
+      "name",
+      "login and contact email",
+      "RA",
+      "role",
+      "active status",
+      "profile photo",
+      "company/account type",
+      "password configured/change-required flags"
+    ],
+    "password_material": "No plaintext passwords or password hashes in this registry; salted hashes remain in academia.auth_passwords.",
+    "automatic_sync": "Database triggers synchronize inserts, updates, and deletes in academia.people, academia.auth_profiles, and academia.auth_passwords.",
+    "site_registration_sync": "Production still writes to D1/R2. This trigger-based synchronization becomes active for site registrations only after the runtime switches to Supabase."
+  }
 }
