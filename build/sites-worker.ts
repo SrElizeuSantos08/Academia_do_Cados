@@ -4,6 +4,28 @@ import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 import { configureSupabaseRuntime } from "../lib/supabase-d1-adapter.mjs";
 
+async function injectPrivacyNotice(request: Request, response: Response) {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!response.ok || request.method === "HEAD" || !contentType.includes("text/html")) return response;
+  const html = await response.text();
+  const bodyEnd = html.toLowerCase().lastIndexOf("</body>");
+  if (bodyEnd < 0 || html.includes("/privacy-consent.js")) {
+    const headers = new Headers(response.headers);
+    headers.delete("content-length");
+    headers.delete("content-encoding");
+    headers.delete("etag");
+    return new Response(html, { status: response.status, statusText: response.statusText, headers });
+  }
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  headers.delete("content-encoding");
+  headers.delete("etag");
+  headers.delete("content-md5");
+  const updated = html.slice(0, bodyEnd) + '<script defer src="/privacy-consent.js"></script>' + html.slice(bodyEnd);
+  return new Response(updated, { status: response.status, statusText: response.statusText, headers });
+}
+
+
 export default {
   async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     if (new URL(request.url).pathname.startsWith("/api/lms/")) {
@@ -29,6 +51,6 @@ export default {
         },
       };
     }
-    return runWithConnectorBinding(binding, () => handler.fetch(request, env, ctx));
+    return runWithConnectorBinding(binding, async () => injectPrivacyNotice(request, await handler.fetch(request, env, ctx)));
   },
 };

@@ -5,15 +5,15 @@
   "source": "Cloudflare D1 live snapshot; copied to private academia schema",
   "destination_schema": "academia",
   "database_management": {
-    "base_tables": 26,
-    "rls_enabled_tables": 26,
-    "service_role_policies": 26,
-    "constraints": 68,
-    "indexes": 60,
+    "base_tables": 27,
+    "rls_enabled_tables": 27,
+    "service_role_policies": 27,
+    "constraints": 69,
+    "indexes": 61,
     "triggers": 3,
     "enum_types": 0,
     "realtime_tables": 0,
-    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling. Registry is RLS-enabled and only service_role has a read policy."
+    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling. Registry is RLS-enabled and only service_role has a read policy. The current legal pages and versioned policy text are stored in academia.documentos_legais; signup stores explicit acceptance of the policy versions."
   },
   "d1_import": {
     "source_table_counts": {
@@ -65,7 +65,8 @@
       "SUPABASE_SERVICE_ROLE_KEY"
     ],
     "runtime_configuration_error": "Sites connector returns project_not_found for production environment variables; current user is Site editor, not owner.",
-    "github_commit_logging": "Enabled through the existing GitHub Actions to Supabase workflow."
+    "github_commit_logging": "Enabled through the existing GitHub Actions to Supabase workflow.",
+    "registration_legal_acceptance": "Added to signup; production remains on D1/R2, so new acceptance records reach Supabase after runtime cutover."
   },
   "validation": {
     "unit_tests": "27 passed",
@@ -78,12 +79,13 @@
     "auth_limits",
     "auth_email_challenges"
   ],
-  "latest_database_migration": "20261028130825_platform_user_registry_read_policy",
+  "latest_database_migration": "20261028131910_legal_documents_and_privacy",
   "pending": [
     "Transfer the two R2 objects",
     "Owner must configure and validate runtime secrets",
     "Run cutover verification before treating Supabase as production source",
-    "Configure and validate the production Supabase runtime cutover so new site registrations reach the Supabase source tables and registry automatically"
+    "Configure and validate the production Supabase runtime cutover so new site registrations reach the Supabase source tables and registry automatically",
+    "Confirm the controller's registered legal name, CNPJ, and address for the public policy/contact details before paid offers."
   ],
   "platform_user_registry": {
     "table": "academia.usuarios_plataforma",
@@ -101,5 +103,12 @@
     "password_material": "No plaintext passwords or password hashes in this registry; salted hashes remain in academia.auth_passwords.",
     "automatic_sync": "Database triggers synchronize inserts, updates, and deletes in academia.people, academia.auth_profiles, and academia.auth_passwords.",
     "site_registration_sync": "Production still writes to D1/R2. This trigger-based synchronization becomes active for site registrations only after the runtime switches to Supabase."
+  },
+  "legal_documents": {
+    "table": "academia.documentos_legais",
+    "version": "2026-10-28-v1",
+    "documents": 3,
+    "signup_acceptance": "New registrations must accept Terms and acknowledge privacy/cookie notice; accepted versions and timestamp are stored in the existing settings table.",
+    "cookies": "Essential session cookie only; no app analytics/advertising cookies enabled."
   }
 }
