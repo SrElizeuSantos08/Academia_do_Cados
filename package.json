@@ -6,6 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "test": "node scripts/test.mjs",
     "typecheck": "tsc --noEmit",
     "typecheck:edge": "deno task --config supabase/functions/deno.json check",
     "install:ci": "bash scripts/install-pnpm.sh",
