@@ -2,7 +2,7 @@ import { handleLms } from "../lib/lms.mjs";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
-import { configureSupabaseRuntime } from "../lib/supabase-d1-adapter.mjs";
+import { databaseEnv as configureSupabaseRuntime } from "../lib/database.mjs";
 
 async function injectPrivacyNotice(request: Request, response: Response) {
   const contentType = response.headers.get("content-type") ?? "";

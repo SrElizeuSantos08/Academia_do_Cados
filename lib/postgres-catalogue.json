@@ -1,0 +1,1322 @@
+[
+  {
+    "id": "341163fd719d147b8b9ae278779d062b743c98bc6be287500e7c3a65ca25eeaa",
+    "sqlite": "DELETE FROM auth_email_challenges WHERE expires<?",
+    "sql": "WITH affected AS (DELETE FROM auth_email_challenges WHERE expires<%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "df49cf586ef144a4f25a2e4081da18bebdf14496e32cee70dd3c6d0da9b275f0",
+    "sqlite": "DELETE FROM auth_email_challenges WHERE id=?",
+    "sql": "WITH affected AS (DELETE FROM auth_email_challenges WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "93d5d6d6848e3243bf4d12f164a9e4b787f1d1d861f53767cf05501b8bc040aa",
+    "sqlite": "DELETE FROM auth_email_challenges WHERE user=?",
+    "sql": "WITH affected AS (DELETE FROM auth_email_challenges WHERE \"user\"=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "a2c624adedba194317c7d3e37f8447828d0539348933ef583272e615dba143cb",
+    "sqlite": "DELETE FROM auth_email_challenges WHERE user=? AND EXISTS(SELECT 1 FROM auth_passwords WHERE user=? AND updated=?)",
+    "sql": "WITH affected AS (DELETE FROM auth_email_challenges WHERE \"user\"=%L AND EXISTS(SELECT 1 FROM auth_passwords WHERE \"user\"=%L AND updated=%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "96d7203eac72dc1a0b8d5c8a7b9e0e6ba4267d1ee297c3f3094215e5e0573ed5",
+    "sqlite": "DELETE FROM auth_sessions WHERE expires<?",
+    "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE expires<%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "9209f89f3b97cad7ebe0307af4c20ead3dc71e236652d930a3902b4ebdbc460b",
+    "sqlite": "DELETE FROM auth_sessions WHERE token_hash=?",
+    "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE token_hash=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "65cb6d6ed1cf157dd7745b10f104563646018152f9658a8263e1cd63646528be",
+    "sqlite": "DELETE FROM auth_sessions WHERE user=?",
+    "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE \"user\"=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "b48b726fac452ebadb0d208752010c1ea52d176dacf8b4cce649d754d7554e2a",
+    "sqlite": "DELETE FROM auth_sessions WHERE user=? AND EXISTS(SELECT 1 FROM auth_passwords WHERE user=? AND updated=?)",
+    "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE \"user\"=%L AND EXISTS(SELECT 1 FROM auth_passwords WHERE \"user\"=%L AND updated=%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "46f37f7d100ca0e6fa3bf34de5dc93c549b0fd5abda1509a1949ed3809bd06b2",
+    "sqlite": "DELETE FROM auth_sessions WHERE user=? AND version LIKE 'email:%'",
+    "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE \"user\"=%L AND version LIKE 'email:%%' RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "ea178ed4eb91ad14bd88dcd5173bec119ca109f14303d0d311d9e779dd901211",
+    "sqlite": "DELETE FROM enrollments WHERE user=? AND course=?",
+    "sql": "WITH affected AS (DELETE FROM enrollments WHERE \"user\"=%L AND course=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "177a993b58f684363cc9606117de5c299f97d44b053f4c11f402eb14df0e1b14",
+    "sqlite": "DELETE FROM messages WHERE id=?",
+    "sql": "WITH affected AS (DELETE FROM messages WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "335ab85721df64a287eca01b896d449398a1e0f23b7cbf105f0361d1307a19c7",
+    "sqlite": "INSERT INTO assets VALUES(?,?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO assets VALUES(%L,%L,%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 8,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "24ab09e84f10b2b88ae62a2118ae33e75ae13d2b52179c4789e8ab62ce5bb17b",
+    "sqlite": "INSERT INTO audit VALUES(?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO audit VALUES(%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "44c7437d3b2ef4750d125f6d2d8a6721afa5f6c7d25eb42656104f618109adff",
+    "sqlite": "INSERT INTO audit(id,user,action,target,created) VALUES(?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO audit(id,\"user\",action,target,created) VALUES(%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "da07f78a102b86b5cd51ec4259925c6d9207c85b2d24df1cf4826f87f2711f69",
+    "sqlite": "INSERT INTO auth_email_challenges(id,user,salt,password_hash,expires,consumed,created) VALUES(?,?,?,?,?,0,?)",
+    "sql": "WITH affected AS (INSERT INTO auth_email_challenges(id,\"user\",salt,password_hash,expires,consumed,created) VALUES(%L,%L,%L,%L,%L,0,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "22d5e019ebf19014088ff5a860ecc3f0c96031199f8327c15c31bff312f38f41",
+    "sqlite": "INSERT INTO auth_limits(key,count,started) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN started<? THEN 1 ELSE count+1 END,started=CASE WHEN started<? THEN excluded.started ELSE started END RETURNING count",
+    "sql": "WITH affected AS (INSERT INTO auth_limits(key,count,started) VALUES(%L,1,%L) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN auth_limits.started<%L THEN 1 ELSE auth_limits.count+1 END,started=CASE WHEN auth_limits.started<%L THEN excluded.started ELSE auth_limits.started END RETURNING count) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 4,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "a709434c11108175dd0f39afa5c56d5d2f30f135574a7f48ac56c7fd81936096",
+    "sqlite": "INSERT INTO auth_passwords(user,salt,password_hash,must_change,updated) SELECT ?,?,?,0,? WHERE EXISTS(SELECT 1 FROM auth_sessions s JOIN auth_email_challenges e ON s.version='email:'||e.id WHERE s.token_hash=? AND s.user=? AND s.expires>? AND e.consumed=1 AND e.expires>?) ON CONFLICT(user) DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO auth_passwords(\"user\",salt,password_hash,must_change,updated) SELECT %L,%L,%L,0,%L WHERE EXISTS(SELECT 1 FROM auth_sessions s JOIN auth_email_challenges e ON s.version='email:'||e.id WHERE s.token_hash=%L AND s.\"user\"=%L AND s.expires>%L AND e.consumed=1 AND e.expires>%L) ON CONFLICT(\"user\") DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 8,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "05e8584346ece853a36aa9ca27aee143e6a03dc27315f74e82f263629d70ef58",
+    "sqlite": "INSERT INTO auth_passwords(user,salt,password_hash,must_change,updated) SELECT ?,?,?,0,? WHERE EXISTS(SELECT 1 FROM auth_sessions s JOIN auth_passwords a ON a.user=s.user AND a.updated=s.version WHERE s.token_hash=? AND s.user=? AND s.expires>? AND a.must_change=0 AND s.expires>?) ON CONFLICT(user) DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO auth_passwords(\"user\",salt,password_hash,must_change,updated) SELECT %L,%L,%L,0,%L WHERE EXISTS(SELECT 1 FROM auth_sessions s JOIN auth_passwords a ON a.\"user\"=s.\"user\" AND a.updated=s.version WHERE s.token_hash=%L AND s.\"user\"=%L AND s.expires>%L AND a.must_change=0 AND s.expires>%L) ON CONFLICT(\"user\") DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 8,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "f0de7096dccc95d03715c63fde54aa2f6d11bdbc8d51dbf50d9fa905af19634c",
+    "sqlite": "INSERT INTO auth_passwords(user,salt,password_hash,must_change,updated) VALUES(?,?,?,0,?) ON CONFLICT(user) DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO auth_passwords(\"user\",salt,password_hash,must_change,updated) VALUES(%L,%L,%L,0,%L) ON CONFLICT(\"user\") DO UPDATE SET salt=excluded.salt,password_hash=excluded.password_hash,must_change=0,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 4,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "3cd17ddc80d366ecde2c12fdeb73c77a4c7d686e0475e525775c24dfee330a43",
+    "sqlite": "INSERT INTO auth_profiles(user,company,account_type) VALUES(?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO auth_profiles(\"user\",company,account_type) VALUES(%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "caa5ec2503489fe22a8bc98d17dc4568f0c0b07b79d30c98c822e567d38a4742",
+    "sqlite": "INSERT INTO auth_sessions(token_hash,user,expires,created,version) VALUES(?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO auth_sessions(token_hash,\"user\",expires,created,version) VALUES(%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "141c8e1e931f97f34c2b7d3b060163584fb6810162315d13f5f2f682f804fb00",
+    "sqlite": "INSERT INTO courses VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET title=excluded.title,description=excluded.description,level=excluded.level,folder=excluded.folder,published=excluded.published,sort=excluded.sort,body=excluded.body,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO courses VALUES(%L,%L,%L,%L,%L,%L,%L,%L,%L) ON CONFLICT(id) DO UPDATE SET title=excluded.title,description=excluded.description,level=excluded.level,folder=excluded.folder,published=excluded.published,sort=excluded.sort,body=excluded.body,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 9,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "0304028a99c4d58c412be6caf2e4e9faea48f74d696368a91527f8bb17a6cccf",
+    "sqlite": "INSERT INTO enrollments(user,course,created) VALUES(?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO enrollments(\"user\",course,created) VALUES(%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "2afecc8079fdc947a3cadba6a91f493e5ee644ce0efa8d3963157dd658c6d133",
+    "sqlite": "INSERT INTO message_topics VALUES(?,?)",
+    "sql": "WITH affected AS (INSERT INTO message_topics VALUES(%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "1b131008d55a6ab323dd8fc301eee86415005d7980e42d759aef33d4e9dba5d9",
+    "sqlite": "INSERT INTO messages VALUES(?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO messages VALUES(%L,%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "b81b8a2ab2ab3d5e40001cc7d083d9e9a518b5acc0c27333347c5028d68f0515",
+    "sqlite": "INSERT INTO moderation VALUES(?,?,?,?,?) ON CONFLICT(message) DO UPDATE SET hidden=excluded.hidden,reason=excluded.reason,user=excluded.user,created=excluded.created",
+    "sql": "WITH affected AS (INSERT INTO moderation VALUES(%L,%L,%L,%L,%L) ON CONFLICT(message) DO UPDATE SET hidden=excluded.hidden,reason=excluded.reason,\"user\"=excluded.\"user\",created=excluded.created RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "2313b13cfceb6b8a1224a8b04bacac6f2f24cbaa308b7ae5ec85d1cca13433ac",
+    "sqlite": "INSERT INTO notifications VALUES(?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO notifications VALUES(%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "ea5bcedbdb4908d629edd15ba44d625e997b8fe5e074198b9c130c7a4d143a99",
+    "sqlite": "INSERT INTO notifications(id,user,course,title,text,created) VALUES(?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO notifications(id,\"user\",course,title,text,created) VALUES(%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "6fee5d4af6e7ea5720d79675e3c78fcd96bc8ebb42583ebfbd8ded30ab4bd605",
+    "sqlite": "INSERT INTO people (id,identity,login_email,email,name,ra,role,active,created) SELECT ?,?,?,?,?,COALESCE(?, ? || printf('%04d', MAX(?, COALESCE(MAX(CAST(substr(ra,9) AS INTEGER)),0)) + 1)),?,?,? FROM people WHERE ra GLOB ? AND substr(ra,9) NOT GLOB '*[^0-9]*'",
+    "sql": "WITH affected AS (INSERT INTO people (id,identity,login_email,email,name,ra,role,active,created)\n      SELECT %L,%L,%L,%L,%L,COALESCE(%L::text,%L::text || lpad((GREATEST(%L::integer,\n      COALESCE(MAX(CAST(substr(ra,9) AS INTEGER)),0))+1)::text,4,'0')),%L,%L,%L\n      FROM people WHERE ra ~ %L::text RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 12,
+    "write": true,
+    "registration": true
+  },
+  {
+    "id": "6ff9fc6680b771114b0c1bd2c1538a0aa0120ba69477b23a891433782ea55037",
+    "sqlite": "INSERT INTO progress VALUES(?,?,?,?,?,?,?) ON CONFLICT(user,course,lesson) DO UPDATE SET done=excluded.done,score=excluded.score,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO progress VALUES(%L,%L,%L,%L,%L,%L,%L) ON CONFLICT(\"user\",course,lesson) DO UPDATE SET done=excluded.done,score=excluded.score,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "3d2511a22441560b971014bf6cead9091e759b06914f797207971397c5fdd009",
+    "sqlite": "INSERT INTO progress VALUES(?,?,?,?,?,?,?) ON CONFLICT(user,course,lesson) DO UPDATE SET position=excluded.position,done=MAX(progress.done,excluded.done),score=COALESCE(excluded.score,progress.score),updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO progress VALUES(%L,%L,%L,%L,%L,%L,%L) ON CONFLICT(\"user\",course,lesson) DO UPDATE SET position=excluded.position,done=GREATEST(progress.done,excluded.done),score=COALESCE(excluded.score,progress.score),updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "f7902988465d3d4ba95c807154e3b89a091f31e311062e76326cea98636f52ea",
+    "sqlite": "INSERT INTO replies VALUES(?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO replies VALUES(%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "2d7366da22a0ac752697caa7f560c89c0346c1f97e11eae7c8b1674bc88d45fc",
+    "sqlite": "INSERT INTO settings VALUES('robot',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+    "sql": "WITH affected AS (INSERT INTO settings VALUES('robot',%L) ON CONFLICT(key) DO UPDATE SET value=excluded.value RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "a2268bdb003192cb048fc126a6fcd6c6df8a0f945879e7a703247cddfff2ebe8",
+    "sqlite": "INSERT INTO settings(key,value) VALUES(?,?)",
+    "sql": "WITH affected AS (INSERT INTO settings(key,value) VALUES(%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "b93b82cdbc9943d9836ac756dbaa74c064e4c9aa201987b24c8d3e842256e5e9",
+    "sqlite": "INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+    "sql": "WITH affected AS (INSERT INTO settings(key,value) VALUES(%L,%L) ON CONFLICT(key) DO UPDATE SET value=excluded.value RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "a223c21d9cd940e0c7cb00405fa26538cd5eb38dc093658ea18e9e7126d57e3f",
+    "sqlite": "INSERT INTO tickets VALUES(?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO tickets VALUES(%L,%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "6912643533e3c6d6581a0eef2a77e8b6b101517a63e2704fada867490d9f1d36",
+    "sqlite": "INSERT INTO topics(id,course,user,title,created) VALUES(?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO topics(id,course,\"user\",title,created) VALUES(%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "cf706f3f149e0ccebd7ea7cf6d2a082970fbf951e7f7d9d54bd024312c26ad62",
+    "sqlite": "INSERT INTO tutor VALUES(?,?,?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO tutor VALUES(%L,%L,%L,%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 9,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "c7191744c89523802aa3fcdf2b6a27c12b5e13b2ce25adaa603234b9876d9a31",
+    "sqlite": "INSERT OR IGNORE INTO certificates VALUES(?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO certificates VALUES(%L,%L,%L,%L,%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "1aaadd1a19441a8df0e7fed5a8042a77a4d1102db8004a1ad485f3ece00a29e2",
+    "sqlite": "INSERT OR IGNORE INTO courses VALUES(?,?,?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO courses VALUES(%L,%L,%L,%L,%L,%L,%L,%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 9,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "6cd2bfb48947881dd7a7ca5b086e57eed61c51b33f2762c5f898227895f62a9e",
+    "sqlite": "INSERT OR IGNORE INTO enrollments (user,course,created) SELECT p.id,c.id,? FROM people p JOIN courses c ON c.id='cyber-pilot' WHERE p.id=? AND p.role='student' AND p.active=1 AND c.published=1 AND NOT EXISTS (SELECT 1 FROM settings s WHERE s.key='course:'||c.id||':development' AND s.value='on')",
+    "sql": "WITH affected AS (INSERT INTO enrollments (\"user\",course,created) SELECT p.id,c.id,%L FROM people p JOIN courses c ON c.id='cyber-pilot' WHERE p.id=%L AND p.role='student' AND p.active=1 AND c.published=1 AND NOT EXISTS (SELECT 1 FROM settings s WHERE s.key='course:'||c.id||':development' AND s.value='on') ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "c839aa93889de548bde4ef19b7c2a01f3a9a89523bc3f59b1a4de721a63dc03c",
+    "sqlite": "INSERT OR IGNORE INTO enrollments VALUES(?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO enrollments VALUES(%L,%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "9fe9070a56ec5366b437cc0dbdd47d2b50f01d77849f97c7f4efbf4bd2c82960",
+    "sqlite": "INSERT OR IGNORE INTO enrollments(user,course,created) VALUES(?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO enrollments(\"user\",course,created) VALUES(%L,%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 3,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "1de07adaf51c28468d91154f0add5322f0b371a1c18101bbf12749fe8f12541d",
+    "sqlite": "INSERT OR IGNORE INTO forum_reports(id,message,course,user,reason,created) VALUES(?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO forum_reports(id,message,course,\"user\",reason,created) VALUES(%L,%L,%L,%L,%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "96e44d68aee6121f8038f5f69ad8eb4e3dd324380fbf844fbf81f2189d96f99a",
+    "sqlite": "INSERT OR IGNORE INTO people (id,identity,login_email,email,name,ra,role,active,created) SELECT ?,?,?,?,?,COALESCE(?, ? || printf('%04d', MAX(?, COALESCE(MAX(CAST(substr(ra,9) AS INTEGER)),0)) + 1)),?,?,? FROM people WHERE ra GLOB ? AND substr(ra,9) NOT GLOB '*[^0-9]*'",
+    "sql": "WITH affected AS (INSERT INTO people (id,identity,login_email,email,name,ra,role,active,created)\n      SELECT %L,%L,%L,%L,%L,COALESCE(%L::text,%L::text || lpad((GREATEST(%L::integer,\n      COALESCE(MAX(CAST(substr(ra,9) AS INTEGER)),0))+1)::text,4,'0')),%L,%L,%L\n      FROM people WHERE ra ~ %L::text ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 12,
+    "write": true,
+    "registration": true
+  },
+  {
+    "id": "2cbfb3ce501959471765f975caede2e173a81448ad6739bc463e8646efb1d3d7",
+    "sqlite": "INSERT OR IGNORE INTO reads VALUES(?,?)",
+    "sql": "WITH affected AS (INSERT INTO reads VALUES(%L,%L) ON CONFLICT DO NOTHING RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "3de8ec0ac31f6ff7b0f3b594cd335dfceafab07d70701c1f03151f5990d18539",
+    "sqlite": "SELECT * FROM \"assets\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"assets\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2ce31bba70a07a6867a7d62e6c299e357e64e5ed19a4187345197a7d16578c5b",
+    "sqlite": "SELECT * FROM \"audit\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"audit\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "b67d08952dffe822e34499714f909e789e600724ed745bc2976b7a227c4734fb",
+    "sqlite": "SELECT * FROM \"auth_email_challenges\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_email_challenges\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "f0aca0605459db16f96ccd67cc6fb27f7152ff8c733ea74cf55a61197361ca91",
+    "sqlite": "SELECT * FROM \"auth_limits\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_limits\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "620882ab14188ad3d7e0e6ee74d125779c3f2b1aaea55da8e9531816b34cd183",
+    "sqlite": "SELECT * FROM \"auth_passwords\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_passwords\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "fb077759dbf0a35ca8274294beab72f4582f480135c806f045a065d3323bf9db",
+    "sqlite": "SELECT * FROM \"auth_profiles\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_profiles\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "91c59a5dc63a92de906c0279108a92dc4c995c5a8019ff78febcaa2267862fa5",
+    "sqlite": "SELECT * FROM \"auth_sessions\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_sessions\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "9f297928ec586a749f1cc7a905359a87f4391aa1e605e3004a037504ff7cdba9",
+    "sqlite": "SELECT * FROM \"certificates\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"certificates\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "0e741f0094e7f973f0cb308c4dc9337846592f4aa02aefb8179d92908fcb36ae",
+    "sqlite": "SELECT * FROM \"courses\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"courses\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "47f2765b1e249b2c2559e3dcd3d9c12a4175e02777f8480b18ccbefda81b5037",
+    "sqlite": "SELECT * FROM \"enrollments\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"enrollments\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "48db1d402e2d9e4743ae74074f9802c870e46fcd136ba8be1d81101f9932f69e",
+    "sqlite": "SELECT * FROM \"forum_reports\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"forum_reports\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "737f444759a09c05da0c5ec8144bd9645e2c7b323598d1d72c4215e2fe1d6797",
+    "sqlite": "SELECT * FROM \"message_topics\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"message_topics\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "ba5ccb16e1e17fe9c2b84db3dd49fbd64d482cf726cf3f448e06bc1ce7704fe9",
+    "sqlite": "SELECT * FROM \"messages\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"messages\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "ab9e05c11edabe0bbc38070647d3bb102b8fcaa438f185c9bc60e58caae201f0",
+    "sqlite": "SELECT * FROM \"moderation\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"moderation\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "c67246e5f0e9f19fb12d1211d74a7873f062ed2839459d90112fb712c604fcae",
+    "sqlite": "SELECT * FROM \"notifications\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"notifications\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "ea339b7db61b828a90d589b8b8970d6337fbe7aa83459f93ea7efb24560023c7",
+    "sqlite": "SELECT * FROM \"people\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"people\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "9640a79b55c5bd80db18d7194ccfdd0c876dde3ae3a06d06e48eed65ad0abf12",
+    "sqlite": "SELECT * FROM \"progress\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"progress\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "041a09f522cd0b71efc4e3d3fb29403f0ea6010eb030534bf7c412823c1226ba",
+    "sqlite": "SELECT * FROM \"reads\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"reads\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "fc3e11fb60e671169c3e969f85b70268a198dd5d85f7768cc8f8fdc794edecfd",
+    "sqlite": "SELECT * FROM \"replies\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"replies\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "60934c68f00e8bfd3e3dbd3fea1a7608adb759224032aee0901bd2629a77eef4",
+    "sqlite": "SELECT * FROM \"settings\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"settings\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "4e4b54817ffa409ab14b930fd7e5cdbe73756f5eec181b22128bfb686a70bfe0",
+    "sqlite": "SELECT * FROM \"tickets\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"tickets\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "c1a051de90f74b53f5ae5d6e44032e4b082cd019edf0b7bea0ad86a4ee19ebe6",
+    "sqlite": "SELECT * FROM \"topics\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"topics\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2965fed8b4abb5f1164d1b4ee272fe005ee25967779045fdea4e55c2b25d49c8",
+    "sqlite": "SELECT * FROM \"tutor\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"tutor\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "f0382bb257db4167e3d978f3390d6175af8352b1fd6981518390f98398f64523",
+    "sqlite": "SELECT * FROM assets WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM assets WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "21bb831c15bfdb82a30f075077c46f4277d2c19b3a2d79ddb102f8f2f7b541b9",
+    "sqlite": "SELECT * FROM assets WHERE id=? AND scope='photo'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM assets WHERE id=%L AND scope='photo') found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "997c37eba14f6aa3ec0a31dd583b0fc1458fe6c94411614495c8dd0f9e7c71bf",
+    "sqlite": "SELECT * FROM auth_email_challenges WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_email_challenges WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "5572f7c7ecc3ae9b53583ccbe87b61c4d0f3f98b9c7456f2bf6cdef73ae4be17",
+    "sqlite": "SELECT * FROM auth_email_challenges WHERE id=? AND user=? AND consumed=1 AND expires>?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_email_challenges WHERE id=%L AND \"user\"=%L AND consumed=1 AND expires>%L) found",
+    "arity": 3,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "dea6cc26487f6e5ecc320d2ab18b07032e3657e0677fef8dcdd40596208573a8",
+    "sqlite": "SELECT * FROM auth_email_challenges WHERE user=? AND consumed=0 AND expires>? ORDER BY created DESC LIMIT 1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_email_challenges WHERE \"user\"=%L AND consumed=0 AND expires>%L ORDER BY created DESC LIMIT 1) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "cc3aabe678af026d769d96adb31596425e2b9d00daf9848bb4c0a489a3015d06",
+    "sqlite": "SELECT * FROM auth_passwords WHERE user=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_passwords WHERE \"user\"=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "9c95d8767eab41d12d82dadb87ed7e8711b183ac624a3f16a76aed00fe0d0f3c",
+    "sqlite": "SELECT * FROM auth_passwords WHERE user=? AND must_change=0",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_passwords WHERE \"user\"=%L AND must_change=0) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "06cd5a01a4718fd1c66a5daab7f8c738e739026be97d785053b8b4b4a6e275f9",
+    "sqlite": "SELECT * FROM auth_passwords WHERE user=? AND updated=? AND must_change=0",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_passwords WHERE \"user\"=%L AND updated=%L AND must_change=0) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "64c87d58e801ecd3e64d840b72fbad069924b8a9c3b11380bb13c02d3f039608",
+    "sqlite": "SELECT * FROM certificates ORDER BY created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM certificates ORDER BY created DESC) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "f38c032572d1e21f03b5bd8c9c0b017b304b3abb314b562a2c1352f609ec439a",
+    "sqlite": "SELECT * FROM certificates WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM certificates WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "494fac8b057d45676b6a37e30c6b247e88ec15d3784c35cac21f71ea21a6c643",
+    "sqlite": "SELECT * FROM certificates WHERE user=? AND course=? AND module=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM certificates WHERE \"user\"=%L AND course=%L AND module=%L) found",
+    "arity": 3,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "a91fe680ff8e5b3329091231134ea873c513c10277d6750085405757a5d1f09f",
+    "sqlite": "SELECT * FROM certificates WHERE user=? ORDER BY created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM certificates WHERE \"user\"=%L ORDER BY created DESC) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "18ec543077f1547825f6e03e665eb2c3dfa1f5f8a783ba6ba761437659fe0526",
+    "sqlite": "SELECT * FROM courses",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM courses) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "33ef738381dcd24294b3d5e5d6ffd9fbb5acb214fc1dabe933d7da1c9e9466f9",
+    "sqlite": "SELECT * FROM courses ORDER BY folder,sort,id",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM courses ORDER BY folder,sort,id) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "11373e1fa815b24c7a030fe796d22bae2b964f1df4070a8f22f50519c1e7ae75",
+    "sqlite": "SELECT * FROM courses WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM courses WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "8f15a69926104ced6930fd195c52283a6436abbec92a1bcc35dfb55f34f162aa",
+    "sqlite": "SELECT * FROM enrollments",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM enrollments) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "880b16cb474575e8eeb6098d719a2dff1f8f0dc2c3c4c615b3f43c487dfb79b9",
+    "sqlite": "SELECT * FROM enrollments WHERE user=? AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM enrollments WHERE \"user\"=%L AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "d3084c173f706402f3dc9055352fef6b64b5ad10be7e002407df513cea0a4917",
+    "sqlite": "SELECT * FROM messages WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM messages WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "43cd132c37c38a63645c890fdf347438bfc79687083c236d48d0477e6b19f518",
+    "sqlite": "SELECT * FROM messages WHERE id=? AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM messages WHERE id=%L AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "39319d1ddceb73b8dd0c0d81720af0b0870755a6eaa72b438c371ceaa887d43b",
+    "sqlite": "SELECT * FROM people",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "418cadad94cfee1a8eea90494866d05d239f55ea75d9c833937c2a85bbac5d51",
+    "sqlite": "SELECT * FROM people ORDER BY created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people ORDER BY created DESC) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "4b9ff325a91eb9f2216800feb232bd3237cbe688f8ec80e9e6ced36f164c3c94",
+    "sqlite": "SELECT * FROM people WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "77edd07aa60f0cef8f28dd62b658d31ba01714a0a573025d85443bd4b915dd03",
+    "sqlite": "SELECT * FROM people WHERE identity=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people WHERE identity=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "41c228a5cd57b54c38c97addd9a83e8830dfd3996aee731497993b05dbdbd470",
+    "sqlite": "SELECT * FROM people WHERE login_email=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people WHERE login_email=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "78633085897d8394e38af194063a27b7cbf9c209a6efad5584dbe78cb0d11ccd",
+    "sqlite": "SELECT * FROM people WHERE lower(login_email)=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM people WHERE lower(login_email)=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "318d04ba52e74b84a6470f65430de8a87bfd0fa5a03e5f5f46b0b61b68a92903",
+    "sqlite": "SELECT * FROM progress",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM progress) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "39ec34e7b069496dd3055700b8b1c4c2217bc4a106754b006055c7f8b0609fd3",
+    "sqlite": "SELECT * FROM progress WHERE lesson NOT LIKE '@final:%'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM progress WHERE lesson NOT LIKE '@final:%%') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2dd32c003e361af6c80c56855330c7244e397341277585e6f72756b8f09d8691",
+    "sqlite": "SELECT * FROM progress WHERE user=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM progress WHERE \"user\"=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "bb63672ec791f6622674a724dc61322abfdaf2641b5d1dc59ab23c2a23cd37a1",
+    "sqlite": "SELECT * FROM progress WHERE user=? AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM progress WHERE \"user\"=%L AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "7dde86c30e25943e3540aa99402e0ea24429ad8d1a05ea9ff1672ae1fc014abf",
+    "sqlite": "SELECT * FROM progress WHERE user=? AND course=? AND lesson=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM progress WHERE \"user\"=%L AND course=%L AND lesson=%L) found",
+    "arity": 3,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "9f8fa49529693046a0934ad0f17ba7a0a642658b9dd8fecf64e53682bb5cb90f",
+    "sqlite": "SELECT * FROM tickets WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM tickets WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "973bfe01b860072406953c7ed10bba5eb3dca83710e0ef2df6b6a2c7a4c31f39",
+    "sqlite": "SELECT * FROM topics WHERE id=? AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM topics WHERE id=%L AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "6376c4578c6fc798582d2411a2c97482e3b1b4048bf48dea71467c4f77de9d34",
+    "sqlite": "SELECT * FROM tutor WHERE id=? AND user=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM tutor WHERE id=%L AND \"user\"=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "de597833588a809b52b672a8a557f9d1c2d3145230886737a8fff92c8d23df28",
+    "sqlite": "SELECT COALESCE(topic,'') AS topic FROM message_topics WHERE message=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT COALESCE(topic,'') AS topic FROM message_topics WHERE message=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "14862a8f6e925adee8c36925bcec6303866dd412a7050ce23af0676e125df24c",
+    "sqlite": "SELECT COUNT(*) AS count FROM tutor WHERE user=? AND created>?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT COUNT(*) AS count FROM tutor WHERE \"user\"=%L AND created>%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2ddc0dcad7afb70f536b4982f656ca5b2887996a0835270e44472624308a80c3",
+    "sqlite": "SELECT COUNT(*) AS total FROM forum_reports WHERE status='open'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT COUNT(*) AS total FROM forum_reports WHERE status='open') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "845c555d0c0c4c15b2d6f67f1c7923c6c2a8fb8822634faf5aa82a59301ce8cf",
+    "sqlite": "SELECT DISTINCT lesson FROM progress WHERE course=? AND done=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT DISTINCT lesson FROM progress WHERE course=%L AND done=1) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "52b59e56bf93ff5a67a406514f908671ae672e9542a2545cccf0ef841fdc18b8",
+    "sqlite": "SELECT a.*,p.name FROM audit a JOIN people p ON p.id=a.user ORDER BY a.created DESC LIMIT 100",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT a.*,p.name FROM audit a JOIN people p ON p.id=a.\"user\" ORDER BY a.created DESC LIMIT 100) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "cf74fa9989314fe87b6c0d2ff6f7ce198ba9210d2969e874980a26597d0e651f",
+    "sqlite": "SELECT c.* FROM courses c JOIN enrollments e ON e.course=c.id WHERE e.user=? AND c.published=1 AND c.folder=? AND (c.sort<? OR (c.sort=? AND c.id<?))",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT c.* FROM courses c JOIN enrollments e ON e.course=c.id WHERE e.\"user\"=%L AND c.published=1 AND c.folder=%L AND (c.sort<%L OR (c.sort=%L AND c.id<%L))) found",
+    "arity": 5,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "99417b53f7a7e77cc08a8926c4eeeed436ce260d3edd072116bae48e40611aaa",
+    "sqlite": "SELECT c.* FROM courses c WHERE c.published=1 AND (EXISTS(SELECT 1 FROM enrollments e WHERE e.course=c.id AND e.user=?) OR EXISTS(SELECT 1 FROM settings s WHERE s.key='course:'||c.id||':development' AND s.value='on')) ORDER BY c.folder,c.sort,c.id",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT c.* FROM courses c WHERE c.published=1 AND (EXISTS(SELECT 1 FROM enrollments e WHERE e.course=c.id AND e.\"user\"=%L) OR EXISTS(SELECT 1 FROM settings s WHERE s.key='course:'||c.id||':development' AND s.value='on')) ORDER BY c.folder,c.sort,c.id) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "764b2cc282ea5295f03c167e15b6fae72e6837c1154ac5c641957f58019a2712",
+    "sqlite": "SELECT course,lesson FROM progress WHERE user=? AND done=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT course,lesson FROM progress WHERE \"user\"=%L AND done=1) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "e9ee8e5093ec0895d52658601f7931f81aba8b9622b776e506ef256e37e12b5e",
+    "sqlite": "SELECT id FROM assets WHERE id=? AND scope='subtitle' AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM assets WHERE id=%L AND scope='subtitle' AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "7b78404edbb94beaa2069855c725499506308230b7aae20e534ea498e0628e1a",
+    "sqlite": "SELECT id FROM assets WHERE id=? AND scope='video' AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM assets WHERE id=%L AND scope='video' AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "6f62e15fb0d550a246756cf6241eb1238e4612391fd96da41bcbb4cc1b8aeb28",
+    "sqlite": "SELECT id FROM assets WHERE id=? AND user=? AND course=? AND scope='forum'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM assets WHERE id=%L AND \"user\"=%L AND course=%L AND scope='forum') found",
+    "arity": 3,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "7c39d117dd48a96436fb65c64d49cbb50570892fb2e6cda4ebbe03e1363df26b",
+    "sqlite": "SELECT id FROM courses WHERE id=? AND published=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM courses WHERE id=%L AND published=1) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "50cbedfdc5663c1fcade08544c03041318e004008d1f68289d8204590b2fa952",
+    "sqlite": "SELECT id FROM forum_reports WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM forum_reports WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "de531ecc67e1e76f1d696e55cc75008d62dd328aaf7c2af4264bf6ff920d7f02",
+    "sqlite": "SELECT id FROM messages WHERE id=? AND course=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM messages WHERE id=%L AND course=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "514d7a235a056dbaa271373afa9e7915e4f86515844de17093a9b367998812f7",
+    "sqlite": "SELECT id FROM notifications WHERE user=? OR (user='' AND (course='' OR course IN (SELECT course FROM enrollments WHERE user=?)))",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM notifications WHERE \"user\"=%L OR (\"user\"='' AND (course='' OR course IN (SELECT course FROM enrollments WHERE \"user\"=%L)))) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "6d9131a2f08cb7a3ade6df9de9b4a7e7f167ea598037711aceecf0bec1a7f1c9",
+    "sqlite": "SELECT id FROM people WHERE active=1 AND role IN ('admin','teacher')",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE active=1 AND role IN ('admin','teacher')) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "5e410a119631a49b12493f5734923405ee42ca7f3ca7f3491afd0e41a0fbf298",
+    "sqlite": "SELECT id FROM people WHERE active=1 AND role IN ('teacher','admin')",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE active=1 AND role IN ('teacher','admin')) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "bb3f65a010b70269fb315ffb00226bd16185deec81dd844cd4a19cbb0d024715",
+    "sqlite": "SELECT id FROM people WHERE active=1 AND role='admin'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE active=1 AND role='admin') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "59bb1f9cd3ef42f9913a4a1eb611b4071828cb401988770916a4c3c3df3d49b2",
+    "sqlite": "SELECT id FROM people WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "997bb13706f528f8c84cf802521a6abd08680826d5ce090488cd008cd95b17be",
+    "sqlite": "SELECT id FROM people WHERE id=? AND active=1 AND role IN ('teacher','admin')",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE id=%L AND active=1 AND role IN ('teacher','admin')) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "84f7483eab4cc9f0165f608d91c6edb06ef8213b2c39416e8cefe535f9d459b0",
+    "sqlite": "SELECT id FROM people WHERE login_email=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE login_email=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "6594bfbe53f7d4c00015a845f2c50e947f670e1fd6eea26862c363b9ffd6d7eb",
+    "sqlite": "SELECT id FROM people WHERE lower(login_email)=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE lower(login_email)=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "64e43b88bd12f275c24f16c65b50147f9269e0bbe7b64d31f6f5fae9de00fe59",
+    "sqlite": "SELECT id,name,role,photo FROM people WHERE active=1 AND role IN ('teacher','admin')",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id,name,role,photo FROM people WHERE active=1 AND role IN ('teacher','admin')) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "72689019a46d7025e0136dda0ed8bce8864eef0451708d14ecf8a06a040156aa",
+    "sqlite": "SELECT id,title,level FROM courses WHERE published=1 ORDER BY folder,sort,id",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id,title,level FROM courses WHERE published=1 ORDER BY folder,sort,id) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "ca46a86fae1a4365300e855f0defee08e592c4d02962de6fe94ab9c5e83b6e51",
+    "sqlite": "SELECT key FROM settings WHERE key LIKE 'course:%:development' AND value='on'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT key FROM settings WHERE key LIKE 'course:%%:development' AND value='on') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "cc9a6241ac17c9dc5c01b98dd07008912cabec40794c32c8163e1de660d09aa2",
+    "sqlite": "SELECT key,value FROM settings WHERE key LIKE 'registration:%'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT key,value FROM settings WHERE key LIKE 'registration:%%') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "4efcf566e32365ed8f2e83d364083414f37a7d07fb4257b9c17a18cdd6c1294d",
+    "sqlite": "SELECT lesson FROM progress WHERE user=? AND course=? AND done=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT lesson FROM progress WHERE \"user\"=%L AND course=%L AND done=1) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "8577eddc0d830d566c43d7e2e124abb20ef130fb417cf0eb563ecdb5809b7575",
+    "sqlite": "SELECT m.*,p.name,p.photo,p.ra,p.role,a.name AS asset_name,a.type AS asset_type,COALESCE(mod.hidden,0) AS hidden,mod.reason,mt.topic FROM (SELECT m.* FROM messages m LEFT JOIN message_topics mt ON mt.message=m.id WHERE m.course=? AND COALESCE(mt.topic,'')=? ORDER BY m.created DESC LIMIT 500) m JOIN people p ON p.id=m.user LEFT JOIN assets a ON a.id=m.asset LEFT JOIN message_topics mt ON mt.message=m.id LEFT JOIN moderation mod ON mod.message=m.id ORDER BY m.created ASC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT m.*,p.name,p.photo,p.ra,p.role,a.name AS asset_name,a.type AS asset_type,COALESCE(mod.hidden,0) AS hidden,mod.reason,mt.topic FROM (SELECT m.* FROM messages m LEFT JOIN message_topics mt ON mt.message=m.id WHERE m.course=%L AND COALESCE(mt.topic,'')=%L ORDER BY m.created DESC LIMIT 500) m JOIN people p ON p.id=m.\"user\" LEFT JOIN assets a ON a.id=m.asset LEFT JOIN message_topics mt ON mt.message=m.id LEFT JOIN moderation mod ON mod.message=m.id ORDER BY m.created ASC) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "25ae9590ca89793bbaa633e0ae8ea1ea9ad6535d7bded64271539eee5c1894f0",
+    "sqlite": "SELECT mod.hidden FROM messages m JOIN moderation mod ON mod.message=m.id WHERE m.asset=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT mod.hidden FROM messages m JOIN moderation mod ON mod.message=m.id WHERE m.asset=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "c815318f2ea722d12da0e5569305971cb86f5d4f414ff326e13c579480ccc65b",
+    "sqlite": "SELECT n.*,CASE WHEN r.notice IS NULL THEN 0 ELSE 1 END AS read FROM notifications n LEFT JOIN reads r ON r.notice=n.id AND r.user=? WHERE n.user=? OR (n.user='' AND (n.course='' OR n.course IN (SELECT course FROM enrollments WHERE user=?))) ORDER BY n.created DESC LIMIT 100",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT n.*,CASE WHEN r.notice IS NULL THEN 0 ELSE 1 END AS read FROM notifications n LEFT JOIN reads r ON r.notice=n.id AND r.\"user\"=%L WHERE n.\"user\"=%L OR (n.\"user\"='' AND (n.course='' OR n.course IN (SELECT course FROM enrollments WHERE \"user\"=%L))) ORDER BY n.created DESC LIMIT 100) found",
+    "arity": 3,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "eb9c31dfb5194fa587d83528575e220c8e21ce5440e683c8c04cbc039416da13",
+    "sqlite": "SELECT name FROM people WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT name FROM people WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2dd43fe9595aa16cd87dfe8759cca59a4c4f34ce04b062b7e0c2cf4f1bc92e4a",
+    "sqlite": "SELECT name FROM sqlite_master WHERE type='table'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT table_name AS name FROM information_schema.tables WHERE table_schema='academia' AND table_type='BASE TABLE') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "bc2850cbd401ebaf1eb50f4731a37756da689a1f608ee2a2351df55f3dbaeb88",
+    "sqlite": "SELECT name FROM sqlite_master WHERE type='table' AND name='forum_reports'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT table_name AS name FROM information_schema.tables WHERE table_schema='academia' AND table_type='BASE TABLE' AND table_name='forum_reports') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "0382c9977bd626e65c15ff4fec971ffa543c6746f587c0da9a5abc517a59d92e",
+    "sqlite": "SELECT p.*,ap.account_type FROM people p JOIN auth_profiles ap ON ap.user=p.id WHERE p.id=? AND p.active=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT p.*,ap.account_type FROM people p JOIN auth_profiles ap ON ap.\"user\"=p.id WHERE p.id=%L AND p.active=1) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "efb52e4f446306bddabff9b8a53ff881126a460e8b7d69b7f69e590c35aed316",
+    "sqlite": "SELECT p.*,ap.account_type FROM people p LEFT JOIN auth_profiles ap ON ap.user=p.id WHERE lower(p.login_email)=? OR lower(p.ra)=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT p.*,ap.account_type FROM people p LEFT JOIN auth_profiles ap ON ap.\"user\"=p.id WHERE lower(p.login_email)=%L OR lower(p.ra)=%L) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "8270a242b4014b4d893360017268b808b8078846a7e9ac886f17bcb0ab6b2855",
+    "sqlite": "SELECT p.*,s.token_hash,s.expires,s.version FROM auth_sessions s JOIN people p ON p.id=s.user WHERE s.token_hash=? AND s.expires>? AND p.active=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT p.*,s.token_hash,s.expires,s.version FROM auth_sessions s JOIN people p ON p.id=s.\"user\" WHERE s.token_hash=%L AND s.expires>%L AND p.active=1) found",
+    "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "ab2a9c0ca6cc3803cade4e549b266800e5ecc8b8cd7f3b0ba4e0aee91f0b4291",
+    "sqlite": "SELECT p.id,p.name,p.ra,p.email,COALESCE(ap.company,'') AS company,p.role,p.created FROM people p LEFT JOIN auth_profiles ap ON ap.user=p.id WHERE p.id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT p.id,p.name,p.ra,p.email,COALESCE(ap.company,'') AS company,p.role,p.created FROM people p LEFT JOIN auth_profiles ap ON ap.\"user\"=p.id WHERE p.id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "f70f87d14fcd04dc32e06515adc4d6a552d853615802e921c835aa44d0c4f5bd",
+    "sqlite": "SELECT r.*,m.text,p.name AS reporter,author.name AS author FROM forum_reports r JOIN messages m ON m.id=r.message JOIN people p ON p.id=r.user JOIN people author ON author.id=m.user ORDER BY r.status,r.created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT r.*,m.text,p.name AS reporter,author.name AS author FROM forum_reports r JOIN messages m ON m.id=r.message JOIN people p ON p.id=r.\"user\" JOIN people author ON author.id=m.\"user\" ORDER BY r.status,r.created DESC) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "1f81744f33cea845b5fe549112f6d0752bd43164c355d99d7524105498747f12",
+    "sqlite": "SELECT r.*,m.text,p.name AS reporter,p.ra AS reporter_ra,author.name AS author,author.ra AS author_ra,c.title AS course_title,t.title AS topic_title,COALESCE(mod.hidden,0) AS hidden FROM forum_reports r JOIN messages m ON m.id=r.message JOIN people p ON p.id=r.user JOIN people author ON author.id=m.user JOIN courses c ON c.id=r.course LEFT JOIN message_topics mt ON mt.message=m.id LEFT JOIN topics t ON t.id=mt.topic LEFT JOIN moderation mod ON mod.message=m.id ORDER BY CASE WHEN r.status='open' THEN 0 ELSE 1 END,r.created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT r.*,m.text,p.name AS reporter,p.ra AS reporter_ra,author.name AS author,author.ra AS author_ra,c.title AS course_title,t.title AS topic_title,COALESCE(mod.hidden,0) AS hidden FROM forum_reports r JOIN messages m ON m.id=r.message JOIN people p ON p.id=r.\"user\" JOIN people author ON author.id=m.\"user\" JOIN courses c ON c.id=r.course LEFT JOIN message_topics mt ON mt.message=m.id LEFT JOIN topics t ON t.id=mt.topic LEFT JOIN moderation mod ON mod.message=m.id ORDER BY CASE WHEN r.status='open' THEN 0 ELSE 1 END,r.created DESC) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "0b075d62f6b82dddf66a30edbb0e8b71fbc49589d2ddaa25cdad625c4236b778",
+    "sqlite": "SELECT r.*,p.name,p.role FROM replies r JOIN people p ON p.id=r.user JOIN tickets t ON t.id=r.ticket WHERE t.user=? ORDER BY r.created",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT r.*,p.name,p.role FROM replies r JOIN people p ON p.id=r.\"user\" JOIN tickets t ON t.id=r.ticket WHERE t.\"user\"=%L ORDER BY r.created) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "901d718827e7ca775987e70a6ad2a31024b6c410b851ec77d48aeb00ce8a9b32",
+    "sqlite": "SELECT r.*,p.name,p.role FROM replies r JOIN people p ON p.id=r.user ORDER BY r.created",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT r.*,p.name,p.role FROM replies r JOIN people p ON p.id=r.\"user\" ORDER BY r.created) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "fe376e281f50bb18c693bb9dfaf8349aed93528a6f873e3f7bd536981eb7bf2d",
+    "sqlite": "SELECT ra FROM people WHERE id=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT ra FROM people WHERE id=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "6678c1fc17751e034f71c0a28f9d0b927c6873c0014efce6f67cd2b5eabd6ea3",
+    "sqlite": "SELECT t.*,p.name FROM tickets t JOIN people p ON p.id=t.user ORDER BY t.created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT t.*,p.name FROM tickets t JOIN people p ON p.id=t.\"user\" ORDER BY t.created DESC) found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "e22c1cf9a1c3dbcb2254aaad6b9a39e1c10738906e6b5a2d1e18c403d2b1614b",
+    "sqlite": "SELECT t.*,p.name FROM tickets t JOIN people p ON p.id=t.user WHERE t.user=? ORDER BY t.created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT t.*,p.name FROM tickets t JOIN people p ON p.id=t.\"user\" WHERE t.\"user\"=%L ORDER BY t.created DESC) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "be1898b745c497240335ee25031d20f858f68141fb1c84e09bd430ad2fac5220",
+    "sqlite": "SELECT t.*,p.name,(SELECT COUNT(*) FROM message_topics mt WHERE mt.topic=t.id) AS messages FROM topics t JOIN people p ON p.id=t.user WHERE t.course=? ORDER BY t.pinned DESC,t.created DESC",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT t.*,p.name,(SELECT COUNT(*) FROM message_topics mt WHERE mt.topic=t.id) AS messages FROM topics t JOIN people p ON p.id=t.\"user\" WHERE t.course=%L ORDER BY t.pinned DESC,t.created DESC) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "2c63c8e0904e19c30c40278b15cc78fbee6319476fc510a2be8b858085796e88",
+    "sqlite": "SELECT updated FROM auth_passwords WHERE user=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT updated FROM auth_passwords WHERE \"user\"=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "f756f723552cf6d6a1042b5de5615fa5b046e66bad2052b02c5a1c99f2a04d4d",
+    "sqlite": "SELECT user FROM auth_passwords WHERE user=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT \"user\" FROM auth_passwords WHERE \"user\"=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "eb58285a5951f14cdbd3279e0e8d28751f4e2448783f685502c5e69a510f091c",
+    "sqlite": "SELECT value FROM settings WHERE key LIKE 'registration:%'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT value FROM settings WHERE key LIKE 'registration:%%') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "9ac1fd24b21165ef96156440dec591e56bb2b6f0b2bdb7552ed2efa544efafa8",
+    "sqlite": "SELECT value FROM settings WHERE key='password_login'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT value FROM settings WHERE key='password_login') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "b7ff37a9bf5e472d1fbdf338007018b8f7f1712cbc27345936a6c984f3eff9ec",
+    "sqlite": "SELECT value FROM settings WHERE key='robot'",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT value FROM settings WHERE key='robot') found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "479dea993b2294603b99f44e19f350eae75673617f00a6fa2c2e5ae5ee0a6aa3",
+    "sqlite": "SELECT value FROM settings WHERE key=?",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT value FROM settings WHERE key=%L) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "8b256a8a376bc404e3bf0b637a8e5c226ca5df4b79553b34ba84f2215638362b",
+    "sqlite": "UPDATE auth_email_challenges SET consumed=1 WHERE id=? AND consumed=0 AND expires>? RETURNING id",
+    "sql": "WITH affected AS (UPDATE auth_email_challenges SET consumed=1 WHERE id=%L AND consumed=0 AND expires>%L RETURNING id) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "7ebb4c06c64d57581e89580ca5e9478fd37e942728fb91730f21cf3389ecf6a4",
+    "sqlite": "UPDATE auth_email_challenges SET consumed=2 WHERE user=? AND id<>?",
+    "sql": "WITH affected AS (UPDATE auth_email_challenges SET consumed=2 WHERE \"user\"=%L AND id<>%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "24a13a02bf3f8e9cc37754f441ede349e245b3c40c0582cef8695b3c5d8f8567",
+    "sqlite": "UPDATE courses SET body=?,updated=? WHERE id=? AND body=? AND updated=?",
+    "sql": "WITH affected AS (UPDATE courses SET body=%L,updated=%L WHERE id=%L AND body=%L AND updated=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 5,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "8185c0d9b90347af46031e933488917b120e70785a08324a78c39868b181f70c",
+    "sqlite": "UPDATE courses SET published=0 WHERE id=?",
+    "sql": "WITH affected AS (UPDATE courses SET published=0 WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "e6127fa14886da284906a9a4e1fc576d5d61f7cfc639e65d1f9de6b06fb6704d",
+    "sqlite": "UPDATE forum_reports SET status=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE forum_reports SET status=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "962c976de87d5b6428a2562e5c02fc0f179976c099edeb34fb034a6a444a805b",
+    "sqlite": "UPDATE people SET identity=? WHERE id=? AND identity IS NULL",
+    "sql": "WITH affected AS (UPDATE people SET identity=%L WHERE id=%L AND identity IS NULL RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "c8c48f2054a3dbb4002fbdf4f8acabc4e8b427c1bfd47eacb20e17c5583ca3ee",
+    "sqlite": "UPDATE people SET name=?,email=?,login_email=?,role=?,active=?,photo=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE people SET name=%L,email=%L,login_email=%L,role=%L,active=%L,photo=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "82c89c22e7be50b1cd1d0b13876f292476d19328426dbf36f691039644ccd41b",
+    "sqlite": "UPDATE people SET role=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE people SET role=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "78161fd874807c060db51b45eca9662cd2db6e8b2f28dc72e4dc20e1e599b6e1",
+    "sqlite": "UPDATE settings SET value=? WHERE key=?",
+    "sql": "WITH affected AS (UPDATE settings SET value=%L WHERE key=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "84c5414b85a46c83f7189da29b834eaf36736006ccb1aaff495b1a7dc020ace1",
+    "sqlite": "UPDATE tickets SET status=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE tickets SET status=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "3dd78b3d4db71a9cd0950983bc2482ca9ae3e2ea201af8f7ff7f5409ed5d5c2d",
+    "sqlite": "UPDATE topics SET title=?,pinned=?,closed=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE topics SET title=%L,pinned=%L,closed=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 4,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "1d5370c600095e91dcd3b70fedc3f9de2464e44fa570c03eea6c9ab94f983a18",
+    "sqlite": "UPDATE tutor SET ticket=? WHERE id=?",
+    "sql": "WITH affected AS (UPDATE tutor SET ticket=%L WHERE id=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
+    "write": true,
+    "registration": false
+  }
+]
