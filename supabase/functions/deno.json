@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window"]
+  },
+  "nodeModulesDir": "none",
+  "tasks": {
+    "check": "deno check github-site-update/index.ts"
+  }
+}

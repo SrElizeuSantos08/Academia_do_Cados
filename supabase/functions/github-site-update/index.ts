@@ -3,6 +3,7 @@ import { isTrustedGitHubPush, verifyGitHubActionsToken } from './github-oidc.mjs
 const repository='SrElizeuSantos08/Academia_do_Cados';
 const audience='academia-github-site-updates';
 const json=(body:unknown,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+const record=(value:unknown):Record<string,unknown>=>value!==null&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};
 
 Deno.serve(async (request:Request)=>{
  if(request.method!=='POST')return json({error:'Method not allowed.'},405);
@@ -30,10 +31,11 @@ Deno.serve(async (request:Request)=>{
   });
  }catch{return json({error:'Could not verify the GitHub commit.'},502)}
  if(!commitResponse.ok)return json({error:'Could not verify the GitHub commit.'},502);
- const commit=await commitResponse.json().catch(()=>null);
- const commitSha=String(commit?.sha||'').toLowerCase();
- const message=commit?.commit?.message;
- const committedAt=commit?.commit?.committer?.date||commit?.commit?.author?.date;
+ const commit=record(await commitResponse.json().catch(()=>null));
+ const metadata=record(commit.commit);
+ const commitSha=typeof commit.sha==='string'?commit.sha.toLowerCase():'';
+ const message=metadata.message;
+ const committedAt=record(metadata.committer).date||record(metadata.author).date;
  if(commitSha!==claims.sha||typeof message!=='string'||typeof committedAt!=='string'||!Number.isFinite(Date.parse(committedAt)))return json({error:'GitHub returned incomplete commit metadata.'},502);
 
  const projectUrl=Deno.env.get('SUPABASE_URL');
