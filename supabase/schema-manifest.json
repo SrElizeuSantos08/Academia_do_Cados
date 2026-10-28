@@ -1076,6 +1076,97 @@
       "primaryKey": [
         "id"
       ]
+    },
+    "auth_totp": {
+      "columns": [
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "secret",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "pending_secret",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "enabled",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "last_step",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "updated",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "user"
+      ]
+    },
+    "auth_totp_challenges": {
+      "columns": [
+        {
+          "name": "token_hash",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "user",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "expires",
+          "type": "bigint",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "attempts",
+          "type": "integer",
+          "nullable": false,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "token_hash"
+      ]
     }
   }
 }

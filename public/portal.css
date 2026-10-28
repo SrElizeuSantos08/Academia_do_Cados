@@ -25,3 +25,4 @@
 .moderation-count{margin-left:auto;background:#ffb35c;color:#201408;border-radius:20px;padding:2px 8px;font-weight:800;font-size:11px}.card h3 small{font-size:12px;font-weight:400}
 
 .lesson-review-label{display:block;font-size:10px;color:#586947;margin-bottom:3px}.course-development-notice,.lesson-review-notice{line-height:1.6}.lesson-review-notice p{margin:6px 0 0}
+.totp-secret{display:block;overflow-wrap:anywhere;padding:14px;background:#101812;color:#d8f99b;border-radius:10px;font:700 16px/1.5 ui-monospace,monospace;letter-spacing:1px;margin-top:8px}

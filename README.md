@@ -175,3 +175,5 @@ A migração de segurança remove credenciais legadas marcadas para troca e suas
 ## Envio Microsoft 365
 
 O teste pela caixa compartilhada foi enviado e seu recebimento confirmado em 26/10/2026. O Exchange apresentou o endereço principal `academiadocaosbbsone@bbsone.com.br`. O suporte ao Microsoft Graph está implementado, com logo incorporada, HTML personalizado e troca obrigatória da senha temporária. O envio automático depende da autorização do aplicativo e da configuração na hospedagem. Consulte [o procedimento e as pendências](docs/microsoft365-email.md).
+
+## Autenticação em duas etapas\n\nA opção TOTP pode ser ativada em Meu perfil para contas com senha própria da academia. Configure `MFA_ENCRYPTION_KEY` como segredo de servidor com `openssl rand -hex 32` e aplique a migração do banco antes de habilitar o recurso. Consulte [o guia de configuração](docs/autenticacao-duas-etapas.md).\n
