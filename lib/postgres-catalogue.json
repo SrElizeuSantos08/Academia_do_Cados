@@ -64,10 +64,10 @@
     "registration": false
   },
   {
-    "id": "203e7ca1945f816f16f8927fdf4a0343201d2bbcc4585bbae7babc9b5e9d66a7",
-    "sqlite": "DELETE FROM auth_totp WHERE user=? AND enabled=1 AND last_step=?",
-    "sql": "WITH affected AS (DELETE FROM auth_totp WHERE \"user\"=%L AND enabled=1 AND last_step=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
-    "arity": 2,
+    "id": "20f5edaedb622f88042c4d6cb854f0cae038677480fc60355e0ddf2bec81ba38",
+    "sqlite": "DELETE FROM auth_totp WHERE user=? AND enabled=1",
+    "sql": "WITH affected AS (DELETE FROM auth_totp WHERE \"user\"=%L AND enabled=1 RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
     "write": true,
     "registration": false
   },
@@ -83,6 +83,22 @@
     "id": "f53c6a858187a79c1ba5e6f2e3f9f9071a525732cd5cb1ad0a600ea8c4512df4",
     "sqlite": "DELETE FROM auth_totp_challenges WHERE token_hash=?",
     "sql": "WITH affected AS (DELETE FROM auth_totp_challenges WHERE token_hash=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "60a82ce9b3abe7bf2905d2324d81179aaf45b832d991dc6424188c384a988789",
+    "sqlite": "DELETE FROM auth_totp_challenges WHERE token_hash=? AND purpose='enroll' RETURNING user",
+    "sql": "WITH affected AS (DELETE FROM auth_totp_challenges WHERE token_hash=%L AND purpose='enroll' RETURNING \"user\") SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "111014ac67763430a504341048283b5d133cdcb39ca7be2de5c11302af4545a8",
+    "sqlite": "DELETE FROM auth_totp_challenges WHERE token_hash=? AND purpose='login' RETURNING user",
+    "sql": "WITH affected AS (DELETE FROM auth_totp_challenges WHERE token_hash=%L AND purpose='login' RETURNING \"user\") SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
     "arity": 1,
     "write": true,
     "registration": false
@@ -176,18 +192,18 @@
     "registration": false
   },
   {
-    "id": "26ad004244e890a48882303ed3513f1536730aea1649346ffbb8364ae656d1e9",
-    "sqlite": "INSERT INTO auth_totp(user,secret,pending_secret,enabled,last_step,updated) VALUES(?,'',?,0,0,?) ON CONFLICT(user) DO UPDATE SET pending_secret=excluded.pending_secret,updated=excluded.updated",
-    "sql": "WITH affected AS (INSERT INTO auth_totp(\"user\",secret,pending_secret,enabled,last_step,updated) VALUES(%L,'',%L,0,0,%L) ON CONFLICT(\"user\") DO UPDATE SET pending_secret=excluded.pending_secret,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
-    "arity": 3,
+    "id": "6c07908f555af5c149e0a4abd02e60ab8158d0a3b9002da2e1be44e6910cd6ce",
+    "sqlite": "INSERT INTO auth_totp(user,secret,pending_secret,enabled,last_step,updated) VALUES(?,'','',1,0,?) ON CONFLICT(user) DO UPDATE SET secret='',pending_secret='',enabled=1,last_step=0,updated=excluded.updated",
+    "sql": "WITH affected AS (INSERT INTO auth_totp(\"user\",secret,pending_secret,enabled,last_step,updated) VALUES(%L,'','',1,0,%L) ON CONFLICT(\"user\") DO UPDATE SET secret='',pending_secret='',enabled=1,last_step=0,updated=excluded.updated RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 2,
     "write": true,
     "registration": false
   },
   {
-    "id": "f9a2b97848a9781acf46083adb1cbe961257daf21fcfac27296da0e4aa5091a0",
-    "sqlite": "INSERT INTO auth_totp_challenges(token_hash,user,expires,attempts,created) VALUES(?,?,?,0,?)",
-    "sql": "WITH affected AS (INSERT INTO auth_totp_challenges(token_hash,\"user\",expires,attempts,created) VALUES(%L,%L,%L,0,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
-    "arity": 4,
+    "id": "056d21a066b7ad5f9d66cabd460938ed28e1525e45bcb5edb8a51dab8ae3544a",
+    "sqlite": "INSERT INTO auth_totp_challenges(token_hash,user,expires,attempts,created,code_hash,purpose) VALUES(?,?,?,0,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO auth_totp_challenges(token_hash,\"user\",expires,attempts,created,code_hash,purpose) VALUES(%L,%L,%L,0,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 6,
     "write": true,
     "registration": false
   },
@@ -648,14 +664,6 @@
     "registration": false
   },
   {
-    "id": "6e97caec9a2d291a6216bb88a402cddabfeb9a8531431edfce32e558c6178cb2",
-    "sqlite": "SELECT * FROM auth_totp WHERE user=?",
-    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_totp WHERE \"user\"=%L) found",
-    "arity": 1,
-    "write": false,
-    "registration": false
-  },
-  {
     "id": "bc19effb46ea328cc19cbe6145c434ee3c3de758cba28e33415fe17e8cdd15a4",
     "sqlite": "SELECT * FROM auth_totp WHERE user=? AND enabled=1",
     "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_totp WHERE \"user\"=%L AND enabled=1) found",
@@ -664,10 +672,18 @@
     "registration": false
   },
   {
-    "id": "0d8a163d6d8006c4af79179dedea583dfd1f374c6c0d288cc26a8c8d0c29e814",
-    "sqlite": "SELECT * FROM auth_totp_challenges WHERE token_hash=? AND expires>? AND attempts<5",
-    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_totp_challenges WHERE token_hash=%L AND expires>%L AND attempts<5) found",
+    "id": "28985088b9adb0d1be8f3aea49df424285c051de36669a342cd9912eaf290a1e",
+    "sqlite": "SELECT * FROM auth_totp_challenges WHERE token_hash=? AND purpose='login' AND expires>? AND attempts<5",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_totp_challenges WHERE token_hash=%L AND purpose='login' AND expires>%L AND attempts<5) found",
     "arity": 2,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "5ca9d45a2afad906ff26bcaf868a57e215770929b403238346623d8c84cc3b29",
+    "sqlite": "SELECT * FROM auth_totp_challenges WHERE token_hash=? AND user=? AND purpose='enroll' AND expires>? AND attempts<5",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM auth_totp_challenges WHERE token_hash=%L AND \"user\"=%L AND purpose='enroll' AND expires>%L AND attempts<5) found",
+    "arity": 3,
     "write": false,
     "registration": false
   },
@@ -1056,6 +1072,14 @@
     "registration": false
   },
   {
+    "id": "c326111eabcef5dfaf725c1ecb6b51e960a942ce9da90a45f908ee7ffc745692",
+    "sqlite": "SELECT id,name,login_email FROM people WHERE id=? AND active=1",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id,name,login_email FROM people WHERE id=%L AND active=1) found",
+    "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
     "id": "64e43b88bd12f275c24f16c65b50147f9269e0bbe7b64d31f6f5fae9de00fe59",
     "sqlite": "SELECT id,name,role,photo FROM people WHERE active=1 AND role IN ('teacher','admin')",
     "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id,name,role,photo FROM people WHERE active=1 AND role IN ('teacher','admin')) found",
@@ -1300,22 +1324,6 @@
     "sqlite": "UPDATE auth_email_challenges SET consumed=2 WHERE user=? AND id<>?",
     "sql": "WITH affected AS (UPDATE auth_email_challenges SET consumed=2 WHERE \"user\"=%L AND id<>%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
     "arity": 2,
-    "write": true,
-    "registration": false
-  },
-  {
-    "id": "ebf4011c7bbc445564dc3cd839c7159167b052363a1c7d666a8a5ba6723541e1",
-    "sqlite": "UPDATE auth_totp SET last_step=?,updated=? WHERE user=? AND enabled=1 AND last_step<?",
-    "sql": "WITH affected AS (UPDATE auth_totp SET last_step=%L,updated=%L WHERE \"user\"=%L AND enabled=1 AND last_step<%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
-    "arity": 4,
-    "write": true,
-    "registration": false
-  },
-  {
-    "id": "94728fd3c19981ddb0f7d0aa627d44f76a032c419f34d2b009201d85734ba9ae",
-    "sqlite": "UPDATE auth_totp SET secret=pending_secret,pending_secret='',enabled=1,last_step=?,updated=? WHERE user=? AND pending_secret=?",
-    "sql": "WITH affected AS (UPDATE auth_totp SET secret=pending_secret,pending_secret='',enabled=1,last_step=%L,updated=%L WHERE \"user\"=%L AND pending_secret=%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
-    "arity": 4,
     "write": true,
     "registration": false
   },

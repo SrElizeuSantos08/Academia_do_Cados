@@ -106,7 +106,7 @@
           "name": "level",
           "type": "text",
           "nullable": false,
-          "default": "'Básico'",
+          "default": "'B\u00e1sico'",
           "pk": 0
         },
         {
@@ -1161,6 +1161,20 @@
           "type": "text",
           "nullable": false,
           "default": null,
+          "pk": 0
+        },
+        {
+          "name": "code_hash",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "purpose",
+          "type": "text",
+          "nullable": false,
+          "default": "'login'",
           "pk": 0
         }
       ],
