@@ -3,7 +3,7 @@ import {readFileSync,writeFileSync,existsSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {normalizeSql,postgresSql} from '../lib/postgres-sql.mjs';
 const roots=[process.cwd(),...process.argv.slice(2)],queries=new Set();
-const tables=['people','courses','enrollments','progress','assets','messages','topics','message_topics','moderation','forum_reports','tickets','replies','notifications','reads','certificates','settings','audit','tutor','auth_profiles','auth_passwords','auth_sessions','auth_limits','auth_email_challenges','auth_totp','auth_totp_challenges'];
+const tables=['people','courses','enrollments','progress','assets','messages','topics','message_topics','moderation','forum_reports','tickets','replies','notifications','reads','certificates','settings','audit','tutor','auth_profiles','auth_passwords','auth_sessions','auth_limits','auth_email_challenges','auth_totp','auth_totp_challenges','auth_email_events'];
 for(const root of roots){for(const name of ['lms','password-auth','registration','course-availability','database-export','basic-content-sync']){
  const path=root+'/lib/'+name+'.mjs';if(!existsSync(path))continue;
  const tree=ts.createSourceFile(path,readFileSync(path,'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.JS),variables=new Map();

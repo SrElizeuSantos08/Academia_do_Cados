@@ -48,3 +48,5 @@ CREATE TABLE IF NOT EXISTS `tutor` (
 INSERT INTO settings(key,value) VALUES('robot','on') ON CONFLICT(key) DO UPDATE SET value='on';
 INSERT INTO settings(key,value) VALUES('agent:auto_support','on') ON CONFLICT(key) DO UPDATE SET value='on';
 INSERT INTO settings(key,value) VALUES('agent:auto_forum','on') ON CONFLICT(key) DO UPDATE SET value='on';
+CREATE TABLE IF NOT EXISTS auth_email_events(id TEXT PRIMARY KEY NOT NULL,kind TEXT NOT NULL CHECK(kind IN ('access','mfa')),recipient_masked TEXT NOT NULL,provider TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN ('accepted','failed')),error_code TEXT NOT NULL DEFAULT '',created TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS auth_email_events_created ON auth_email_events(created DESC);

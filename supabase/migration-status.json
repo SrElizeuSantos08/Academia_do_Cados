@@ -1,19 +1,19 @@
 {
   "project_ref": "snboppvknkqlremkwrjf",
-  "snapshot_date": "2026-10-27",
+  "snapshot_date": "2026-10-29",
   "status": "partial",
   "source": "Cloudflare D1 live snapshot; copied to private academia schema",
   "destination_schema": "academia",
   "database_management": {
-    "base_tables": 27,
-    "rls_enabled_tables": 27,
-    "service_role_policies": 27,
-    "constraints": 69,
-    "indexes": 61,
+    "base_tables": 28,
+    "rls_enabled_tables": 28,
+    "service_role_policies": 28,
+    "constraints": 72,
+    "indexes": 62,
     "triggers": 3,
     "enum_types": 0,
     "realtime_tables": 0,
-    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling. Registry is RLS-enabled and only service_role has a read policy. The current legal pages and versioned policy text are stored in academia.documentos_legais; signup stores explicit acceptance of the policy versions."
+    "notes": "String status fields remain compatible with the app and are guarded by CHECK constraints; timestamps are written by the backend. Platform user registry is private and trigger-synced from Supabase source tables; credentials are not stored in it. Forum updates use polling. Registry is RLS-enabled and only service_role has a read policy. The current legal pages and versioned policy text are stored in academia.documentos_legais; signup stores explicit acceptance of the policy versions. Email delivery telemetry is stored with masked recipients only; access is restricted to service_role."
   },
   "d1_import": {
     "source_table_counts": {
@@ -79,7 +79,7 @@
     "auth_limits",
     "auth_email_challenges"
   ],
-  "latest_database_migration": "20261028131910_legal_documents_and_privacy",
+  "latest_database_migration": "20261029170000_email_delivery_events",
   "pending": [
     "Transfer the two R2 objects",
     "Owner must configure and validate runtime secrets",

@@ -10,12 +10,12 @@ const context={S:{me:{id:'me',role:'admin'},certificates:[{user:'me'},{user:'oth
 let adminSpace=true;
 context.isAdmin=()=>context.S.me.role==='admin';context.adminView=()=>adminSpace;
 vm.createContext(context);vm.runInContext(helpers,context);
-assert.deepEqual(Array.from(context.managementItems(),i=>i[0]),['dashboard','approvals','people','enrollments','reports','moderation','courses','forum','support','notifications','certificates','settings','audit']);
+assert.deepEqual(Array.from(context.managementItems(),i=>i[0]),['dashboard','approvals','people','enrollments','reports','moderation','courses','forum','support','notifications','certificates','email','settings','audit']);
 assert(context.managementOverview().includes('data-go="people"'));
 assert.equal(context.visibleCertificates().length,2);
 adminSpace=false;assert.equal(context.visibleCertificates().length,1);
 context.S.me.role='teacher';adminSpace=true;
-assert(!context.managementItems().some(i=>['people','enrollments','settings','audit'].includes(i[0])));
+assert(!context.managementItems().some(i=>['people','enrollments','email','settings','audit'].includes(i[0])));
 assert.equal(context.visibleCertificates().length,1);
 assert(source.includes("location.assign(adminView()?'/aluno.html':'/admin.html')"));
 assert(source.includes('if(requestedAdmin&&!isStaff()&&!S.registrationPending)'));
@@ -35,6 +35,7 @@ try{
   }
   const html=await (await fetch(base+'/admin')).text();assert(html.includes('Painel da Empresa | Academia do Caos'));assert(html.includes('AMBIENTE LOCAL'));
   let boot=await call('bootstrap');assert.equal(boot.me.role,'admin');assert.equal(boot.people.length,3);
+  const emailStatus=await call('email-events');assert.equal(typeof emailStatus.emailReady,'boolean');assert.deepEqual(emailStatus.events,[]);await call('email-events','GET',null,'student',403);
   const created=await call('people','POST',{name:'Pessoa de teste',email:'new-person@example.test',role:'student'},'admin',201);
   await call('people/'+created.id,'PATCH',{name:'Pessoa atualizada'});
   await call('people','POST',{name:'Sem permissão',email:'no-access@example.test'},'student',403);
