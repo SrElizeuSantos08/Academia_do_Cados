@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS auth_sessions(token_hash TEXT PRIMARY KEY NOT NULL,us
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS auth_sessions_user ON auth_sessions(user);
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS auth_profiles(user TEXT PRIMARY KEY NOT NULL REFERENCES people(id),company TEXT NOT NULL DEFAULT '');
+CREATE TABLE IF NOT EXISTS auth_profiles(user TEXT PRIMARY KEY NOT NULL REFERENCES people(id),company TEXT NOT NULL DEFAULT '',account_type TEXT NOT NULL DEFAULT 'student');
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS auth_limits(key TEXT PRIMARY KEY NOT NULL,count INTEGER NOT NULL,started INTEGER NOT NULL);
 --> statement-breakpoint

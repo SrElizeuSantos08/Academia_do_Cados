@@ -106,7 +106,7 @@
           "name": "level",
           "type": "text",
           "nullable": false,
-          "default": "'B\u00e1sico'",
+          "default": "'Básico'",
           "pk": 0
         },
         {
@@ -1180,6 +1180,62 @@
       ],
       "primaryKey": [
         "token_hash"
+      ]
+    },
+    "auth_email_events": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "name": "kind",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "recipient_masked",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "name": "error_code",
+          "type": "text",
+          "nullable": false,
+          "default": "''",
+          "pk": 0
+        },
+        {
+          "name": "created",
+          "type": "text",
+          "nullable": false,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "primaryKey": [
+        "id"
       ]
     }
   }

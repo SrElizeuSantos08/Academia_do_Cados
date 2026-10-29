@@ -24,6 +24,14 @@
     "registration": false
   },
   {
+    "id": "8a3ca63b12b31b1119d54ec9491518d160d2dbb3816bf8b321fa94dc96e09804",
+    "sqlite": "DELETE FROM auth_email_events WHERE created<?",
+    "sql": "WITH affected AS (DELETE FROM auth_email_events WHERE created<%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 1,
+    "write": true,
+    "registration": false
+  },
+  {
     "id": "96d7203eac72dc1a0b8d5c8a7b9e0e6ba4267d1ee297c3f3094215e5e0573ed5",
     "sqlite": "DELETE FROM auth_sessions WHERE expires<?",
     "sql": "WITH affected AS (DELETE FROM auth_sessions WHERE expires<%L RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
@@ -156,6 +164,14 @@
     "sqlite": "INSERT INTO auth_email_challenges(id,user,salt,password_hash,expires,consumed,created) VALUES(?,?,?,?,?,0,?)",
     "sql": "WITH affected AS (INSERT INTO auth_email_challenges(id,\"user\",salt,password_hash,expires,consumed,created) VALUES(%L,%L,%L,%L,%L,0,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
     "arity": 6,
+    "write": true,
+    "registration": false
+  },
+  {
+    "id": "fc7b68fab32243728a2e70a789e1455a18e01772bf31a1d5ae31d3e0e9fba1cd",
+    "sqlite": "INSERT INTO auth_email_events(id,kind,recipient_masked,provider,status,error_code,created) VALUES(?,?,?,?,?,?,?)",
+    "sql": "WITH affected AS (INSERT INTO auth_email_events(id,kind,recipient_masked,provider,status,error_code,created) VALUES(%L,%L,%L,%L,%L,%L,%L) RETURNING 1 AS changed) SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(affected)),'[]'::jsonb),'changes',count(*)) FROM affected",
+    "arity": 7,
     "write": true,
     "registration": false
   },
@@ -443,6 +459,14 @@
     "id": "b67d08952dffe822e34499714f909e789e600724ed745bc2976b7a227c4734fb",
     "sqlite": "SELECT * FROM \"auth_email_challenges\"",
     "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_email_challenges\") found",
+    "arity": 0,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "0bdd120b6aaf54a88474bb72a8ef77bb096a1fea960b602fa5bd2e7f4b6bd31f",
+    "sqlite": "SELECT * FROM \"auth_email_events\"",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT * FROM \"auth_email_events\") found",
     "arity": 0,
     "write": false,
     "registration": false
@@ -1108,6 +1132,14 @@
     "sqlite": "SELECT id FROM people WHERE lower(login_email)=?",
     "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id FROM people WHERE lower(login_email)=%L) found",
     "arity": 1,
+    "write": false,
+    "registration": false
+  },
+  {
+    "id": "7413c0cdbe022c981fecebd262db62d27b6bf272a217a95df4c2bd0822e3fada",
+    "sqlite": "SELECT id,kind,recipient_masked,provider,status,error_code,created FROM auth_email_events ORDER BY created DESC LIMIT 100",
+    "sql": "SELECT jsonb_build_object('results',COALESCE(jsonb_agg(to_jsonb(found)),'[]'::jsonb),'changes',0) FROM (SELECT id,kind,recipient_masked,provider,status,error_code,created FROM auth_email_events ORDER BY created DESC LIMIT 100) found",
+    "arity": 0,
     "write": false,
     "registration": false
   },
