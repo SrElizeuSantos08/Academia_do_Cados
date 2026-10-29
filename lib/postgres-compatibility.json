@@ -1,0 +1,9 @@
+[
+  "DELETE FROM auth_totp WHERE user=? AND enabled=1 AND last_step=?",
+  "INSERT INTO auth_totp(user,secret,pending_secret,enabled,last_step,updated) VALUES(?,'',?,0,0,?) ON CONFLICT(user) DO UPDATE SET pending_secret=excluded.pending_secret,updated=excluded.updated",
+  "INSERT INTO auth_totp_challenges(token_hash,user,expires,attempts,created) VALUES(?,?,?,0,?)",
+  "SELECT * FROM auth_totp WHERE user=?",
+  "SELECT * FROM auth_totp_challenges WHERE token_hash=? AND expires>? AND attempts<5",
+  "UPDATE auth_totp SET last_step=?,updated=? WHERE user=? AND enabled=1 AND last_step<?",
+  "UPDATE auth_totp SET secret=pending_secret,pending_secret='',enabled=1,last_step=?,updated=? WHERE user=? AND pending_secret=?"
+]

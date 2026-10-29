@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {handleLms} from '../lib/lms.mjs';
-const sql=new DatabaseSync(':memory:');for(const f of ['0000_brainy_dreaming_celestial.sql','0006_password_login.sql','0008_secure_email_access.sql','0014_totp_two_factor.sql','0015_email_two_factor.sql'])sql.exec(readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8'));
+const sql=new DatabaseSync(':memory:');for(const f of ['0000_brainy_dreaming_celestial.sql','0006_password_login.sql','0008_secure_email_access.sql'])sql.exec(readFileSync(new URL('./fixtures/site-drizzle/'+f,import.meta.url),'utf8'));
+for(const f of ['0014_totp_two_factor.sql','0015_email_two_factor.sql'])sql.exec(readFileSync(new URL('../drizzle/'+f,import.meta.url),'utf8'));
 class Statement{constructor(q,args=[]){this.q=q;this.args=args}bind(...args){return new Statement(this.q,args)}async run(){return {meta:{changes:sql.prepare(this.q).run(...this.args).changes}}}async first(){return sql.prepare(this.q).get(...this.args)||null}async all(){return {results:sql.prepare(this.q).all(...this.args)}}}
 const env={RESEND_API_KEY:'fixture-email-key-not-a-secret',ACADEMY_EMAIL_FROM:'Academia <academy@example.test>',ACADEMY_PUBLIC_URL:'https://academy.test',DB:{prepare:q=>new Statement(q),batch:async stmts=>{sql.exec('BEGIN');try{const results=[];for(const s of stmts)results.push(await s.run());sql.exec('COMMIT');return results}catch(e){sql.exec('ROLLBACK');throw e}}}};
 const admin={id:'verified-admin',email:'admin@example.test'};sql.prepare('INSERT INTO people(id,identity,login_email,email,name,ra,role,active,created) VALUES(?,?,?,?,?,?,?,1,?)').run('admin',admin.id,admin.email,admin.email,'Admin Teste','AC-EXISTENTE','admin',new Date().toISOString());
@@ -51,3 +52,4 @@ await request('auth/totp-disable','POST',{currentPassword:'Senha incorreta'},aft
 console.log('PASS: cryptographic temporary passwords, email acceptance/error paths, no plaintext persistence/response, single use and expiration, forced change, permanent password preservation, company privilege isolation, restricted sessions, session revocation, CSRF, email privacy, escaping and canonical account throttling.');
 }finally{globalThis.fetch=originalFetch}
 export {env,sql,admin,request,emails,temporary,emailMock};
+export const currentAdminPassword='Nova senha recuperada 2026!';
