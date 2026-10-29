@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {env,sql,admin,request,emailMock} from './password-auth.test.mjs';
+import {env,sql,admin,request,emailMock,currentAdminPassword} from './password-auth.test.mjs';
 import {DatabaseSync} from 'node:sqlite';
 // Recovery must use the emailed temporary password, never an identity header alone.
 assert.equal((await request('auth/access')).data.emailReady,true);
 const before=sql.prepare('SELECT * FROM auth_passwords ORDER BY user').all();
-const active=await request('auth/login','POST',{identifier:admin.email,password:'Outra senha pessoal 2026!'},'',admin);
+const active=await request('auth/login','POST',{identifier:admin.email,password:currentAdminPassword},'',admin);
 for(const identity of [undefined,admin,{id:'other-id',email:admin.email}]){
  await request('auth/recover','POST',{identifier:admin.email,password:'Unauthorized replacement 2026!'},'',identity,400);
 }

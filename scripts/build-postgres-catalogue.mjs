@@ -23,6 +23,9 @@ for(const root of roots){for(const name of ['lms','password-auth','registration'
   for(const q of values(argument))if(/^(SELECT|INSERT|UPDATE|DELETE)\b/i.test(q.trim()))queries.add(normalizeSql(q));
  }ts.forEachChild(n,visit)}visit(tree);
 }}
+// Keep the published authenticator operations during the coordinated switch to email MFA.
+// This explicit allowlist can be retired only after no deployed version needs these queries.
+for(const query of JSON.parse(readFileSync(new URL('../lib/postgres-compatibility.json',import.meta.url),'utf8')))queries.add(normalizeSql(query));
 const catalogue=[...queries].sort().map(sqlite=>({id:createHash('sha256').update(sqlite).digest('hex'),sqlite,...postgresSql(sqlite)}));
 writeFileSync('lib/postgres-catalogue.json',JSON.stringify(catalogue,null,2)+'\n');
 console.log('Registered '+catalogue.length+' exact SQL statements.');
