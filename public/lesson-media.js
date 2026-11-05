@@ -10,9 +10,17 @@ const basicVideos=Object.freeze({
  'pilot-l7':{id:'1240759699',hash:'dcaaaa4c6b',number:'07'},
  'pilot-l8':{id:'1240759698',hash:'a7469a7845',number:'08'}
 });
+const intermediateVideos=Object.freeze({
+ 'intermediate-l1':{id:'1243758673',number:'01'},
+ 'intermediate-l2':{id:'1243758644',number:'02'},
+ 'intermediate-l3':{id:'1243758674',number:'03'},
+ 'intermediate-l4':{id:'1243758641',number:'04'},
+ 'intermediate-l5':{id:'1243758640',number:'05'},
+ 'intermediate-l6':{id:'1243758642',number:'06'}
+});
 let sdkPromise;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function forLesson(course,lesson){if(course!=='cyber-pilot'||!Object.hasOwn(basicVideos,lesson))return null;const video=basicVideos[lesson];return {url:origin+'/video/'+video.id+'?h='+video.hash+'&dnt=1&title=0&byline=0&portrait=0',publicUrl:'https://vimeo.com/'+video.id+'/'+video.hash,title:'Videoaula '+video.number+' - Segurança Digital na Prática'};}
+function forLesson(course,lesson){const videos=course==='cyber-pilot'?basicVideos:course==='cyber-intermediate'?intermediateVideos:null;if(!videos||!Object.hasOwn(videos,lesson))return null;const video=videos[lesson],title=course==='cyber-pilot'?'Segurança Digital na Prática':'Segurança Digital no Trabalho';return {url:origin+'/video/'+video.id+'?'+(video.hash?'h='+video.hash+'&':'')+'dnt=1&title=0&byline=0&portrait=0',publicUrl:'https://vimeo.com/'+video.id+(video.hash?'/'+video.hash:''),title:'Videoaula '+video.number+' - '+title};}
 function markup(media,course,lesson){return '<div class="vimeo-lesson-wrap"><iframe id="lessonVimeo" class="lesson-player vimeo-lesson" src="'+esc(media.url)+'" title="'+esc(media.title)+'" data-course="'+esc(course)+'" data-lesson="'+esc(lesson)+'" data-position="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p id="vimeoPlaybackError" class="inline-alert" role="alert" hidden></p>';}
 function loadSdk(){
  if(window.Vimeo?.Player)return Promise.resolve(window.Vimeo);
