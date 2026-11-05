@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import {Window} from 'happy-dom';
 import {env,call,student,sql,p} from './lms.test.mjs';
 import {handleLms} from '../lib/lms.mjs';
-const w=new Window({url:'https://academy.test/aluno.html',settings:{disableJavaScriptFileLoading:true,disableCSSFileLoading:true,disableComputedStyleRendering:true}});
+let w=new Window({url:'https://academy.test/aluno.html',settings:{disableJavaScriptFileLoading:true,disableCSSFileLoading:true,disableComputedStyleRendering:true}});
 const players=[];
 class Player{
  constructor(frame){this.frame=frame;this.events={};this.seeks=[];this.destroyed=false;players.push(this);}
@@ -29,6 +29,16 @@ try{
  }
  assert.equal(media.forLesson('cyber-pilot','pilot-l9'),null);assert.equal(media.forLesson('cyber-pilot','__proto__'),null);
  assert.equal(media.forLesson('cyber-intermediate','pilot-l1'),null);
+ const intermediateIds=['1243758673','1243758644','1243758674','1243758641','1243758640','1243758642'];
+ for(const [i,id] of intermediateIds.entries()){
+  const lesson='intermediate-l'+(i+1),entry=media.forLesson('cyber-intermediate',lesson),url=new URL(entry.url);
+  assert.equal(url.pathname,'/video/'+id);assert.equal(url.origin,'https://player.vimeo.com');assert.equal(url.searchParams.get('dnt'),'1');
+  for(const tracking of ['h','share','autoplay'])assert(!url.searchParams.has(tracking));
+  assert.equal(entry.publicUrl,'https://vimeo.com/'+id);assert(entry.title.includes('Segurança Digital no Trabalho'));
+  assert(entry.title.includes(String(i+1).padStart(2,'0')));
+ }
+ assert.equal(media.forLesson('cyber-intermediate','__proto__'),null);assert.equal(media.forLesson('cyber-intermediate','intermediate-l7'),null);
+ assert.equal(media.forLesson('cyber-pilot','intermediate-l1'),null);assert.equal(media.forLesson('unknown','intermediate-l1'),null);
  const trial=media.forLesson('cyber-pilot','pilot-l1');
  assert.equal(new URL(trial.url).origin,'https://player.vimeo.com');
  assert.equal(new URL(trial.url).searchParams.get('h'),'94c62529b7');
@@ -62,5 +72,37 @@ try{
  assert.equal(sql.prepare('SELECT done FROM progress WHERE user=? AND lesson=?').get(p.id,'pilot-l1').done,0,'video end alone does not pass quiz');
  w.document.querySelector('[data-go="courses"]').click();await until(()=>player.destroyed,'player cleaned up');
  const before=Number(frame.dataset.position);player.events.timeupdate({seconds:99});assert.equal(Number(frame.dataset.position),before,'disposed events ignored');
- console.log('PASS: eight correct Vimeo lesson mappings, privacy hashes, accessible titles, no autoplay, resume/progress, quiz gating, unchanged portfolio, no automatic passing and player cleanup.');
+ await call('seed','POST',{course:'cyber-intermediate'});
+ sql.prepare('INSERT OR IGNORE INTO enrollments(user,course,created) VALUES(?,?,?)').run(p.id,'cyber-intermediate',new Date().toISOString());
+ await call('courses/cyber-intermediate/availability','PATCH',{development:false});
+ assert.equal((await call('bootstrap','GET',null,student)).courses.find(c=>c.id==='cyber-intermediate').locked,true,'basic prerequisite remains enforced');
+ const basicModules=JSON.parse(sql.prepare('SELECT body FROM courses WHERE id=?').get('cyber-pilot').body);
+ for(const l of basicModules.flatMap(m=>m.lessons))sql.prepare('INSERT OR REPLACE INTO progress VALUES(?,?,?,?,?,?,?)').run(p.id,'cyber-pilot',l.id,0,1,100,new Date().toISOString());
+ const released=(await call('bootstrap','GET',null,student)).courses.find(c=>c.id==='cyber-intermediate');
+ assert.equal(released.development,false);assert.equal(released.locked,false);assert.equal(released.modules[1].lessons[0].locked,true);
+ const intermediateBody=sql.prepare('SELECT body FROM courses WHERE id=?').get('cyber-intermediate').body;
+ await call('progress','POST',{course:'cyber-intermediate',lesson:'intermediate-l1',position:18},student);
+ await w.happyDOM.abort();await w.close();
+ w=new Window({url:'https://academy.test/aluno.html',settings:{disableJavaScriptFileLoading:true,disableCSSFileLoading:true,disableComputedStyleRendering:true}});
+ w.document.write(readFileSync(new URL('../public/portal.html',import.meta.url),'utf8'));
+ w.Vimeo={Player};w.structuredClone=structuredClone;w.confirm=()=>true;w.HTMLElement.prototype.scrollIntoView=()=>{};
+ w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
+ w.fetch=async(input,options={})=>{const headers=new Headers(options.headers);headers.set('origin','https://academy.test');headers.set('oai-authenticated-user-id',student.id);headers.set('oai-authenticated-user-email',student.email);return handleLms(new Request(new URL(String(input),'https://academy.test'),{...options,headers}),env);};
+ for(const file of ['lesson-media.js','navigation.js','module-badges.js','certificate.js','portal.js'])w.eval(readFileSync(new URL('../public/'+file,import.meta.url),'utf8'));
+ await until(()=>w.document.querySelector('[data-action="open-course"][data-id="cyber-intermediate"]'),'released intermediate dashboard');
+ w.document.querySelector('[data-action="open-course"][data-id="cyber-intermediate"]').click();
+ await until(()=>w.document.querySelector('#lessonVimeo')?.dataset.course==='cyber-intermediate','intermediate Vimeo classroom');
+ const intermediateFrame=w.document.querySelector('#lessonVimeo'),intermediatePlayer=players.at(-1);
+ await until(()=>intermediatePlayer.events.ended,'intermediate SDK events');
+ assert.equal(new URL(intermediateFrame.src).pathname,'/video/'+intermediateIds[0]);
+ assert.equal(w.document.querySelectorAll('.quiz-question').length,5);assert(w.document.querySelector('.lesson-material').href.includes('portfolio-intermediario-01'));
+ assert(w.document.querySelector('#completeLesson').disabled);
+ await intermediatePlayer.events.play();assert.deepEqual(intermediatePlayer.seeks,[18]);
+ intermediatePlayer.events.timeupdate({seconds:29});await intermediatePlayer.events.pause();
+ await until(()=>sql.prepare('SELECT position FROM progress WHERE user=? AND course=? AND lesson=?').get(p.id,'cyber-intermediate','intermediate-l1')?.position===29,'intermediate progress saved');
+ await intermediatePlayer.events.ended();assert.equal(w.document.querySelector('#completeLesson').disabled,false);
+ assert.equal(sql.prepare('SELECT done FROM progress WHERE user=? AND course=? AND lesson=?').get(p.id,'cyber-intermediate','intermediate-l1').done,0,'intermediate video does not pass assessment');
+ assert.equal(sql.prepare('SELECT body FROM courses WHERE id=?').get('cyber-intermediate').body,intermediateBody,'questions, portfolios and lesson content preserved');
+ w.document.querySelector('[data-go="courses"]').click();await until(()=>intermediatePlayer.destroyed,'intermediate player cleaned up');
+ console.log('PASS: fourteen correct Vimeo mappings, basic privacy hashes, accessible titles, no autoplay, both tracks resume/progress, quiz gating, unchanged portfolios, intermediate release/prerequisite and player cleanup.');
 }finally{await w.happyDOM.abort();await w.close();}
