@@ -27,3 +27,20 @@ for item in content:
                 assert char["x0"] >= 48 and char["x1"] <= page.width - 45, (path.name, index + 1, char["text"])
                 assert char["top"] >= 20 and char["bottom"] <= page.height - 18, (path.name, index + 1)
     print(f"PASS: module {item['number']:02}, eight pages, text, hyperlinks and page bounds.")
+
+for item in json.loads((ROOT / "content/intermediate-course.json").read_text(encoding="utf-8")):
+    path = ROOT / "public/materials" / f"portfolio-intermediario-{item['number']:02}-2026.pdf"
+    reader = PdfReader(path)
+    assert len(reader.pages) == 8, path.name
+    assert "Segurança Digital no Trabalho" in reader.metadata.subject, path.name
+    for page in reader.pages[1:]:
+        text = page.extract_text()
+        assert "SEGURANÇA DIGITAL NO TRABALHO" in text, path.name
+        assert "SEGURANÇA DIGITAL NA PRÁTICA" not in text, path.name
+        assert f"MÓDULO {item['number']:02}" in text, path.name
+    with pdfplumber.open(path) as pdf:
+        for index, page in enumerate(pdf.pages):
+            for char in page.chars:
+                assert char["x0"] >= 48 and char["x1"] <= page.width - 45, (path.name, index + 1, char["text"])
+                assert char["top"] >= 20 and char["bottom"] <= page.height - 18, (path.name, index + 1)
+    print(f"PASS: intermediate {item['number']:02}, eight pages, correct track/footer/metadata and page bounds.")

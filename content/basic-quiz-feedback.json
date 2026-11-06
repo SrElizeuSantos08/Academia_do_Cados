@@ -1,0 +1,178 @@
+{
+  "pilot-l1": [
+    {
+      "question": "Como verificar esse aviso de bloqueio?",
+      "explanation": "Abra o aplicativo ou digite o endereço oficial que você já conhece para verificar a pendência. O link recebido pode levar a uma página falsa; a aparência profissional não comprova a origem, e senha não deve ser enviada por resposta ao e-mail."
+    },
+    {
+      "question": "O e-mail mostra um nome conhecido. Isso comprova que a mensagem é legítima?",
+      "explanation": "O nome exibido e o texto da mensagem podem ser imitados. Confira o endereço completo e confirme o pedido pelo canal conhecido, considerando o contexto; um nome familiar ou a ausência de erros não autenticam o remetente."
+    },
+    {
+      "question": "O que o HTTPS informa sobre uma página de login?",
+      "explanation": "HTTPS protege a conexão com o endereço acessado, mas não comprova que esse endereço pertence à organização esperada. Páginas fraudulentas também podem usar HTTPS; confira o domínio antes de informar dados."
+    },
+    {
+      "question": "Você recebeu uma solicitação de autenticação que não iniciou. O que fazer?",
+      "explanation": "Uma aprovação ou código pode liberar uma entrada na conta. Se você não iniciou a solicitação, rejeite-a e procure o serviço oficial ou a equipe responsável; aprovar para interromper os avisos ou enviar o código a terceiros aumenta o risco."
+    },
+    {
+      "question": "Você informou sua senha em uma página suspeita. Qual é o próximo passo?",
+      "explanation": "Fechar a página não retira a senha que já foi enviada. Pelo serviço oficial e a partir de um dispositivo confiável, proteja a conta, trate a reutilização da senha e comunique a equipe responsável no trabalho para receber orientação."
+    }
+  ],
+  "pilot-l2": [
+    {
+      "question": "O nome do remetente parece conhecido. Isso basta?",
+      "explanation": "Um nome conhecido pode ser imitado, e uma conta legítima pode estar comprometida. Confirme se a cobrança faz sentido e verifique-a por um contato previamente conhecido, fora da própria mensagem, antes de abrir o anexo."
+    },
+    {
+      "question": "Uma cobrança inesperada contém um arquivo ZIP com senha. O que a senha comprova?",
+      "explanation": "A senha do ZIP controla a abertura do arquivo, mas não autentica o remetente nem garante que o conteúdo seja seguro. Mesmo um arquivo protegido por senha precisa ter origem e necessidade confirmadas antes da abertura."
+    },
+    {
+      "question": "Qual é a melhor forma de confirmar a cobrança antes de abrir o anexo?",
+      "explanation": "Use um contato que já constava no cadastro ou que você obtenha de um canal oficial independente. O telefone informado no próprio e-mail pode estar sob controle do suspeito; abrir o ZIP para descobrir a origem antecipa o risco."
+    },
+    {
+      "question": "O arquivo pede para desativar a proteção ou habilitar conteúdo inesperado. Como agir?",
+      "explanation": "Um documento inesperado não justifica desligar a proteção ou permitir conteúdo ativo. Interrompa a ação e confirme com a equipe responsável pelo canal conhecido, sem pedir a um colega que execute o arquivo como teste."
+    },
+    {
+      "question": "Você executou um arquivo do anexo e depois desconfiou. Qual informação ajuda a TI?",
+      "explanation": "Descrever o horário, a mensagem, o arquivo e as ações realizadas ajuda a TI a avaliar o alcance do incidente. Diga se recebeu, baixou, abriu, executou ou autorizou conteúdo; aparência normal do computador não comprova ausência de risco."
+    }
+  ],
+  "pilot-l3": [
+    {
+      "question": "Qual é a melhor próxima ação?",
+      "explanation": "Confirme o pedido usando o contato que você já conhecia, antes de enviar qualquer valor. Um número novo ou uma foto de perfil não comprovam identidade, e uma transferência pequena ainda pode causar prejuízo."
+    },
+    {
+      "question": "Uma foto conhecida e detalhes da sua rotina garantem que o contato é verdadeiro?",
+      "explanation": "Fotos, nomes e detalhes da rotina podem ser copiados ou obtidos por terceiros. Eles tornam a história convincente, mas não substituem a confirmação da identidade e do pedido por um canal previamente conhecido."
+    },
+    {
+      "question": "O contato diz que mudou de número e não pode atender ligação. O que fazer?",
+      "explanation": "A mudança de número e a impossibilidade de atender exigem uma pausa para confirmar por outro canal confiável. A justificativa e a foto iguais não são prova de identidade; enviar dinheiro para testar continua sendo uma exposição."
+    },
+    {
+      "question": "Um suposto suporte pede seu código de verificação. Qual é a resposta segura?",
+      "explanation": "Códigos de verificação podem permitir entrada ou recuperação de uma conta. Não os compartilhe, nem parcialmente, com quem entrou em contato; confirme o atendimento pelo canal oficial, pois um logotipo pode ser copiado."
+    },
+    {
+      "question": "Uma mensagem com a voz do gestor pede pagamento fora do procedimento. Como agir?",
+      "explanation": "Uma voz familiar não substitui a confirmação independente nem as aprovações financeiras. Ela pode ser imitada ou usada fora de contexto; confirme o pedido por outro canal conhecido e mantenha o procedimento da empresa."
+    }
+  ],
+  "pilot-l4": [
+    {
+      "question": "Qual combinação protege melhor as contas?",
+      "explanation": "Uma senha diferente para cada serviço limita o efeito de um vazamento, e a autenticação multifator acrescenta uma camada de proteção. Reutilizar uma senha, mesmo longa, conecta o risco das contas; trocar senhas curtas toda semana não resolve isso."
+    },
+    {
+      "question": "Por que reutilizar uma senha é arriscado?",
+      "explanation": "Uma senha exposta pode ser testada junto com o mesmo e-mail ou usuário em outros serviços. Senhas únicas evitam que a descoberta de uma credencial abra várias contas; elas também podem ser usadas com autenticação multifator."
+    },
+    {
+      "question": "Você recebe pedidos MFA que não iniciou. Qual é a ação adequada?",
+      "explanation": "Pedidos MFA inesperados podem indicar uma tentativa de acesso à conta. Rejeite-os e acione o serviço oficial ou a TI para avaliar a situação; não aprove apenas para parar as notificações e não envie o código a um suposto suporte."
+    },
+    {
+      "question": "Como tratar os códigos de recuperação de uma conta?",
+      "explanation": "Códigos de recuperação podem restaurar o acesso e devem ser protegidos como credenciais. Guarde-os em local seguro e use-os somente no fluxo oficial; uma pasta pública ou o compartilhamento com terceiros expõem a conta."
+    },
+    {
+      "question": "Um gerenciador de senhas confiável e autorizado ajuda principalmente a quê?",
+      "explanation": "Um gerenciador confiável e autorizado ajuda a criar e armazenar senhas longas e diferentes para cada serviço. Ele reduz a dependência da memória, mas não substitui o segundo fator, a proteção do próprio cofre ou a revisão dos acessos."
+    }
+  ],
+  "pilot-l5": [
+    {
+      "question": "A página tem cadeado. A compra é confiável?",
+      "explanation": "O cadeado indica proteção da conexão, não a honestidade da loja. Verifique a origem da oferta, a reputação e os contatos do vendedor, além do valor e do destinatário do pagamento, antes de confirmar a compra."
+    },
+    {
+      "question": "Uma promoção muito abaixo do preço habitual termina em poucos minutos. O que fazer?",
+      "explanation": "Preço muito baixo e contagem regressiva podem explorar a pressa para impedir a verificação. Pause e confira a oferta e a loja por fontes independentes; imagens convincentes e urgência não comprovam legitimidade."
+    },
+    {
+      "question": "O destinatário do pagamento diverge do vendedor e você não confirmou o motivo. Como agir?",
+      "explanation": "Um destinatário diferente exige esclarecimento verificável antes do pagamento. Procure o canal oficial conhecido e confirme os dados; a divergência não deve ser resolvida com um pagamento de teste nem apenas com a explicação do chat do anúncio."
+    },
+    {
+      "question": "O vendedor pede para concluir o pagamento fora da plataforma por um link no chat. Qual é o cuidado adequado?",
+      "explanation": "Um pedido para sair do fluxo conhecido precisa ser confirmado diretamente com a plataforma pelo canal oficial. O link enviado no chat pode capturar dados ou desviar o pagamento; códigos de autenticação não devem servir como garantia ao vendedor."
+    },
+    {
+      "question": "Você identificou uma fraude depois de pagar. Qual é a próxima ação?",
+      "explanation": "Procure imediatamente o banco ou provedor pelo aplicativo ou contato oficial e preserve anúncio, conversa e comprovantes. A equipe poderá orientar as medidas disponíveis, sem garantia de recuperação; não envie novas taxas para tentar recuperar o primeiro valor."
+    }
+  ],
+  "pilot-l6": [
+    {
+      "question": "Como obter o programa com mais segurança?",
+      "explanation": "A fonte oficial é o ponto de partida; confira também o nome, o desenvolvedor, as opções de instalação e as permissões. O tamanho do botão não comprova a origem, e desativar a proteção para instalar remove uma camada importante de segurança."
+    },
+    {
+      "question": "O maior botão de download pertence a um anúncio. Como escolher a origem do programa?",
+      "explanation": "Um anúncio pode ocupar a posição mais visível sem pertencer ao fabricante. Localize o site ou a loja oficial e confira o aplicativo e o desenvolvedor, em vez de tratar o primeiro resultado ou o maior botão como confirmação de origem."
+    },
+    {
+      "question": "O instalador oferece uma extensão que você não precisa. Qual é a melhor ação?",
+      "explanation": "Revise cada etapa e recuse extras opcionais que não fazem parte da necessidade. Aceitar tudo pode instalar extensões ou alterar configurações sem intenção; no trabalho, siga também a instalação autorizada pela TI."
+    },
+    {
+      "question": "Um aplicativo pede permissões sem relação clara com sua função. O que fazer?",
+      "explanation": "Permissões devem ter relação com a função e com a tarefa autorizada. Pause diante de um pedido excessivo e consulte a TI no trabalho; a presença em uma loja não dispensa a avaliação do acesso que o aplicativo poderá ter."
+    },
+    {
+      "question": "Uma página pede para desligar a proteção para concluir a instalação. Como agir?",
+      "explanation": "Não desative a proteção nem instale outra ferramenta indicada pelo pop-up para contornar o alerta. Verifique a origem e procure orientação autorizada; o bloqueio precisa ser avaliado antes de continuar a instalação."
+    }
+  ],
+  "pilot-l7": [
+    {
+      "question": "Como compartilhar com apenas um destinatário?",
+      "explanation": "Defina o destinatário correto e a permissão necessária no próprio serviço. Um link aberto pode ser encaminhado, mesmo com um pedido para não compartilhar; deixá-lo público por pouco tempo também amplia o alcance."
+    },
+    {
+      "question": "A pessoa precisa apenas consultar o documento. Qual permissão é mais adequada?",
+      "explanation": "Se a tarefa exige apenas leitura, a visualização para a pessoa correta é a menor permissão adequada. Edição ou administração ampliam o que ela pode fazer e não devem ser concedidas só por conveniência."
+    },
+    {
+      "question": "O que pode acontecer ao compartilhar uma pasta inteira para enviar só um arquivo?",
+      "explanation": "Compartilhar uma pasta pode conceder acesso a outros arquivos contidos nela, conforme suas permissões. O serviço não limita automaticamente o acesso ao documento citado no e-mail; compartilhe apenas o escopo necessário."
+    },
+    {
+      "question": "Apagar a mensagem que continha o link revoga o acesso ao documento?",
+      "explanation": "A mensagem e a permissão no serviço são coisas diferentes. Apagar o e-mail não revoga o link; use o gerenciamento de acesso para revisar e retirar a permissão, quando autorizado, considerando também possíveis cópias já obtidas."
+    },
+    {
+      "question": "Ao encerrar uma colaboração, qual é a boa prática?",
+      "explanation": "Ao terminar a necessidade, revise links, grupos e permissões e retire os acessos desnecessários conforme a política e sua autorização. Manter links sem revisão ou tornar a pasta pública amplia a exposição além da colaboração."
+    }
+  ],
+  "pilot-l8": [
+    {
+      "question": "Qual atitude ajuda após expor uma senha?",
+      "explanation": "Proteja a conta pelo aplicativo ou endereço oficial e procure o suporte apropriado. Esperar ou apagar apenas o histórico não desfaz a exposição; no trabalho, comunique a equipe responsável e siga a orientação recebida."
+    },
+    {
+      "question": "Depois de informar a senha em uma página falsa, fechar a aba resolve toda a exposição?",
+      "explanation": "A senha pode ter sido capturada antes de a aba ser fechada, mesmo sem mensagem de erro. Interrompa a interação, comunique o ocorrido e proteja a conta pelo fluxo oficial, incluindo outras contas em que a senha foi reutilizada."
+    },
+    {
+      "question": "Qual relato ajuda mais a equipe responsável a avaliar o incidente?",
+      "explanation": "Um relato preciso ajuda a diferenciar um clique de envio de dados, execução de arquivo ou aprovação de acesso. Informe horário, origem, ações e dúvidas; não omita detalhes nem conclua que está tudo seguro só porque não percebeu sintomas."
+    },
+    {
+      "question": "De onde é mais adequado proteger uma conta após suspeita de comprometimento?",
+      "explanation": "Use um dispositivo confiável e acesse o serviço pelo aplicativo ou endereço oficial conhecido. O link ou programa oferecido pelo contato suspeito pode repetir a captura de dados; se houver dúvida sobre o equipamento, peça orientação à equipe responsável."
+    },
+    {
+      "question": "Você abriu um arquivo suspeito no computador de trabalho. Como proceder?",
+      "explanation": "Avise a TI imediatamente e descreva o arquivo e o que realizou, preservando o contexto conforme orientação. Não execute novamente para testar nem apague registros por conta própria; a equipe avaliará o dispositivo e as medidas necessárias."
+    }
+  ]
+}

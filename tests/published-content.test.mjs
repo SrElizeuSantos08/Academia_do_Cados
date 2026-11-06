@@ -6,12 +6,18 @@ import { pilotCourse } from '../lib/pilot.mjs';
 import { validateModules } from '../lib/lms.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
+// Applied historical migrations intentionally retain their original content.
+// New comments are added to existing courses by the guarded content sync.
+const historicalModules = structuredClone(pilotCourse.modules);
+for(const module of historicalModules)for(const lesson of module.lessons)for(const question of lesson.quiz)delete question.explanation;
+assert(pilotCourse.modules.every(m=>m.lessons.every(l=>l.quiz.every(q=>q.explanation?.trim()))));
+
 const journal = JSON.parse(read('tests/fixtures/local-drizzle/meta/_journal.json'));
 assert.equal(new Set(journal.entries.map(e => e.idx)).size, journal.entries.length);
 assert.equal(new Set(journal.entries.map(e => e.tag)).size, journal.entries.length);
 const sql = new DatabaseSync(':memory:');
 sql.exec(read('tests/fixtures/local-drizzle/' + journal.entries[0].tag + '.sql'));
-const legacy = structuredClone(pilotCourse.modules);
+const legacy = structuredClone(historicalModules);
 for(const module of legacy)for(const lesson of module.lessons){lesson.quiz.splice(1);delete lesson.materials;}
 sql.prepare('INSERT INTO courses(id,title,body,updated) VALUES(?,?,?,?)').run(pilotCourse.id, pilotCourse.title, JSON.stringify(legacy), '2026-10-15');
 sql.prepare('INSERT INTO people(id,login_email,email,name,ra,created) VALUES(?,?,?,?,?,?)').run('original-user','osmar.cabral@bugbusters.com.br','osmar.cabral@bugbusters.com.br','Osmar Cabral','AC-OLD','2026-10-15');
@@ -21,9 +27,9 @@ sql.prepare('INSERT INTO certificates VALUES(?,?,?,?,?,?)').run('original-certif
 const history = ['enrollments','progress','certificates'].map(table => sql.prepare('SELECT * FROM ' + table).all());
 for (const entry of journal.entries.slice(1)) sql.exec(read('tests/fixtures/local-drizzle/' + entry.tag + '.sql'));
 const migrated = JSON.parse(sql.prepare('SELECT body FROM courses').get().body);
-assert.deepEqual(migrated[0].lessons[0].quiz, pilotCourse.modules[0].lessons[0].quiz);
+assert.deepEqual(migrated[0].lessons[0].quiz, historicalModules[0].lessons[0].quiz);
 assert.deepEqual(migrated[0].lessons[0].materials, pilotCourse.modules[0].lessons[0].materials);
-assert.deepEqual(migrated.slice(1), pilotCourse.modules.slice(1));
+assert.deepEqual(migrated.slice(1), historicalModules.slice(1));
 assert.deepEqual(['enrollments','progress','certificates'].map(table => sql.prepare('SELECT * FROM ' + table).all()), history);
 assert.equal(sql.prepare('SELECT ra FROM people').get().ra,'AC-2026-0003');
 assert.equal(validateModules(migrated, pilotCourse.id)[0].lessons[0].materials.length,1);

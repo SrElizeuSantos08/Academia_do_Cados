@@ -7,7 +7,9 @@ import { validateModules } from '../lib/lms.mjs';
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const content = JSON.parse(read('content/module-portfolios.json'));
 const migration = read('tests/fixtures/local-drizzle/0006_module_portfolios_and_quizzes.sql');
-const originalFirstLesson = JSON.stringify(pilotCourse.modules[0]);
+const historicalModules=structuredClone(pilotCourse.modules);
+for(const module of historicalModules)for(const lesson of module.lessons)for(const question of lesson.quiz)delete question.explanation;
+const originalFirstLesson = JSON.stringify(historicalModules[0]);
 assert.equal(content.length, 7);
 const allQuestions = new Set();
 for (const [index, module] of pilotCourse.modules.entries()) {
@@ -18,13 +20,14 @@ for (const [index, module] of pilotCourse.modules.entries()) {
     assert.equal(question.options.length, 3);
     assert.equal(new Set(question.options).size, 3);
     assert(question.answer >= 0 && question.answer < question.options.length);
+    assert(question.explanation?.trim(), 'Every basic question needs its own explanation');
     assert(!allQuestions.has(question.question), 'Do not repeat the same question across modules');
     allQuestions.add(question.question);
   }
   const pdf = readFileSync(new URL('../public' + lesson.materials[0].url, import.meta.url));
   assert.equal(pdf.subarray(0,5).toString(), '%PDF-');
   if (index) {
-    assert.deepEqual(lesson.quiz.slice(1), content[index - 1].questions);
+    assert.deepEqual(lesson.quiz.slice(1).map(({explanation,...question})=>question), content[index - 1].questions);
     assert.equal(lesson.materials[0].url, '/materials/' + content[index - 1].file);
   }
 }
@@ -37,7 +40,7 @@ assert.throws(() => validateModules(wrongMaterial, pilotCourse.id), /Material nÃ
 function migrate({reorder = false, custom = false} = {}) {
   const sql = new DatabaseSync(':memory:');
   sql.exec(read('tests/fixtures/local-drizzle/0000_brainy_dreaming_celestial.sql'));
-  const modules = structuredClone(pilotCourse.modules);
+  const modules = structuredClone(historicalModules);
   for (const module of modules.slice(1)) {
     module.lessons[0].quiz.splice(1);
     delete module.lessons[0].materials;
@@ -57,7 +60,7 @@ function migrate({reorder = false, custom = false} = {}) {
     const lesson = module.lessons[0];
     if (module.id === 'pilot-m1') {assert.equal(JSON.stringify(module), originalFirstLesson); continue;}
     assert.equal(lesson.video, 'existing-upload-' + module.id);
-    const expected = pilotCourse.modules.find(m => m.id === module.id).lessons[0];
+    const expected = historicalModules.find(m => m.id === module.id).lessons[0];
     if (custom && module.id === 'pilot-m3') {
       assert.equal(lesson.quiz.length, 1);
       assert.equal(lesson.quiz[0].question, 'Pergunta personalizada preservada');

@@ -16,6 +16,7 @@ for item in json.loads((ROOT / "content/intermediate-course.json").read_text(enc
         "file": f"portfolio-intermediario-{item['number']:02}-2026.pdf",
         "materialTitle": f"Portfólio intermediário - {item['moduleTitle']}",
         "trackLabel": "Segurança Digital no Trabalho • Intermediário",
+        "courseTitle": "Segurança Digital no Trabalho",
         "title": item["moduleTitle"], "subtitle": item["lessonTitle"],
         "mechanism": item["scenario"], "sequence": item["key"],
         "cases": [(q["question"], "Escolha seu próximo passo antes de consultar a resposta.", q["explanation"]) for q in questions[:3]],

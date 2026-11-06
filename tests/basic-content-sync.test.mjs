@@ -29,6 +29,25 @@ const done=await call('courses/cyber-pilot/local-content','POST',{confirmed:true
 const after=sql.prepare('SELECT * FROM courses WHERE id=?').get('cyber-pilot'),modules=JSON.parse(after.body);assert(modules.every(m=>m.lessons.every(l=>l.quiz.length===5&&l.materials.length===1)));assert.equal(modules[1].lessons[0].video,'custom-upload-preserved');assert.equal(snapshot(),history);
 const backup=JSON.parse(sql.prepare('SELECT value FROM settings WHERE key=?').get(done.backup).value);assert.equal(backup.body,JSON.stringify(legacy));
 const again=await call('courses/cyber-pilot/local-content','POST',{confirmed:true,version:after.updated});assert.equal(again.changed,false);assert.equal(sql.prepare("SELECT COUNT(*) n FROM settings WHERE key LIKE 'backup:basic-content:%'").get().n,1);
+// An existing five-question course also receives missing comments, without
+// replacing teacher-authored feedback, media, progress or certificates.
+for(const m of modules)for(const l of m.lessons)for(const q of l.quiz)delete q.explanation;
+modules[0].lessons[0].quiz[0].explanation='Comentário personalizado do professor.';
+modules[1].lessons[0].quiz[0].explanation='  ';
+const beforeComments=JSON.stringify(modules);
+sql.prepare('UPDATE courses SET body=? WHERE id=?').run(beforeComments,'cyber-pilot');
+const commentsPreview=await call('courses/cyber-pilot/local-content');
+assert.equal(commentsPreview.conflicts.length,0);assert(commentsPreview.changed);
+assert.equal(commentsPreview.lessons.reduce((n,l)=>n+l.explanationsAdded,0),39);
+const commentsDone=await call('courses/cyber-pilot/local-content','POST',{confirmed:true,version:commentsPreview.version});assert(commentsDone.changed);
+const commented=sql.prepare('SELECT * FROM courses WHERE id=?').get('cyber-pilot'),commentedModules=JSON.parse(commented.body);
+assert(commentedModules.every(m=>m.lessons.every(l=>l.quiz.length===5&&l.quiz.every(q=>q.explanation.trim()))));
+assert.equal(commentedModules[0].lessons[0].quiz[0].explanation,'Comentário personalizado do professor.');
+assert.equal(commentedModules[1].lessons[0].video,'custom-upload-preserved');assert.equal(snapshot(),history);
+assert.equal(JSON.parse(sql.prepare('SELECT value FROM settings WHERE key=?').get(commentsDone.backup).value).body,beforeComments);
+const commentsAgain=await call('courses/cyber-pilot/local-content','POST',{confirmed:true,version:commented.updated});assert.equal(commentsAgain.changed,false);
+assert.equal(sql.prepare("SELECT COUNT(*) n FROM settings WHERE key LIKE 'backup:basic-content:%'").get().n,2);
+modules.splice(0,modules.length,...commentedModules);
 modules[1].lessons[0].quiz=[{question:'AvaliaÃ§Ã£o personalizada',options:['A','B','C'],answer:0}];const custom=JSON.stringify(modules);sql.prepare('UPDATE courses SET body=? WHERE id=?').run(custom,'cyber-pilot');
 const conflict=await call('courses/cyber-pilot/local-content');assert.equal(conflict.conflicts.length,1);await call('courses/cyber-pilot/local-content','POST',{confirmed:true,version:conflict.version},admin,409);assert.equal(sql.prepare('SELECT body FROM courses WHERE id=?').get('cyber-pilot').body,custom);assert.equal(snapshot(),history);
 console.log('PASS: admin-only basic content sync; 40 questions/8 portfolios; exact backup; custom quiz protection; stale-write guard; video/history preservation; idempotency.');

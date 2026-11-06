@@ -73,17 +73,17 @@ def box(title, text):
     return table
 
 
-def header(c, number, module):
+def header(c, number, module, course_title="Segurança Digital na Prática"):
     c.setStrokeColor(LINE)
     c.line(52, 40, W - 52, 40)
     c.setFont("Arial", 7)
     c.setFillColor(MUTED)
-    c.drawString(52, 26, f"BBS ONE  |  SEGURANÇA DIGITAL NA PRÁTICA  |  MÓDULO {module:02}")
+    c.drawString(52, 26, f"BBS ONE  |  {course_title.upper()}  |  MÓDULO {module:02}")
     c.drawRightString(W - 52, 26, f"{number:02}")
 
 
-def page(c, number, module, content):
-    header(c, number, module)
+def page(c, number, module, content, course_title="Segurança Digital na Prática"):
+    header(c, number, module, course_title)
     remaining = list(content)
     frame = Frame(52, 65, WIDTH, H - 119, leftPadding=0, rightPadding=0,
                   topPadding=0, bottomPadding=0)
@@ -135,7 +135,10 @@ def render(item):
     c = canvas.Canvas(str(destination), pagesize=A4, invariant=1)
     c.setTitle(item["materialTitle"])
     c.setAuthor("BBS One | Academia do Caos")
-    c.setSubject(f"Módulo {item['number']:02} - Segurança Digital na Prática")
+    course_title = item.get("courseTitle", "Segurança Digital na Prática")
+    c.setSubject(f"Módulo {item['number']:02} - {course_title}")
+    def content_page(number, content):
+        page(c, number, item["number"], content, course_title)
     n = item["number"]
     cover(c, item)
 
@@ -151,7 +154,7 @@ def render(item):
         ("TOPPADDING", (0, 0), (-1, -1), 9),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 9),
     ]))
-    page(c, 2, n, [p("01 | Entenda a mecânica", "heading"), p(item["mechanism"]),
+    content_page(2, [p("01 | Entenda a mecânica", "heading"), p(item["mechanism"]),
                    p("Onde mora o risco", "sub"), table, Spacer(1, 15),
                    box("A sequência para reconhecer", item["sequence"])])
 
@@ -159,14 +162,14 @@ def render(item):
               p("Observe o conjunto: um detalhe isolado não encerra a análise. Pergunte se a ação faz sentido para a situação e confirme pelo caminho adequado.")]
     for title, text in item["signals"]:
         blocks += [p(title, "sub"), p(text)]
-    page(c, 3, n, blocks)
+    content_page(3, blocks)
 
     blocks = [p("03 | Casos para praticar", "heading"),
               p("Os cenários abaixo são fictícios. Use-os para treinar a decisão antes de encontrar uma situação parecida no dia a dia.")]
     for index, (title, situation, action) in enumerate(item["cases"], 1):
         blocks += [p(f"Caso {index} - {title}", "sub"), p(situation),
                    bold("Resposta segura", action), Spacer(1, 6)]
-    page(c, 4, n, blocks)
+    content_page(4, blocks)
 
     blocks = [p("04 | Pausa de 20 segundos", "heading"),
               p("Use o checklist PARE antes de concluir a ação. Se uma resposta ainda depende da mensagem ou da pessoa suspeita, procure uma confirmação independente."),
@@ -174,7 +177,7 @@ def render(item):
     for letter, title, text in item["checklist"]:
         blocks += [box(f"{letter} - {title}", text), Spacer(1, 10)]
     blocks += [p(item["nuance"][0], "sub"), p(item["nuance"][1])]
-    page(c, 5, n, blocks)
+    content_page(5, blocks)
 
     blocks = [p("05 | Hábitos que reduzem o risco", "heading"),
               p("A prática fica mais simples quando você sabe qual caminho seguro usar. No trabalho, combine os cuidados abaixo com os procedimentos da organização."),
@@ -182,14 +185,14 @@ def render(item):
     for text in item["habits"]:
         blocks += [p("• " + text), Spacer(1, 3)]
     blocks += [Spacer(1, 12), box("Regra de ouro", item["rule"])]
-    page(c, 6, n, blocks)
+    content_page(6, blocks)
 
     blocks = [p("06 | Se algo saiu do esperado", "heading"),
               p("Não esconda o ocorrido nem espere ter todas as respostas para pedir ajuda. Estas são orientações de conscientização; a resposta concreta deve seguir o serviço e a equipe responsáveis.")]
     for i, (title, text) in enumerate(item["response"], 1):
         blocks += [p(f"{i}. {title}", "sub"), p(text)]
     blocks += [Spacer(1, 6), box("Lembre-se", item["closing"])]
-    page(c, 7, n, blocks)
+    content_page(7, blocks)
 
     blocks = [p("07 | Mini laboratório", "heading"),
               p("Leia cada cenário e escolha seu próximo passo antes de consultar o comentário. Na aula do portal, responda às cinco perguntas; são necessários quatro acertos.")]
@@ -201,7 +204,7 @@ def render(item):
         blocks += [p(title, "small"), Paragraph(
             f'<link href="{escape(url, quote=True)}" color="#177B7C">{escape(url)}</link>', STYLES["small"])]
     blocks += [p("Consulta às fontes: 22 out. 2026. Material autoral de conscientização com exemplos fictícios. Telas e procedimentos podem variar por serviço, conta e política organizacional.", "small")]
-    page(c, 8, n, blocks)
+    content_page(8, blocks)
     c.save()
     print(f"Módulo {n:02}: 8 páginas - {destination.name}")
 
