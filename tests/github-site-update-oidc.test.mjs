@@ -26,6 +26,12 @@ const wrongAudience=await token({aud:'unexpected-audience'});
 assert.equal(await verifyGitHubActionsToken(wrongAudience.jwt,{fetchImpl:fetchKeys,now,audience}),null);
 const expired=await token({exp:Math.floor(now/1000)-1});
 assert.equal(await verifyGitHubActionsToken(expired.jwt,{fetchImpl:fetchKeys,now,audience}),null);
-const tampered=valid.jwt.slice(0,-2)+'xx';
+// Mutate signature bytes: replacing trailing base64url characters can leave
+// the decoded signature unchanged because its final sextet has unused bits.
+const [validHeader,validPayload,validSignature]=valid.jwt.split('.');
+const alteredSignature=Buffer.from(validSignature,'base64url');
+alteredSignature[0]^=1;
+assert.notDeepEqual(alteredSignature,Buffer.from(validSignature,'base64url'));
+const tampered=validHeader+'.'+validPayload+'.'+alteredSignature.toString('base64url');
 assert.equal(await verifyGitHubActionsToken(tampered,{fetchImpl:fetchKeys,now,audience}),null);
 console.log('PASS: GitHub OIDC signature, audience, expiry, repository, main branch, push event, workflow identity, and commit claims are enforced.');
