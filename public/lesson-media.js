@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const origin='https://player.vimeo.com';
 const basicVideos=Object.freeze({
- 'pilot-l1':{id:'1240759740',hash:'94c62529b7',number:'01'},
+ 'pilot-l1':{id:'1244243146',hash:'2ab050e76e',number:'01'},
  'pilot-l2':{id:'1240759697',hash:'5209f45e77',number:'02'},
  'pilot-l3':{id:'1240759742',hash:'acd99189ac',number:'03'},
  'pilot-l4':{id:'1240759746',hash:'00d17b69d2',number:'04'},
@@ -20,8 +20,8 @@ const intermediateVideos=Object.freeze({
 });
 let sdkPromise;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function forLesson(course,lesson){const videos=course==='cyber-pilot'?basicVideos:course==='cyber-intermediate'?intermediateVideos:null;if(!videos||!Object.hasOwn(videos,lesson))return null;const video=videos[lesson],title=course==='cyber-pilot'?'Segurança Digital na Prática':'Segurança Digital no Trabalho';return {url:origin+'/video/'+video.id+'?'+(video.hash?'h='+video.hash+'&':'')+'dnt=1&title=0&byline=0&portrait=0',publicUrl:'https://vimeo.com/'+video.id+(video.hash?'/'+video.hash:''),title:'Videoaula '+video.number+' - '+title};}
-function markup(media,course,lesson){return '<div class="vimeo-lesson-wrap"><iframe id="lessonVimeo" class="lesson-player vimeo-lesson" src="'+esc(media.url)+'" title="'+esc(media.title)+'" data-course="'+esc(course)+'" data-lesson="'+esc(lesson)+'" data-position="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p id="vimeoPlaybackError" class="inline-alert" role="alert" hidden></p>';}
+function forLesson(course,lesson){const videos=course==='cyber-pilot'?basicVideos:course==='cyber-intermediate'?intermediateVideos:null;if(!videos||!Object.hasOwn(videos,lesson))return null;const video=videos[lesson],title=course==='cyber-pilot'?'Segurança Digital na Prática':'Segurança Digital no Trabalho';return {url:origin+'/video/'+video.id+'?'+(video.hash?'h='+video.hash+'&':'')+'dnt=1&title=0&byline=0&portrait=0&playsinline=0&fullscreen=1',publicUrl:'https://vimeo.com/'+video.id+(video.hash?'/'+video.hash:''),title:'Videoaula '+video.number+' - '+title};}
+function markup(media,course,lesson){return '<div class="vimeo-lesson-wrap"><iframe id="lessonVimeo" class="lesson-player vimeo-lesson" src="'+esc(media.url)+'" title="'+esc(media.title)+'" data-course="'+esc(course)+'" data-lesson="'+esc(lesson)+'" data-position="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media; screen-wake-lock; orientation-lock" allowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="vimeo-lesson-actions"><button type="button" class="btn secondary" data-vimeo-fullscreen disabled aria-describedby="vimeoOrientationHint">Tela cheia / Horizontal</button><small id="vimeoOrientationHint">No celular, use tela cheia e gire o aparelho. Se necessário, desative o bloqueio de rotação.</small></div><p id="vimeoPlaybackError" class="inline-alert" role="alert" hidden></p>';}
 function loadSdk(){
  if(window.Vimeo?.Player)return Promise.resolve(window.Vimeo);
  if(sdkPromise)return sdkPromise;
@@ -35,7 +35,12 @@ function loadSdk(){
  return sdkPromise;
 }
 function mount(frame,{resume=0,onTime=()=>{},onPause=()=>{},onEnded=()=>{},onError=()=>{}}={}){
- let player,disposed=false,restored=false,restoring=false;
+ let player,disposed=false,restored=false,restoring=false,orientationLocked=false;
+ const controls=frame.parentElement?.nextElementSibling,fullscreenButton=controls?.querySelector('[data-vimeo-fullscreen]'),hint=controls?.querySelector('#vimeoOrientationHint');
+ const unlock=()=>{if(orientationLocked){orientationLocked=false;try{window.screen?.orientation?.unlock?.();}catch{}}};
+ const enterFullscreen=()=>{if(!player||!live())return;try{Promise.resolve(frame.parentElement.requestFullscreen?frame.parentElement.requestFullscreen().catch(()=>player.requestFullscreen()):player.requestFullscreen()).then(async()=>{if(!live()||!window.matchMedia?.('(pointer: coarse)').matches||!window.screen?.orientation?.lock)return;try{await window.screen.orientation.lock('landscape');orientationLocked=true;if(!live())unlock();}catch{}}).catch(()=>{if(live()&&hint)hint.textContent='Use o botão de tela cheia do próprio vídeo e gire o celular. Confira o bloqueio de rotação do aparelho.';});}catch{if(hint)hint.textContent='Use o botão de tela cheia do próprio vídeo e gire o celular.';}};
+ fullscreenButton?.addEventListener('click',enterFullscreen);
+ const fullscreenChanged=()=>{if(!document.fullscreenElement)unlock();};document.addEventListener('fullscreenchange',fullscreenChanged);
  frame.dataset.position=String(Number.isFinite(resume)&&resume>0?resume:0);
  const live=()=>!disposed&&frame.isConnected;
  const report=error=>{if(live())onError(error?.message||'Não foi possível reproduzir este vídeo no Vimeo.');};
@@ -48,9 +53,10 @@ function mount(frame,{resume=0,onTime=()=>{},onPause=()=>{},onEnded=()=>{},onErr
   player.on('pause',()=>{if(live()&&restored&&!restoring)onPause();});
   player.on('ended',()=>{if(live()&&restored&&!restoring)onEnded();});
   player.on('error',report);
-  await player.ready();
+  player.on('fullscreenchange',data=>{if(!data.fullscreen)unlock();});
+  await player.ready();if(live()&&fullscreenButton)fullscreenButton.disabled=false;
  }).catch(report);
- return {ready,destroy(){disposed=true;if(player)Promise.resolve(player.destroy()).catch(()=>{});}};
+ return {ready,destroy(){disposed=true;unlock();fullscreenButton?.removeEventListener('click',enterFullscreen);document.removeEventListener('fullscreenchange',fullscreenChanged);if(player)Promise.resolve(player.destroy()).catch(()=>{});}};
 }
 window.AcademyLessonMedia=Object.freeze({forLesson,markup,mount});
 })();

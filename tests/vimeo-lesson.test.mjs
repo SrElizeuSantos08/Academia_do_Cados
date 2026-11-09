@@ -8,7 +8,7 @@ const players=[];
 class Player{
  constructor(frame){this.frame=frame;this.events={};this.seeks=[];this.destroyed=false;players.push(this);}
  on(name,fn){this.events[name]=fn;} ready(){return Promise.resolve();}
- getDuration(){return Promise.resolve(180);} setCurrentTime(n){this.seeks.push(n);return Promise.resolve(n);}
+ requestFullscreen(){this.fullscreens=(this.fullscreens||0)+1;return Promise.resolve();} getDuration(){return Promise.resolve(180);} setCurrentTime(n){this.seeks.push(n);return Promise.resolve(n);}
  destroy(){this.destroyed=true;return Promise.resolve();}
 }
 const tick=()=>new Promise(r=>setTimeout(r,15));
@@ -19,7 +19,7 @@ try{
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
  w.eval(readFileSync(new URL('../public/lesson-media.js',import.meta.url),'utf8'));
  const media=w.AcademyLessonMedia;
- const expected=[['1240759740','94c62529b7'],['1240759697','5209f45e77'],['1240759742','acd99189ac'],['1240759746','00d17b69d2'],['1240759756','1475053a38'],['1240759701','f61ec9af87'],['1240759699','dcaaaa4c6b'],['1240759698','a7469a7845']];
+ const expected=[['1244243146','2ab050e76e'],['1240759697','5209f45e77'],['1240759742','acd99189ac'],['1240759746','00d17b69d2'],['1240759756','1475053a38'],['1240759701','f61ec9af87'],['1240759699','dcaaaa4c6b'],['1240759698','a7469a7845']];
  for(const [i,[id,hash]] of expected.entries()){
   const lesson='pilot-l'+(i+1),entry=media.forLesson('cyber-pilot',lesson),url=new URL(entry.url);
   assert.equal(url.origin,'https://player.vimeo.com');assert.equal(url.pathname,'/video/'+id);assert.equal(url.searchParams.get('h'),hash);
@@ -41,9 +41,21 @@ try{
  assert.equal(media.forLesson('cyber-pilot','intermediate-l1'),null);assert.equal(media.forLesson('unknown','intermediate-l1'),null);
  const trial=media.forLesson('cyber-pilot','pilot-l1');
  assert.equal(new URL(trial.url).origin,'https://player.vimeo.com');
- assert.equal(new URL(trial.url).searchParams.get('h'),'94c62529b7');
+ assert.equal(new URL(trial.url).searchParams.get('h'),'2ab050e76e');
  assert.equal(new URL(trial.url).searchParams.get('dnt'),'1');
  assert(!trial.url.includes('/manage/'));
+ assert.equal(new URL(trial.url).searchParams.get('playsinline'),'0');
+ assert.equal(new URL(trial.url).searchParams.get('fullscreen'),'1');
+ const mobileBox=w.document.createElement('div');mobileBox.innerHTML=media.markup(trial,'cyber-pilot','pilot-l1');w.document.body.append(mobileBox);
+ const mobileFrame=mobileBox.querySelector('iframe'),mobileButton=mobileBox.querySelector('[data-vimeo-fullscreen]');
+ assert(mobileFrame.allow.includes('fullscreen'));assert(mobileFrame.hasAttribute('webkitallowfullscreen'));assert(mobileButton.disabled);
+ let completedFromFullscreen=0;const mobile=media.mount(mobileFrame,{onEnded:()=>completedFromFullscreen++});await mobile.ready;
+ assert.equal(mobileButton.disabled,false);const mobilePlayer=players.at(-1);mobileButton.click();await tick();
+ assert.equal(mobilePlayer.fullscreens,1);assert.equal(completedFromFullscreen,0);assert.equal(mobilePlayer.seeks.length,0);
+ mobilePlayer.requestFullscreen=()=>Promise.reject(Error('Unsupported'));mobileButton.click();await tick();
+ assert.match(mobileBox.querySelector('#vimeoOrientationHint').textContent,/gire o celular/);
+ mobile.destroy();mobileButton.click();assert.equal(mobilePlayer.fullscreens,1);mobileBox.remove();
+
  sql.prepare('DELETE FROM progress WHERE user=?').run(p.id);
  sql.prepare('UPDATE people SET active=1 WHERE id=?').run(p.id);
  sql.prepare('UPDATE courses SET published=1 WHERE id=?').run('cyber-pilot');

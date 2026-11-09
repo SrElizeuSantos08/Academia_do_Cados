@@ -43,6 +43,10 @@ sql.close();
 // Run the integrated UI submission helper: never grade partial answers or skip
 // the video; expose server feedback and release the guard after a failed attempt.
 const portal = read('public/portal.js');
+const home = read('public/index.html');
+assert(home.includes('id="sentinela"') && home.includes('assets/mascote-sentinela.webp'));
+assert((portal.match(/src="\/assets\/mascote-sentinela\.webp"/g)||[]).length>=3,'Mascot appears on both dashboards and support');
+assert(portal.includes('Sentinela é o mascote e guia visual da plataforma.'));
 const helper = portal.slice(portal.indexOf('let quizSubmitting='),portal.indexOf('function renderClassroom('));
 let marked = 0, calls = 0, ended = false, highlighted = false;
 const result = { textContent: '' }, button = { disabled: false };
